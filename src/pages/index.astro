@@ -17,6 +17,14 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
+
+import fetchApi from "../lib/strapi";
+import type Store from "../interfaces/Store";
+
+const store = await fetchApi<Store>({
+  endpoint: "stores/1", // the content type to fetch
+  wrappedByKey: "data", // the key to unwrap the response
+});
 ---
 
 <Layout>
@@ -24,7 +32,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <main id="main-content">
     <section id="hero">
       <h2>Built with:</h2>
-      <h1>Markketplace</h1>
+      <h1>{store.attributes.title || "Markketplace"}</h1>
       <a
         target="_blank"
         href="/rss.xml"
