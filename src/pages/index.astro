@@ -18,6 +18,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
 
+import { markketplace } from "../config";
 import fetchApi from "../lib/strapi";
 import type Store from "../interfaces/Store";
 
@@ -25,9 +26,10 @@ import type Store from "../interfaces/Store";
  * populate documentation: https://docs.strapi.io/dev-docs/api/rest/populate-select
  * astro/strapi: https://docs.astro.build/en/guides/cms/strapi/
  * strapi/astro tutorial: https://strapi.io/blog/astro-and-strapi-website-tutorial-part-1-intro-to-astro
+ * strapi query api: https://forum.strapi.io/t/strapi-v4-search-by-slug-instead-id/13469/3
  */
 const store = await fetchApi<Store>({
-  endpoint: "stores/?filters[slug][$eq]=morirsoniando&populate=*", // the content type to fetch
+  endpoint: `stores/?filters[slug][$eq]=${markketplace.STORE_SLUG}&populate=*`,
   wrappedByKey: "data", // the key to unwrap the response
   wrappedByList: true, // the key to unwrap the response
 });

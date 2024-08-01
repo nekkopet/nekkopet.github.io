@@ -1,7 +1,12 @@
 import type { Site, SocialObjects } from "./types";
 
+export const markketplace = {
+  STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.morirsoniando.com',
+  STORE_SLUG: import.meta.env.STORE_SLUG as string || 'morirsoniando',
+};
+
 export const SITE: Site = {
-  website: "https://astro.morirsoniando.com//", // replace this with your deployed domain
+  website: "https://morirsoniando.com/",
   author: "Club Calima",
   profile: "https://caliman.org/",
   desc: "A minimal, responsive and SEO-friendly Markketplace theme.",

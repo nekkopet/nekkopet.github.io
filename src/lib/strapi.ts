@@ -5,7 +5,7 @@ interface Props {
   wrappedByList?: boolean;
 }
 
-const STRAPI_URL = (import.meta.env.STRAPI_URL || '').replace(/\/$/, '');
+import { markketplace } from '../config';
 
 /**
  * Fetches data from the Strapi API
@@ -25,7 +25,7 @@ export default async function fetchApi<T>({
     endpoint = endpoint.slice(1);
   }
 
-  const url = new URL(`${STRAPI_URL}/api/${endpoint}`);
+  const url = new URL(`${markketplace.STRAPI_URL}/api/${endpoint}`);
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {

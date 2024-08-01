@@ -1,4 +1,24 @@
-# AstroPaper 📄
+## Markketplace Astro
+
+Convenient frontend template to
+
+
+## Configuration
+
+Use environment variables to connect to a different [Strapi](https://docs.strapi.io) backend, and
+customize the store being used. Default values show below:
+
+```typescript
+
+export const markketplace = {
+  STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.morirsoniando.com',
+  STORE_SLUG: import.meta.env.STORE_SLUG as string || 'morirsoniando',
+};
+```
+
+## AstroPaper 📄
+
+This template was built on top of Astropaper, a free astro template.
 
 ![AstroPaper](public/astropaper-og.jpg)
 [![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/community/file/1356898632249991861)
