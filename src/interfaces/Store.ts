@@ -8,7 +8,7 @@ export default interface Store {
       data: {
         id: string,
         attributes: {
-          format: {
+          formats: {
             medium: {
               ext: string,
               url: string,

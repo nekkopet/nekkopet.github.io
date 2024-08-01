@@ -22,7 +22,7 @@ import fetchApi from "../lib/strapi";
 import type Store from "../interfaces/Store";
 
 const store = await fetchApi<Store>({
-  endpoint: "stores/1", // the content type to fetch
+  endpoint: "stores/1?populate=*", // the content type to fetch
   wrappedByKey: "data", // the key to unwrap the response
 });
 ---
@@ -31,7 +31,6 @@ const store = await fetchApi<Store>({
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h2>Built with:</h2>
       <h1>{store.attributes.title || "Markketplace"}</h1>
       <a
         target="_blank"
@@ -53,17 +52,38 @@ const store = await fetchApi<Store>({
       </a>
 
       <p>
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="http://github.com/calimania/markketplace-astro"
-        >
-          Markketplace-astro
-        </LinkButton>
-        is a minimal, responsive, accessible and SEO-friendly Astro blog theme, compatible
-        with Markketplace/Strapi. This theme follows best practices and provides
-        accessibility out of the box. Light and dark mode are supported by default.
-        Moreover, additional color schemes can also be configured.
+        <strong>
+          {
+            store.attributes.description ||
+              "A simple and minimal Markketplace theme."
+          }
+        </strong>
       </p>
+      {console.log({ a: store.attributes.Logo?.data?.attributes.formats })}
+      {
+        store.attributes.Logo?.data?.attributes?.formats?.medium && (
+          <img
+            src={store.attributes.Logo.data.attributes.formats.medium.url}
+            alt={store.attributes.title}
+            class="h-24 w-24 rounded-full"
+          />
+        )
+      }
+
+      <footer>
+        <p>
+          <LinkButton
+            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+            href="http://github.com/calimania/markketplace-astro"
+          >
+            Markketplace-astro
+          </LinkButton>
+          is a minimal, responsive, accessible and SEO-friendly Astro blog theme,
+          compatible with Markketplace/Strapi. This theme follows best practices
+          and provides accessibility out of the box. Light and dark mode are supported
+          by default. Moreover, additional color schemes can also be configured.
+        </p>
+      </footer>
       <!-- <p>
         Read the blog posts or check
         <LinkButton
