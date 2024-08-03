@@ -1,9 +1,14 @@
+/**
+ *  Store Interface
+ */
 export default interface Store {
   id: number;
   attributes: {
     title: string;
     description: string;
     slug: string;
+    products: { data: [] };
+    Links: { label: string, url: string, }[];
     Logo: {
       data: {
         id: string,

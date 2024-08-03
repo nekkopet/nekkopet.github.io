@@ -29,10 +29,13 @@ import type Store from "../interfaces/Store";
  * strapi query api: https://forum.strapi.io/t/strapi-v4-search-by-slug-instead-id/13469/3
  */
 const store = await fetchApi<Store>({
-  endpoint: `stores/?filters[slug][$eq]=${markketplace.STORE_SLUG}&populate=*`,
+  endpoint: `stores/?filters[slug][$eq]=${markketplace.STORE_SLUG}&populate=products`,
   wrappedByKey: "data", // the key to unwrap the response
   wrappedByList: true, // the key to unwrap the response
 });
+
+const links = store.attributes?.Links || [];
+const products = store.attributes?.products?.data || [];
 ---
 
 <Layout>
@@ -77,20 +80,57 @@ const store = await fetchApi<Store>({
         )
       }
 
-      <footer>
-        <p>
-          <LinkButton
-            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-            href="http://github.com/calimania/markketplace-astro"
-          >
-            Markketplace-astro
-          </LinkButton>
-          is a minimal, responsive, accessible and SEO-friendly Astro blog theme,
-          compatible with Markketplace/Strapi. This theme follows best practices
-          and provides accessibility out of the box. Light and dark mode are supported
-          by default. Moreover, additional color schemes can also be configured.
-        </p>
-      </footer>
+      <p>
+        <LinkButton
+          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+          href="http://github.com/calimania/markketplace-astro"
+        >
+          Markketplace-astro
+        </LinkButton>
+        is a minimal, responsive, accessible and SEO-friendly Astro blog theme, compatible
+        with Markketplace/Strapi. This theme follows best practices and provides
+        accessibility out of the box. Light and dark mode are supported by default.
+        Moreover, additional color schemes can also be configured.
+      </p>
+
+      {
+        links && links.length > 0 && (
+          <div class="mb-12 mt-6">
+            <h2>Links</h2>
+            {links.map(link => {
+              return (
+                <LinkButton
+                  href={link.url}
+                  className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+                >
+                  {link.label}
+                </LinkButton>
+              );
+            })}
+          </div>
+        )
+      }
+
+      {
+        products && products.length > 0 && (
+          <div class="mb-12 mt-6">
+            <h2>Products</h2>
+            {products.map(
+              (product: { id: string; attributes: { Name: string } }) => {
+                return (
+                  <LinkButton
+                    href={`#${product.id}`}
+                    className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+                  >
+                    {product.attributes.Name}
+                  </LinkButton><br />
+                );
+              }
+            )}
+          </div>
+        )
+      }
+
       <!-- <p>
         Read the blog posts or check
         <LinkButton
