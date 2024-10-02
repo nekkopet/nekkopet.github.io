@@ -1,5 +1,5 @@
 ---
-author: Sat Naing
+author:  Daveed Silva
 pubDatetime: 2024-10-02T16:20:69Z
 title: Join Our Mailing List, Calima Markket.place
 featured: false
