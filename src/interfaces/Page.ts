@@ -26,6 +26,10 @@ export default interface Page {
       }
     }
   },
+  SEO: {
+    metaDescription: string,
+    metaTitle: string,
+  },
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

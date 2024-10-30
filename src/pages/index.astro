@@ -6,7 +6,6 @@ import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
-import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
@@ -15,27 +14,23 @@ import {
   BlocksRenderer,
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
+import { slugifyStr } from "@utils/slugify";
 
 const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
 
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const posts = await getCollection("posts");
 
 const socialCount = SOCIALS.filter(social => social.active).length;
 
 const pages = await getCollection("pages");
+
 const homePage = pages.find(
-  page => (page as unknown as { data: Page }).data.slug === "home"
+  (page: { data: Page }) => page.data.slug === "home"
 ) as unknown as { data: Page };
 
 const links = store?.Links || [];
-const products = store?.products?.data || [];
-
+// const products = store?.products?.data || [];
 ---
 
 <Layout>
@@ -64,10 +59,7 @@ const products = store?.products?.data || [];
 
       <p>
         <strong>
-          {
-            store?.Description ||
-              "A simple and minimal Markketplace theme."
-          }
+          {store?.Description || "A simple and minimal Markketplace theme."}
         </strong>
       </p>
       {
@@ -79,14 +71,14 @@ const products = store?.products?.data || [];
           />
         )
       }
-      </section>
-      <section class="">
-        <BlocksRenderer
-          content={homePage?.data?.Content || ([] as BlocksContent[])}
-        />
-      </section>
-      <Hr />
-      <section>
+    </section>
+    <section class="">
+      <BlocksRenderer
+        content={homePage?.data?.Content || ([] as BlocksContent[])}
+      />
+    </section>
+    <Hr />
+    <section>
       {
         links && links.length > 0 && (
           <div class="mb-12 mt-6">
@@ -105,7 +97,7 @@ const products = store?.products?.data || [];
         )
       }
 
-      {
+      <!-- {
         products && products.length > 0 && (
           <div class="mb-12 mt-6">
             <h2>Products</h2>
@@ -123,19 +115,9 @@ const products = store?.products?.data || [];
             )}
           </div>
         )
-      }
+      } -->
 
-      <!-- <p>
-        Read the blog posts or check
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="https://github.com/satnaing/astro-paper#readme"
-        >
-          README
-        </LinkButton> for more info.
-      </p> -->
       {
-        // only display if at least one social link is enabled
         socialCount > 0 && (
           <div class="social-wrapper">
             <div class="social-links">Social Links:</div>
@@ -147,54 +129,54 @@ const products = store?.products?.data || [];
 
     <Hr />
 
-    <section class="pt-10 mb-10">
-      <p>
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="http://github.com/calimania/markketplace-astro"
-        >
-          Built with Markketplace-astro -
-        </LinkButton>
-         a minimal, responsive, accessible and SEO-friendly Astro blog theme, compatible
-        with Markketplace/Strapi. This theme follows best practices and provides
-        accessibility out of the box. Light and dark mode are supported by default.
-        Moreover, additional color schemes can also be configured.
-      </p>
-    </section>
-
     <Hr />
 
     {
-      featuredPosts.length > 0 && (
+      pages.length > 0 && (
         <>
           <section id="featured">
-            <h2>Featured</h2>
+            <h2>Pages</h2>
             <ul>
-              {featuredPosts.map(({ data, slug }) => (
+              {pages.map(page => (
                 <Card
-                  href={`/posts/${slug}/`}
-                  frontmatter={data}
+                  href={`/${page.data.slug}/`}
+                  frontmatter={{
+                    author: "x",
+                    tags: ["x"],
+                    title: page.data.Title,
+                    pubDatetime: new Date(page.data.createdAt),
+                    modDatetime: new Date(page.data.updatedAt),
+                    description: page.data.SEO?.metaDescription || "",
+                  }}
                   secHeading={false}
                 />
               ))}
             </ul>
           </section>
-          {recentPosts.length > 0 && <Hr />}
+          {posts.length > 0 && <Hr />}
         </>
       )
     }
 
     {
-      recentPosts.length > 0 && (
+      posts.length > 0 && (
         <section id="recent-posts">
           <h2>Recent Posts</h2>
           <ul>
-            {recentPosts.map(
-              ({ data, slug }, index) =>
+            {console.log({ posts: posts[0].data })}
+            {posts.map(
+              ({ data, id }, index) =>
                 index < SITE.postPerIndex && (
                   <Card
-                    href={`/posts/${slug}/`}
-                    frontmatter={data}
+                    href={`/posts/${id}/${slugifyStr(data.Title)}`}
+                    frontmatter={{
+                      author: "x",
+                      tags: ["aa"],
+                      title: data.Title,
+                      pubDatetime: new Date(data.createdAt),
+                      modDatetime: new Date(data.updatedAt),
+                      description: data.SEO?.metaDescription || "",
+                    }}
                     secHeading={false}
                   />
                 )
@@ -215,6 +197,21 @@ const products = store?.products?.data || [];
         </svg>
       </LinkButton>
     </div>
+
+    <section class="mb-10 pt-10">
+      <p>
+        <LinkButton
+          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+          href="http://github.com/calimania/markketplace-astro"
+        >
+          Built with Markketplace-astro -
+        </LinkButton>
+        a minimal, responsive, accessible and SEO-friendly Astro blog theme, compatible
+        with Markketplace/Strapi. This theme follows best practices and provides
+        accessibility out of the box. Light and dark mode are supported by default.
+        Moreover, additional color schemes can also be configured.
+      </p>
+    </section>
   </main>
 
   <Footer />

@@ -1,0 +1,48 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import type { Page, Store } from "@interfaces/index";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+import Hr from "@components/Hr.astro";
+
+export interface Props {
+  page: CollectionEntry<"page">;
+}
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages");
+
+  return pages.map((page: { data: CollectionEntry<"page"> }) => ({
+    params: { slug: page.data.slug },
+    props: { page: page.data },
+  }));
+}
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as unknown as Store;
+
+const { page } = Astro.props;
+---
+
+<Layout>
+  <Header store={store} activeNav={page.slug} />
+
+  <Breadcrumbs />
+  <main id="main-content">
+    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
+      <h1 class="text-2xl tracking-wider sm:text-3xl">{page.Title}</h1>
+    </section>
+
+    <section class="">
+      <BlocksRenderer content={page?.Content || ([] as BlocksContent[])} />
+    </section>
+    <Hr />
+  </main>
+</Layout>
+<Footer />
