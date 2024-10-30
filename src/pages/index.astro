@@ -10,6 +10,11 @@ import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
+import type Page from "../interfaces/Page";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
 
 const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
@@ -23,7 +28,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
 
-
+const pages = await getCollection("pages");
+const homePage = pages.find(
+  page => (page as unknown as { data: Page }).data.slug === "home"
+) as unknown as { data: Page };
 
 const links = store?.Links || [];
 const products = store?.products?.data || [];
@@ -71,9 +79,14 @@ const products = store?.products?.data || [];
           />
         )
       }
-
-
-
+      </section>
+      <section class="">
+        <BlocksRenderer
+          content={homePage?.data?.Content || ([] as BlocksContent[])}
+        />
+      </section>
+      <Hr />
+      <section>
       {
         links && links.length > 0 && (
           <div class="mb-12 mt-6">
