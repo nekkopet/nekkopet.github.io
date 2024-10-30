@@ -12,11 +12,17 @@ export interface Props {
   };
 }
 
+import { getCollection } from "astro:content";
+import type Store from "../interfaces/Store";
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as unknown as Store;
+
 const { frontmatter } = Astro.props;
 ---
 
 <Layout title={`${frontmatter.title} | ${SITE.title}`}>
-  <Header activeNav="about" />
+  <Header activeNav="about" store={store} />
   <Breadcrumbs />
   <main id="main-content">
     <section id="about" class="prose mb-28 max-w-3xl prose-img:border-0">

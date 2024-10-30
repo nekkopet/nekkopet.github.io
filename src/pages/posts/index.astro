@@ -5,6 +5,10 @@ import getSortedPosts from "@utils/getSortedPosts";
 import getPagination from "@utils/getPagination";
 
 const posts = await getCollection("blog");
+// const StrapiPosts = await getCollection("strapiPosts");
+// const pages = await getCollection("pages");
+
+// console.log({   pages, strapiPosts, });
 
 const sortedPosts = getSortedPosts(posts);
 

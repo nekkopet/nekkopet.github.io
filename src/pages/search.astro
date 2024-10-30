@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
@@ -7,6 +6,11 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import SearchBar from "@components/Search";
 import getSortedPosts from "@utils/getSortedPosts";
+import { getCollection } from "astro:content";
+import type Store from "../interfaces/Store";
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as unknown as Store;
 
 // Retrieve all published articles
 const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -22,7 +26,7 @@ const searchList = sortedPosts.map(({ data, slug }) => ({
 ---
 
 <Layout title={`Search | ${SITE.title}`}>
-  <Header activeNav="search" />
+  <Header activeNav="search" store={store} />
   <Main pageTitle="Search" pageDesc="Search any article ...">
     <SearchBar client:load searchList={searchList} />
   </Main>

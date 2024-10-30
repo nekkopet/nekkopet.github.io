@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Layout from "@layouts/Layout.astro";
@@ -7,6 +6,11 @@ import Main from "@layouts/Main.astro";
 import Tag from "@components/Tag.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
+import { getCollection } from "astro:content";
+import type Store from "../../interfaces/Store";
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as unknown as Store;
 
 const posts = await getCollection("blog");
 
@@ -14,7 +18,7 @@ let tags = getUniqueTags(posts);
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>
-  <Header activeNav="tags" />
+  <Header activeNav="tags" store={store} />
   <Main pageTitle="Tags" pageDesc="All the tags used in posts.">
     <ul>
       {tags.map(({ tag }) => <Tag {tag} size="lg" />)}

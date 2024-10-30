@@ -7,6 +7,11 @@ import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import Pagination from "@components/Pagination.astro";
 import { SITE } from "@config";
+import { getCollection } from "astro:content";
+import type Store from "../interfaces/Store";
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as unknown as Store;
 
 export interface Props {
   currentPage: number;
@@ -20,7 +25,7 @@ const { currentPage, totalPages, paginatedPosts, tag, tagName } = Astro.props;
 ---
 
 <Layout title={`Tag: ${tagName} | ${SITE.title}`}>
-  <Header activeNav="tags" />
+  <Header activeNav="tags" store={store} />
   <Main
     pageTitle={[`Tag:`, `${tagName}`]}
     titleTransition={tag}

@@ -14,11 +14,17 @@ export interface Props {
   paginatedPosts: CollectionEntry<"blog">[];
 }
 
+import { getCollection } from "astro:content";
+import type Store from "../interfaces/Store";
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as unknown as Store;
+
 const { currentPage, totalPages, paginatedPosts } = Astro.props;
 ---
 
 <Layout title={`Posts | ${SITE.title}`}>
-  <Header activeNav="posts" />
+  <Header activeNav="posts" store={store} />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
       {
