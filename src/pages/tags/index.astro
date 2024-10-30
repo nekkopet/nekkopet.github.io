@@ -12,7 +12,7 @@ import type Store from "../../interfaces/Store";
 const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
 
-const posts = await getCollection("blog");
+const posts = await getCollection("posts");
 
 let tags = getUniqueTags(posts);
 
