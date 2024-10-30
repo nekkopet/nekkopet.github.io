@@ -7,19 +7,20 @@ import Footer from "@components/Footer.astro";
 import SearchBar from "@components/Search";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
+import { slugifyStr } from "@utils/slugify";
 
 const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
 
 // Retrieve all published articles
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const posts = await getCollection("posts");
 
 // List of items to search in
-const searchList = posts.map(({ data, slug }) => ({
-  title: data.title,
-  description: data.description,
+const searchList = posts.map(({ data, id }) => ({
+  title: data.Title,
+  description: data.SEO?.metaDescription,
   data,
-  slug,
+  slug: `/posts/${id}-${slugifyStr(data.Title)}`,
 }));
 ---
 
