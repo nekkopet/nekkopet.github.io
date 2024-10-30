@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -9,40 +8,33 @@ import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
+import { getCollection } from "astro:content";
+import type Store from "../interfaces/Store";
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as unknown as Store;
 
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
+
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
 
-import { markketplace } from "../config";
-import fetchApi from "../lib/strapi";
-import type Store from "../interfaces/Store";
 
-/**
- * populate documentation: https://docs.strapi.io/dev-docs/api/rest/populate-select
- * astro/strapi: https://docs.astro.build/en/guides/cms/strapi/
- * strapi/astro tutorial: https://strapi.io/blog/astro-and-strapi-website-tutorial-part-1-intro-to-astro
- * strapi query api: https://forum.strapi.io/t/strapi-v4-search-by-slug-instead-id/13469/3
- */
-const store = await fetchApi<Store>({
-  endpoint: `stores/?filters[slug][$eq]=${markketplace.STORE_SLUG}&populate=products`,
-  wrappedByKey: "data", // the key to unwrap the response
-  wrappedByList: true, // the key to unwrap the response
-});
 
-const links = store.attributes?.Links || [];
-const products = store.attributes?.products?.data || [];
+const links = store?.Links || [];
+const products = store?.products?.data || [];
+
 ---
 
 <Layout>
-  <Header />
+  <Header store={store} />
   <main id="main-content">
     <section id="hero">
-      <h1>{store.attributes?.title || "Markketplace"}</h1>
+      <h1>{store?.Title || "Markketplace"}</h1>
       <a
         target="_blank"
         href="/rss.xml"
@@ -65,33 +57,22 @@ const products = store.attributes?.products?.data || [];
       <p>
         <strong>
           {
-            store.attributes?.description ||
+            store?.Description ||
               "A simple and minimal Markketplace theme."
           }
         </strong>
       </p>
       {
-        store.attributes.Logo?.data?.attributes?.formats?.medium && (
+        store.Logo?.formats?.small && (
           <img
-            src={store.attributes.Logo.data.attributes.formats.medium.url}
-            alt={store.attributes.title}
+            src={store.Logo.formats.small.url}
+            alt={store.Title}
             class="h-24 w-24 rounded-full"
           />
         )
       }
 
-      <p>
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="http://github.com/calimania/markketplace-astro"
-        >
-          Markketplace-astro
-        </LinkButton>
-        is a minimal, responsive, accessible and SEO-friendly Astro blog theme, compatible
-        with Markketplace/Strapi. This theme follows best practices and provides
-        accessibility out of the box. Light and dark mode are supported by default.
-        Moreover, additional color schemes can also be configured.
-      </p>
+
 
       {
         links && links.length > 0 && (
@@ -149,6 +130,23 @@ const products = store.attributes?.products?.data || [];
           </div>
         )
       }
+    </section>
+
+    <Hr />
+
+    <section class="pt-10 mb-10">
+      <p>
+        <LinkButton
+          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+          href="http://github.com/calimania/markketplace-astro"
+        >
+          Built with Markketplace-astro -
+        </LinkButton>
+         a minimal, responsive, accessible and SEO-friendly Astro blog theme, compatible
+        with Markketplace/Strapi. This theme follows best practices and provides
+        accessibility out of the box. Light and dark mode are supported by default.
+        Moreover, additional color schemes can also be configured.
+      </p>
     </section>
 
     <Hr />

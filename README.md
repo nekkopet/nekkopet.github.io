@@ -1,7 +1,8 @@
 ## Markketplace Astro
 
-Convenient frontend template to
+Convenient frontend template to create clients for [markket.place](https://markket.place).
 
+At Markket.place, we’re building a platform that gives artists and small business owners the tools to launch, grow, and manage their online presence.
 
 ## Configuration
 
@@ -15,6 +16,13 @@ export const markketplace = {
   STORE_SLUG: import.meta.env.STORE_SLUG as string || 'morirsoniando',
 };
 ```
+
+## Reference
+
+ * populate documentation: https://docs.strapi.io/dev-docs/api/rest/populate-select
+ * astro/strapi: https://docs.astro.build/en/guides/cms/strapi/
+ * strapi/astro tutorial: https://strapi.io/blog/astro-and-strapi-website-tutorial-part-1-intro-to-astro
+ * strapi query api: https://forum.strapi.io/t/strapi-v4-search-by-slug-instead-id/13469/3
 
 ## AstroPaper 📄
 

@@ -1,13 +1,14 @@
 /**
  *  Store Interface
  */
-export default interface Store {
+export default interface Page {
   id: number;
   Title: string;
   Description: string;
   slug: string;
   products: { data: [] };
   Links: { label: string, url: string, }[];
+  Content: [],
   Logo: {
     id: string,
     formats: {

@@ -1,5 +1,21 @@
-import { SITE } from "@config";
+import { SITE, markketplace } from "@config";
 import { defineCollection, z } from "astro:content";
+
+import { strapiLoader } from "../lib/strapi-loader";
+
+// Define the Strapi posts collection
+// This sets up a custom loader for Strapi content
+const strapiPosts = defineCollection({
+  loader: strapiLoader({ contentType: "article", filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}` }),
+});
+
+const pages = defineCollection({
+  loader: strapiLoader({ contentType: "page", filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}` }),
+});
+
+const stores = defineCollection({
+  loader: strapiLoader({ contentType: "store", filter: `filters[slug][$eq]=${markketplace.STORE_SLUG}` }),
+});
 
 const blog = defineCollection({
   type: "content",
@@ -23,4 +39,4 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+export const collections = { blog, strapiPosts, pages, stores };
