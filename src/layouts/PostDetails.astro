@@ -9,25 +9,12 @@ import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 
+import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
 
 const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
-
-// import { BlocksRenderer, type BlocksContent } from '@strapi/blocks-react-renderer';
-
-// // Content should come from your Strapi API
-// const content: BlocksContent = [
-//   {
-//     type: 'paragraph',
-//     children: [{ type: 'text', text: 'A simple paragraph' }],
-//   },
-// ];
-
-// const App = () => {
-//   return <BlocksRenderer content={content} />;
-// };
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -36,7 +23,7 @@ export interface Props {
 const { post } = Astro.props;
 
 const {
-  title,
+  Title,
   author,
   description,
   ogImage,
@@ -46,16 +33,14 @@ const {
   tags,
 } = post.data;
 
-const { Content } = await post.render();
-
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
-  ogImageUrl ?? `/posts/${slugifyStr(title)}.png`,
+  ogImageUrl ?? `/posts/${slugifyStr(Title)}.png`,
   Astro.url.origin
 ).href;
 
 const layoutProps = {
-  title: `${title} | ${SITE.title}`,
+  title: `${Title} | ${SITE.title}`,
   author,
   description,
   pubDatetime,
@@ -83,19 +68,19 @@ const layoutProps = {
     </button>
   </div>
   <main id="main-content">
-    <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+    <h1 transition:name={slugifyStr(Title)} class="post-title">{Title}</h1>
     <Datetime
-      pubDatetime={pubDatetime}
-      modDatetime={modDatetime}
+      pubDatetime={post.data.createdAt}
+      modDatetime={post.data.updatedAt}
       size="lg"
       className="my-2"
     />
     <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-      <Content />
+      <BlocksRenderer content={post.data.Content} />
     </article>
 
     <ul class="my-8">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+      {post.data.Tags.map(tag => <Tag tag={slugifyStr(tag.Label)} />)}
     </ul>
 
     <div

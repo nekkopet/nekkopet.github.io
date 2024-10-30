@@ -15,6 +15,9 @@ const store = stores?.[0]?.data as unknown as Store;
 const posts = await getCollection("blog");
 
 let tags = getUniqueTags(posts);
+
+//  { id: 3, Label: 'Company', Color: 'Magenta' } ] }
+// from posts.Tags
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>

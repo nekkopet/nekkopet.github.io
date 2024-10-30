@@ -163,15 +163,14 @@ const links = store?.Links || [];
         <section id="recent-posts">
           <h2>Recent Posts</h2>
           <ul>
-            {console.log({ posts: posts[0].data })}
             {posts.map(
               ({ data, id }, index) =>
                 index < SITE.postPerIndex && (
                   <Card
-                    href={`/posts/${id}/${slugifyStr(data.Title)}`}
+                    href={`/posts/${id}-${slugifyStr(data.Title)}`}
                     frontmatter={{
                       author: "x",
-                      tags: ["aa"],
+                      tags: data.Tags.map(tag => tag.Label),
                       title: data.Title,
                       pubDatetime: new Date(data.createdAt),
                       modDatetime: new Date(data.updatedAt),
