@@ -17,7 +17,7 @@ const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
 
 export interface Props {
-  post: CollectionEntry<"blog">;
+  post: CollectionEntry<"posts">;
 }
 
 const { post } = Astro.props;

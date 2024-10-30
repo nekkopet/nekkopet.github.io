@@ -9,6 +9,7 @@ import Pagination from "@components/Pagination.astro";
 import { SITE } from "@config";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
+import { slugifyStr } from "@utils/slugify";
 
 const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
@@ -16,7 +17,7 @@ const store = stores?.[0]?.data as unknown as Store;
 export interface Props {
   currentPage: number;
   totalPages: number;
-  paginatedPosts: CollectionEntry<"blog">[];
+  paginatedPosts: CollectionEntry<"posts">[];
   tag: string;
   tagName: string;
 }
@@ -34,8 +35,18 @@ const { currentPage, totalPages, paginatedPosts, tag, tagName } = Astro.props;
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul>
       {
-        paginatedPosts.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
+        paginatedPosts.map(({ data, id }) => (
+          <Card
+            href={`/posts/${id}-${slugifyStr(data.Title)}`}
+            frontmatter={{
+              author: "x",
+              tags: data.Tags.map(tag => tag.Label),
+              title: data.Title,
+              pubDatetime: new Date(data.createdAt),
+              modDatetime: new Date(data.updatedAt),
+              description: data.SEO?.metaDescription || "",
+            }}
+          />
         ))
       }
     </ul>
