@@ -172,7 +172,6 @@ async function fetchFromStrapi(
       url.searchParams.set(key, value);
     });
   }
-  console.log({ params })
 
   try {
     const response = await fetch(url.href);
