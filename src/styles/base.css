@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer components {
-  .prose-headings {
-    /* Add your custom styles here */
-/* }
-} */
 @layer base {
   :root,
   html[data-theme="light"] {
@@ -139,6 +134,7 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
 }
 
 @layer components {
+  .prose-headings {}
   .display-none {
     @apply hidden;
   }
