@@ -34,7 +34,7 @@ const products = store?.products?.data || [];
   <Header store={store} />
   <main id="main-content">
     <section id="hero">
-      <h1>{store?.Title || "Markketplace"}</h1>
+      <h1>{store?.title || "Markketplace"}</h1>
       <a
         target="_blank"
         href="/rss.xml"
@@ -63,10 +63,10 @@ const products = store?.products?.data || [];
         </strong>
       </p>
       {
-        store.Logo?.formats?.small && (
+        store.Logo?.url && (
           <img
-            src={store.Logo.formats.small.url}
-            alt={store.Title}
+            src={store.Logo.url}
+            alt={store.title}
             class="h-24 w-24 rounded-full"
           />
         )

@@ -21,11 +21,11 @@ const { activeNav, store } = Astro.props;
           store?.Logo?.formats?.small ? (
             <img
               src={`${store.Logo.formats.small.url}`}
-              alt={store.Title}
+              alt={store.title}
               width={120}
             />
           ) : (
-            store?.Title
+            store?.title
           )
         }
       </a>

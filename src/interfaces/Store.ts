@@ -3,13 +3,14 @@
  */
 export default interface Store {
   id: number;
-  Title: string;
+  title: string;
   Description: string;
   slug: string;
   products: { data: [] };
   Links: { label: string, url: string, }[];
   Logo: {
     id: string,
+    url: string,
     formats: {
       medium: {
         ext: string,
