@@ -4,10 +4,8 @@ import type { ZodTypeAny, ZodObject } from "zod";
 
 import { markketplace } from "../config";
 
-// Configuration constants
-// const STRAPI_BASE_URL =
-// import.meta.env.STRAPI_BASE_URL || "http://localhost:1337";
-const STRAPI_BASE_URL = markketplace.STRAPI_URL;
+
+const { STRAPI_URL: STRAPI_BASE_URL, STORE_SLUG } = markketplace;
 const SYNC_INTERVAL = 60 * 1000; // 1 minute in milliseconds
 
 /**
@@ -22,14 +20,20 @@ export function strapiLoader({ contentType, filter }: { contentType: string, fil
 
     load: async function (this: Loader, { store, meta, logger }) {
       const lastSynced = meta.get("lastSynced");
+      const lastSlug = meta.get("lastSlug");
 
       // Avoid frequent syncs
       if (lastSynced && Date.now() - Number(lastSynced) < SYNC_INTERVAL) {
-        logger.info("Skipping Strapi sync");
+        if (lastSlug !== STORE_SLUG) {
+          logger.info("Store slug has changed, forcing sync");
+        } else {
+          logger.info("Skipping Strapi sync");
         return;
+        }
       }
 
-      logger.info("Fetching posts from Strapi");
+      meta.set("lastSlug", STORE_SLUG);
+      logger.info(`FETCHING STRAPI CONTENT: ${STRAPI_BASE_URL}:${STORE_SLUG}:${contentType}`);
 
       try {
         // Fetch and store the content
