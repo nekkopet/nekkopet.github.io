@@ -32,6 +32,7 @@ export default defineConfig({
       wrap: true,
     },
   },
+  output: "static",
   vite: {
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
