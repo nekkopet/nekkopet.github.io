@@ -2,7 +2,7 @@ import type { Site, SocialObjects } from "./types";
 
 export const markketplace = {
   STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.morirsoniando.com',
-  STORE_SLUG: import.meta.env.STORE_SLUG as string || 'morirsoniando',
+  STORE_SLUG: import.meta.env.STORE_SLUG as string || 'dvidsilva',
 };
 
 export const SITE: Site = {
