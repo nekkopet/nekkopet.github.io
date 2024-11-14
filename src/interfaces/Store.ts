@@ -7,7 +7,7 @@ export default interface Store {
   Description: string;
   slug: string;
   products: { data: [] };
-  Links: { label: string, url: string, }[];
+  URLS: { Label: string, URL: string, }[];
   Logo: {
     id: string,
     url: string,
