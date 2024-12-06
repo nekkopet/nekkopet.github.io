@@ -1,7 +1,8 @@
 ---
-import { LOCALE, SITE } from "@config";
+import { LOCALE, SITE, markketplace } from "@config";
 import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
+import { getCollection } from "astro:content";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -21,7 +22,7 @@ const {
   title = SITE.title,
   author = SITE.author,
   profile = SITE.profile,
-  description = SITE.desc,
+  description = Astro.props.description ?? SITE.desc,
   ogImage = SITE.ogImage,
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   pubDatetime,
@@ -49,6 +50,11 @@ const structuredData = {
     },
   ],
 };
+
+const stores = await getCollection("stores");
+const store = stores.find(
+  store => store.data.slug == markketplace.STORE_SLUG
+)?.data;
 ---
 
 <!doctype html>
@@ -64,17 +70,26 @@ const structuredData = {
     <meta name="generator" content={Astro.generator} />
 
     <!-- General Meta Tags -->
-    <title>{title}</title>
-    <meta name="title" content={title} />
-    <meta name="description" content={description} />
+    <title>{store?.title || title}</title>
+    <meta name="title" content={store?.title || title} />
+    <meta name="description" content={store?.Description || description} />
     <meta name="author" content={author} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={socialImageURL} />
+    <meta
+      property="og:title"
+      content={store?.SEO?.metaTitle || store?.title || title}
+    />
+    <meta
+      property="og:description"
+      content={store?.SEO?.metaDescription || store?.Description || description}
+    />
+    <meta property="og:url" content={store?.SEO?.metaUrl || canonicalURL} />
+    <meta
+      property="og:image"
+      content={store?.SEO?.socialImage?.url || socialImageURL}
+    />
 
     <!-- Article Published/Modified time -->
     {
