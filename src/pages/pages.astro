@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Card from "@components/Card";
+import { slugifyStr } from "@utils/slugify";
+import { SITE } from "@config";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import type Store from "@interfaces/Store";
+
+const stores = await getCollection("stores");
+const store = stores?.[0]?.data as Store;
+
+let pages = await getCollection("pages");
+pages = pages.sort(
+  (a, b) =>
+    new Date(b.data.createdAt).getTime() - new Date(a.data.createdAt).getTime()
+);
+---
+
+<Layout title={`Pages Index | ${SITE.title}`}>
+  <Header store={store} activeNav="pages" />
+  <Main pageTitle="Pages" pageDesc="A list of all pages.">
+    <ul>
+      {
+        pages.map(page => (
+          <Card
+            href={`/${slugifyStr(page.data.slug) || "#"}/`}
+            frontmatter={{
+              title: page.data.Title,
+              pubDatetime: new Date(page.data.createdAt),
+              modDatetime: new Date(page.data.updatedAt),
+              description: page.data.SEO?.metaDescription || "",
+              SEO: { ...page.data.SEO },
+            }}
+          />
+        ))
+      }
+    </ul>
+    <Footer activeNav="pages" />
+  </Main>
+</Layout>

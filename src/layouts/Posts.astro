@@ -39,6 +39,7 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
               pubDatetime: new Date(data.createdAt),
               modDatetime: new Date(data.updatedAt),
               description: data.SEO?.metaDescription || "",
+              SEO: { ...data.SEO },
             }}
           />
         ))

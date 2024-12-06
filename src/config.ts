@@ -6,12 +6,12 @@ export const markketplace = {
 };
 
 export const SITE: Site = {
-  website: "https://morirsoniando.com/",
+  website: "https://markket.place/",
   author: "Club Calima",
   profile: "https://caliman.org/",
   desc: "A minimal, responsive and SEO-friendly Markketplace theme.",
   title: "Morir Soñando",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "https://markketplace.nyc3.digitaloceanspaces.com/uploads/3852868ed9aad1e45e4ee4992fe43177.png",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 8,
@@ -53,12 +53,6 @@ export const SOCIALS: SocialObjects = [
   //   name: "Mail",
   //   href: "mailto:yourmail@gmail.com",
   //   linkTitle: `Send an email to ${SITE.title}`,
-  //   active: false,
-  // },
-  // {
-  //   name: "Twitter",
-  //   href: "https://github.com/satnaing/astro-paper",
-  //   linkTitle: `${SITE.title} on Twitter`,
   //   active: false,
   // },
   // {
@@ -143,6 +137,11 @@ export const SOCIALS: SocialObjects = [
   //   name: "Mastodon",
   //   href: "https://github.com/satnaing/astro-paper",
   //   linkTitle: `${SITE.title} on Mastodon`,
+  //   active: false,
+  // },
+  //   name: "BlueSky",
+  //   href: "https://bsky.app/profile/markketplace.bsky.social",
+  //   linkTitle: `${SITE.title} on BlueSKy`,
   //   active: false,
   // },
 ];

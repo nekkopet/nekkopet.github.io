@@ -27,14 +27,14 @@ const pages = await getCollection("pages");
 
 const homePage = pages.find(
   (page: { data: Page }) => page.data.slug === "home"
-) as unknown as { data: Page };
+) as { data: Page };
 
 const links = store?.URLS || [];
 
 // const products = store?.products?.data || [];
 ---
 
-<Layout>
+<Layout title={`Home | ${SITE.title}`}>
   <Header store={store} />
   <main id="main-content">
     <section id="hero">
@@ -122,33 +122,6 @@ const links = store?.URLS || [];
       <Hr />
 
       {
-        pages.length > 0 && (
-          <>
-            <section id="featured">
-              <h2>Pages</h2>
-              <ul>
-                {pages.map(page => (
-                  <Card
-                    href={`/${page.data.slug}/`}
-                    frontmatter={{
-                      author: "x",
-                      tags: ["x"],
-                      title: page.data.Title,
-                      pubDatetime: new Date(page.data.createdAt),
-                      modDatetime: new Date(page.data.updatedAt),
-                      description: page.data.SEO?.metaDescription || "",
-                    }}
-                    secHeading={false}
-                  />
-                ))}
-              </ul>
-            </section>
-            {posts.length > 0 && <Hr />}
-          </>
-        )
-      }
-
-      {
         posts.length > 0 && (
           <section id="recent-posts">
             <h2>Recent Posts</h2>
@@ -160,11 +133,12 @@ const links = store?.URLS || [];
                       href={`/posts/${id}-${slugifyStr(data.Title)}`}
                       frontmatter={{
                         author: "x",
-                        tags: data.Tags.map(tag => tag.Label),
+                        tags: data.Tags?.map(tag => tag.Label),
                         title: data.Title,
                         pubDatetime: new Date(data.createdAt),
                         modDatetime: new Date(data.updatedAt),
                         description: data.SEO?.metaDescription || "",
+                        SEO: { ...data.SEO },
                       }}
                       secHeading={false}
                     />
@@ -188,18 +162,25 @@ const links = store?.URLS || [];
       </div>
 
       <section class="mb-10 pt-10">
-        <p>
-          <LinkButton
-            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-            href="http://github.com/calimania/markketplace-astro"
-          >
-            Built with Markketplace-astro -
-          </LinkButton>
-          a minimal, responsive, accessible and SEO-friendly Astro blog theme, compatible
-          with Markketplace/Strapi. This theme follows best practices and provides
-          accessibility out of the box. Light and dark mode are supported by default.
-          Moreover, additional color schemes can also be configured.
-        </p>
+        {
+          !store?.Description && (
+            <>
+              <p>
+                <LinkButton
+                  className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+                  href="http://github.com/calimania/markketplace-astro"
+                >
+                  Built with Markketplace-astro -
+                </LinkButton>
+                a minimal, responsive, accessible and SEO-friendly Astro blog
+                theme, compatible with Markketplace/Strapi. This theme follows
+                best practices and provides accessibility out of the box. Light
+                and dark mode are supported by default. Moreover, additional
+                color schemes can also be configured.
+              </p>
+            </>
+          )
+        }
       </section>
       <Hr />
       <section>
