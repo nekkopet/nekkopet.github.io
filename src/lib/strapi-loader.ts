@@ -201,8 +201,6 @@ async function fetchFromStrapi(
 
   console.log('Fetching URL:', url.toString());
 
-  console.log(url, params);
-
   try {
     const response = await fetch(url.href);
     if (!response.ok) {

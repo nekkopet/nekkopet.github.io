@@ -1,15 +1,5 @@
-interface SEOImage {
-  url: string;
-  alternativeText: string | null;
-  width: number;
-  height: number;
-}
-
-interface SEO {
-  metaTitle: string;
-  metaDescription: string;
-  socialImage?: SEOImage;
-}
+import Tag from './Tag.astro';
+import type { SEO } from '../interfaces/Article';
 
 export interface Props {
   href?: string;
@@ -20,13 +10,13 @@ export interface Props {
     pubDatetime: Date;
     modDatetime: Date;
     description: string;
-    metaDescription: string;
     SEO?: SEO;
+    author?: string;
   };
   secHeading?: boolean;
 }
 
-export default function Card({ href, frontmatter, secHeading = true }: Props) {
+export default function Card({ href, frontmatter, tags, secHeading = true }: Props) {
   const { title, pubDatetime, description, SEO } = frontmatter;
   const imageUrl = SEO?.socialImage?.url;
 
@@ -71,6 +61,12 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5M6 7l5 5-5 5" />
               </svg>
             </div>
+            <ul>
+              {tags?.map((tag) => {
+                if (!tag) return null;
+                <Tag tag={tag || 'x'} size="sm" />
+              })}
+            </ul>
           </div>
         </a>
       </article>
