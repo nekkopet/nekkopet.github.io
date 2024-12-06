@@ -6,6 +6,7 @@ import { slugifyStr } from "@utils/slugify";
 export async function GET() {
   const posts = await getCollection("posts");
   const pages = await getCollection("pages");
+  // const products =
 
   const items = [];
 
