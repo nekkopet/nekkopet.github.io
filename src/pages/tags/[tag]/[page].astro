@@ -8,22 +8,38 @@ import getPagination from "@utils/getPagination";
 
 export interface Props {
   post: CollectionEntry<"posts">;
-  tag: string;
+  tag?: string;
   tagName: string;
 }
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
-
   const tags = getUniqueTags(posts);
+
+  // Handle case with no tags
+  if (!tags.length) {
+    return [
+      {
+        params: { tag: "all", page: "1" },
+        props: { tag: "all", tagName: "All Posts", page: "1" },
+      },
+    ];
+  }
 
   return tags.flatMap(({ tag, tagName }) => {
     const tagPosts = getPostsByTag(posts, tag);
     const totalPages = getPageNumbers(tagPosts.length);
 
-    return totalPages.map(page => ({
-      params: { tag, page },
-      props: { tag, tagName },
+    return totalPages.map(pageNum => ({
+      params: {
+        tag: tag || "all",
+        page: String(pageNum),
+      },
+      props: {
+        tag,
+        tagName,
+        page: String(pageNum),
+      },
     }));
   });
 }
@@ -33,7 +49,7 @@ const { tag, tagName } = Astro.props;
 
 const posts = await getCollection("posts");
 
-const postsByTag = getPostsByTag(posts, tag);
+const postsByTag = getPostsByTag(posts, tag || "all");
 
 const pagination = getPagination({
   posts: postsByTag,
@@ -41,4 +57,4 @@ const pagination = getPagination({
 });
 ---
 
-<TagPosts {...pagination} {tag} {tagName} />
+<TagPosts {...pagination} tag={tag || "all"} tagName={tagName || "all"} />

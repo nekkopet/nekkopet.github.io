@@ -7,15 +7,22 @@ import getUniqueTags from "@utils/getUniqueTags";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
-
   const tags = getUniqueTags(posts);
 
-  return tags.map(({ tag, tagName }) => {
-    return {
-      params: { tag },
-      props: { tag, tagName, posts },
-    };
-  });
+  // Add default "all" tag
+  const allTags = [
+    { tag: "all", tagName: "All Posts" },
+    ...tags.filter(tag => tag.tag && tag.tag.length > 0), // Filter out empty tags
+  ];
+
+  return allTags.map(({ tag, tagName }) => ({
+    params: { tag: tag || "all" }, // Ensure tag is never empty
+    props: {
+      tag: tag || "all",
+      tagName: tagName || "All Posts",
+      posts: tag === "all" ? posts : getPostsByTag(posts, tag),
+    },
+  }));
 }
 
 const { tag, tagName, posts } = Astro.props;

@@ -29,5 +29,5 @@ const searchList = posts.map(({ data, id }) => ({
   <Main pageTitle="Search" pageDesc="Search any article ...">
     <SearchBar client:load searchList={searchList} />
   </Main>
-  <Footer />
+  <Footer activeNav="search" />
 </Layout>

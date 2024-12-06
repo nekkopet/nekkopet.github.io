@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+
+## [Untagged]
+
+### Features
+- Display tags page navigation and filtering
+- Improve page title display
+- Add hero images to blog posts and pages
+- Enhance cards and SEO in /pages section
+- Update post configuration for better population
+- Add more posts to /blog with date sorting
+- Display links in homepage
+
+### Fixed
+- Fix search page functionality
+- Fix bug in Strapi local setup
+- Remove unnecessary Dockerfile
+
 ## v4.3.1 (2024-07-27)
 
 ### Fix
@@ -74,7 +91,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Others
 
-* adds blog post for how to add a social icon ([#221](https://github.com/satnaing/astro-paper/issues/221)) 
+* adds blog post for how to add a social icon ([#221](https://github.com/satnaing/astro-paper/issues/221))
 * updates the hook post with a smarter updateHook ([#222](https://github.com/satnaing/astro-paper/issues/222))
 * update breadcrumbs delimiter to "»" ([#213](https://github.com/satnaing/astro-paper/issues/213))
 

@@ -6,13 +6,15 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import Pagination from "@components/Pagination.astro";
-import { SITE } from "@config";
+import { SITE, markketplace } from "@config";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
 import { slugifyStr } from "@utils/slugify";
 
 const stores = await getCollection("stores");
-const store = stores?.[0]?.data as unknown as Store;
+const store = stores?.find(
+  (store: { data: Store }) => store.data.slug === markketplace.STORE_SLUG
+)?.data;
 
 export interface Props {
   currentPage: number;
@@ -22,7 +24,13 @@ export interface Props {
   tagName: string;
 }
 
-const { currentPage, totalPages, paginatedPosts, tag, tagName } = Astro.props;
+const {
+  currentPage,
+  totalPages,
+  paginatedPosts,
+  tag = "all",
+  tagName,
+} = Astro.props;
 ---
 
 <Layout title={`Tag: ${tagName} | ${SITE.title}`}>
@@ -38,9 +46,9 @@ const { currentPage, totalPages, paginatedPosts, tag, tagName } = Astro.props;
         paginatedPosts.map(({ data, id }) => (
           <Card
             href={`/posts/${id}-${slugifyStr(data.Title)}`}
+            tags={data.Tags.map((tag: { Label: string }) => tag.Label)}
             frontmatter={{
               author: "x",
-              tags: data.Tags.map(tag => tag.Label),
               title: data.Title,
               pubDatetime: new Date(data.createdAt),
               modDatetime: new Date(data.updatedAt),
