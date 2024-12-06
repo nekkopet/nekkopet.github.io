@@ -44,11 +44,14 @@ export function strapiLoader({ contentType, filter }: { contentType: string, fil
         }
 
         const data = await fetchFromStrapi(`/api/${contentType}s?`, { [filterKey]: filterValue, populate: '*' });
-        const posts = data?.data;
+        let posts = data?.data;
 
         if (!posts || !Array.isArray(posts)) {
           throw new Error("Invalid data received from Strapi");
         }
+
+        // Sort posts by creation date in descending order
+        posts = posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
         // Get the schema
         const schemaOrFn = this.schema;
