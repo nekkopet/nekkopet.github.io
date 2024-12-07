@@ -1,3 +1,4 @@
+import React from "react";
 import Fuse from "fuse.js";
 import { useEffect, useRef, useState, useMemo } from "react";
 import Card from "@components/Card";
@@ -113,13 +114,14 @@ export default function SearchBar({ searchList }: Props) {
           searchResults.map(({ item, refIndex }) => (
             <Card
               href={item.slug}
+              tags={item?.data?.Tags?.map((tag: { Label: string }) => tag.Label) || []}
               frontmatter={{
                 author: "x",
-                tags: item.data.Tags.map(tag => tag.Label),
                 title: item.data.Title,
                 pubDatetime: new Date(item.data.createdAt),
                 modDatetime: new Date(item.data.updatedAt),
                 description: item.data.SEO?.metaDescription || "",
+                SEO: item.data?.SEO,
               }}
               key={`${refIndex}-${item.slug}`}
             />

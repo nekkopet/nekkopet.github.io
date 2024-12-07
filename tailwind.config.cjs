@@ -18,7 +18,19 @@ module.exports = {
       sm: "640px",
     },
 
+
+
     extend: {
+      colors: {
+        accent: {
+          100: '#e6f7ff',
+          300: '#91d5ff',
+          400: '#69c0ff',
+          500: '#40a9ff',
+          700: '#096dd9',
+          900: '#003a8c',
+        },
+      },
       textColor: {
         skin: {
           base: withOpacity("--color-text-base"),

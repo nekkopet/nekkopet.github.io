@@ -9,6 +9,8 @@ import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 
+import HeroImage from "@components/HeroImage.astro";
+
 import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
@@ -30,7 +32,8 @@ const {
   canonicalURL,
   pubDatetime,
   modDatetime,
-  tags,
+  Tags,
+  SEO,
 } = post.data;
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
@@ -68,6 +71,7 @@ const layoutProps = {
     </button>
   </div>
   <main id="main-content">
+    <HeroImage image={SEO?.socialImage} title={Title} />
     <h1 transition:name={slugifyStr(Title)} class="post-title">{Title}</h1>
     <Datetime
       pubDatetime={post.data.createdAt}
@@ -80,7 +84,7 @@ const layoutProps = {
     </article>
 
     <ul class="my-8">
-      {post.data.Tags.map(tag => <Tag tag={slugifyStr(tag.Label)} />)}
+      {Tags.map(tag => <Tag tag={slugifyStr(tag.Label)} />)}
     </ul>
 
     <div

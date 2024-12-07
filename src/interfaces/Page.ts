@@ -29,6 +29,7 @@ export default interface Page {
   SEO: {
     metaDescription: string,
     metaTitle: string,
+    socialImage: {},
   },
   createdAt: string;
   updatedAt: string;

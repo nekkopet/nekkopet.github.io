@@ -14,9 +14,9 @@ const SYNC_INTERVAL = 60 * 1000; // 1 minute in milliseconds
  * @param filter The filter to apply to the content &filters[store][id][$eq]=${STRAPI_STORE_ID}
  * @returns An Astro loader for the specified content type
  */
-export function strapiLoader({ contentType, filter }: { contentType: string, filter?: string }): Loader {
+export function strapiLoader({ contentType, filter, populate = 'SEO.socialImage' }: { contentType: string, filter?: string, populate?: string }): Loader {
   return {
-    name: "strapi-posts",
+    name: `strapi-${contentType}`,
 
     load: async function (this: Loader, { store, meta, logger }) {
       const lastSynced = meta.get("lastSynced");
@@ -43,12 +43,18 @@ export function strapiLoader({ contentType, filter }: { contentType: string, fil
           [filterKey, filterValue] = filter.split('=');
         }
 
-        const data = await fetchFromStrapi(`/api/${contentType}s?`, { [filterKey]: filterValue, populate: '*' });
-        const posts = data?.data;
+        const data = await fetchFromStrapi(`/api/${contentType}s?`, {
+          [filterKey]: filterValue,
+          populate,
+        });
+        let posts = data?.data;
 
         if (!posts || !Array.isArray(posts)) {
           throw new Error("Invalid data received from Strapi");
         }
+
+        // Sort posts by creation date in descending order
+        posts = posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
         // Get the schema
         const schemaOrFn = this.schema;
@@ -172,10 +178,28 @@ async function fetchFromStrapi(
   const url = new URL(path, baseUrl || STRAPI_BASE_URL);
 
   if (params) {
+    // Handle populate parameters
+    if (params.populate) {
+      const populateFields = params.populate.split(',');
+      populateFields.forEach((field, index) => {
+        if (field.includes('.')) {
+          const [parent, child] = field.split('.');
+          url.searchParams.append('populate', parent);
+          url.searchParams.append(`populate[${index + 1}]`, `${parent}.${child}`);
+        } else {
+          url.searchParams.append('populate', field);
+        }
+      });
+      delete params.populate;
+    }
+
+    // Handle remaining parameters (including filters)
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.set(key, value);
     });
   }
+
+  console.log('Fetching URL:', url.toString());
 
   try {
     const response = await fetch(url.href);

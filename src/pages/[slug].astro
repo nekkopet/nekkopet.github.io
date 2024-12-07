@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import type { Page, Store } from "@interfaces/index";
+import type { Store } from "@interfaces/index";
+import HeroImage from "@components/HeroImage.astro";
 import {
   BlocksRenderer,
   type BlocksContent,
@@ -12,13 +13,13 @@ import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Hr from "@components/Hr.astro";
 
 export interface Props {
-  page: CollectionEntry<"page">;
+  page: CollectionEntry<"pages">;
 }
 
 export async function getStaticPaths() {
   const pages = await getCollection("pages");
 
-  return pages.map((page: { data: CollectionEntry<"page"> }) => ({
+  return pages.map((page: CollectionEntry<"pages">) => ({
     params: { slug: page.data.slug },
     props: { page: page.data },
   }));
@@ -28,14 +29,20 @@ const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
 
 const { page } = Astro.props;
+console.log({ x: page });
+// const { SEO } = page.data;
 ---
 
 <Layout>
-  <Header store={store} activeNav={page.slug} />
-
+  <Header store={store} activeNav={page?.slug} />
   <Breadcrumbs />
   <main id="main-content">
     <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
+      {
+        page?.SEO?.socialImage && (
+          <HeroImage image={page?.SEO?.socialImage} title={page?.Title} />
+        )
+      }
       <h1 class="text-2xl tracking-wider sm:text-3xl">{page.Title}</h1>
     </section>
 
@@ -45,4 +52,4 @@ const { page } = Astro.props;
     <Hr />
   </main>
 </Layout>
-<Footer />
+<Footer activeNav={page?.slug} />

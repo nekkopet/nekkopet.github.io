@@ -6,19 +6,26 @@ const currentYear = new Date().getFullYear();
 
 export interface Props {
   noMarginTop?: boolean;
+  activeNav?: string;
 }
 
-const { noMarginTop = false } = Astro.props;
+const { activeNav, noMarginTop = false } = Astro.props;
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
   <Hr noPadding />
-  <div class="footer-wrapper">
+  <div class="footer-wrapper mb-10">
     <Socials centered />
     <div class="copyright-wrapper">
       <span>Copyleft &#169; {currentYear}</span>
       <span class="separator">&nbsp;|&nbsp;</span>
       <span>Some rights reserved.</span>
+      &nbsp;|&nbsp;
+      <span>
+        <a href="/pages/" class={activeNav === "pages" ? "active" : ""}>
+          Pages
+        </a>
+      </span>
     </div>
   </div>
 </footer>
