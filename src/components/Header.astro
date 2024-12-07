@@ -4,8 +4,10 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 import type Store from "../interfaces/Store";
 
+export type activeNav = "posts" | "tags" | "about" | "search" | "pages";
+
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search" | "pages";
+  activeNav?: activeNav;
   store?: Store;
 }
 
