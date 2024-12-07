@@ -3,6 +3,10 @@ import type { Site, SocialObjects } from "./types";
 export const markketplace = {
   STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.morirsoniando.com',
   STORE_SLUG: import.meta.env.STORE_SLUG as string || 'markket',
+  colors: {
+    primary: import.meta.env.COLOR_PRIMARY as string || '#fbda0c',
+    accent: import.meta.env.COLOR_ACCENT as string || '#38b2ac',
+  }
 };
 
 export const SITE: Site = {

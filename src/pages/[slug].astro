@@ -7,7 +7,7 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
+import Header, { type activeNav } from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Hr from "@components/Hr.astro";
@@ -29,12 +29,10 @@ const stores = await getCollection("stores");
 const store = stores?.[0]?.data as unknown as Store;
 
 const { page } = Astro.props;
-console.log({ x: page });
-// const { SEO } = page.data;
 ---
 
 <Layout>
-  <Header store={store} activeNav={page?.slug} />
+  <Header store={store} activeNav={page?.data?.slug as activeNav} />
   <Breadcrumbs />
   <main id="main-content">
     <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
