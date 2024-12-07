@@ -21,7 +21,7 @@ export default function Subscribe({ storeId, storeName }: Props) {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 data: {
-                  email,
+                  Email: email,
                   stores: [storeId],
                 }
               })
