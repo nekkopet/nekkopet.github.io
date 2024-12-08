@@ -29,9 +29,9 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
       {
-        paginatedPosts.map(({ id, data }) => (
+        paginatedPosts.map(({ data }) => (
           <Card
-            href={`/blog/${id}-${slugifyStr(data.Title)}/`}
+            href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
             tags={data.Tags.map((tag: { Label: string }) => tag.Label)}
             frontmatter={{
               author: "x",

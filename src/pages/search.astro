@@ -20,7 +20,7 @@ const searchList = posts.map(({ data, id }) => ({
   title: data.Title,
   description: data.SEO?.metaDescription,
   data,
-  slug: `/posts/${id}-${slugifyStr(data.Title)}`,
+  slug: `/blog/${id}-${slugifyStr(data.Title)}`,
 }));
 ---
 
