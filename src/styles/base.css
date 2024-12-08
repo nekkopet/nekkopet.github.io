@@ -153,6 +153,14 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
     color: #fbda0d !important;
   }
 
+  html[data-theme="dark"] a {
+    color: #E4007C !important;
+  }
+
+  .brand-magenta {
+    color: #E4007C !important;
+  }
+
   .brand-yellow {
     color: #fbda0d !important;
   }
@@ -161,6 +169,7 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
     color: #0157ad;
   }
 }
+
 @layer components {
   .prose-headings {}
   .display-none {
