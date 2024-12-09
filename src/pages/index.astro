@@ -10,14 +10,20 @@ import { SITE, SOCIALS } from "@config";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
 import type Page from "../interfaces/Page";
+import type Product from "../interfaces/Product";
 import {
   BlocksRenderer,
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import { slugifyStr } from "@utils/slugify";
+import { markketplace } from "@config";
 
 const stores = await getCollection("stores");
-const store = stores?.[0]?.data as unknown as Store;
+const store = stores.find(
+  (store: Store) => store.data.slug === markketplace.STORE_SLUG
+);
+
+const products = await getCollection("products");
 
 const posts = await getCollection("posts");
 
@@ -100,25 +106,52 @@ const links = store?.URLS || [];
         )
       }
       <Hr />
-      <!-- {
+      {
         products && products.length > 0 && (
-          <div class="mb-12 mt-6">
-            <h2>Products</h2>
-            {products.map(
-              (product: { id: string; attributes: { Name: string } }) => {
-                return (
-                  <LinkButton
-                    href={`#${product.id}`}
-                    className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-                  >
-                    {product.attributes.Name}
-                  </LinkButton><br />
-                );
-              }
-            )}
-          </div>
+          <section id="recent-posts">
+            <div class="mb-12 mt-6">
+              <h2>Products</h2>
+              <ul class="-mx-4 flex flex-wrap">
+                {products.slice(0, 5).map(({ data }) => {
+                  return (
+                    <Card
+                      href={`/stores/${data.slug || slugifyStr(data.Name)}`}
+                      tags={[]}
+                      frontmatter={{
+                        author: "x",
+                        title: data.Name || data.SEO?.metaTitle || "---",
+                        pubDatetime: new Date(data.createdAt),
+                        modDatetime: new Date(data.updatedAt),
+                        description:
+                          data.SEO?.metaDescription || data.Description || "",
+                        SEO: {
+                          ...data.SEO,
+                          metaTitle:
+                            data.SEO?.metaTitle ||
+                            data.Name ||
+                            "Product Page - Markkët",
+                          socialImage: {
+                            url:
+                              data.SEO?.socialImage?.url || data.Thumbnail?.url,
+                          },
+                        },
+                      }}
+                    />
+                  );
+                })}
+              </ul>
+              <div class="all-posts-btn-wrapper">
+                <LinkButton href="/products/">
+                  All Products
+                  <svg xmlns="http://www.w3.org/2000/svg">
+                    <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+                  </svg>
+                </LinkButton>
+              </div>
+            </div>
+          </section>
         )
-      } -->
+      }
       <Hr />
 
       {
@@ -130,7 +163,7 @@ const links = store?.URLS || [];
                 ({ data, id }, index) =>
                   index < SITE.postPerIndex && (
                     <Card
-                      href={`/posts/${id}-${slugifyStr(data.Title)}`}
+                      href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
                       frontmatter={{
                         author: "x",
                         tags: data.Tags?.map(tag => tag.Label),
@@ -150,7 +183,7 @@ const links = store?.URLS || [];
       }
 
       <div class="all-posts-btn-wrapper">
-        <LinkButton href="/posts/">
+        <LinkButton href="/blog/">
           All Posts
           <svg xmlns="http://www.w3.org/2000/svg">
             <path

@@ -7,83 +7,78 @@ import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
 import Card from "@components/Card";
 import { SITE } from "@config";
-import type Page from "@interfaces/Page";
-import {
-  BlocksRenderer,
-  type BlocksContent,
-} from "@strapi/blocks-react-renderer";
 import HeroImage from "@components/HeroImage.astro";
 import Hr from "@components/Hr.astro";
-import { markketplace } from "@config";
 
 export interface Props {
   currentPage: number;
   totalPages: number;
-  paginatedPosts: CollectionEntry<"posts">[];
+  stores: CollectionEntry<"stores">[];
 }
 
 import { getCollection } from "astro:content";
-import type Store from "../interfaces/Store";
+import type Store from "@interfaces/Store";
 import { slugifyStr } from "@utils/slugify";
+import { markketplace } from "@config";
 
 const stores = await getCollection("stores");
 const store = stores.find(
   (store: Store) => store.data.slug === markketplace.STORE_SLUG
 );
 
-const { currentPage, totalPages, paginatedPosts } = Astro.props;
+const products = await getCollection("products");
 
-const pages = await getCollection("pages");
-const blogPage: { data: Page } | undefined = pages.find(
-  (page: { data: Page }) => page.data.slug === "blog"
-);
+const { currentPage, totalPages } = Astro.props;
 ---
 
 <Layout
   title={`Posts | ${SITE.title}`}
   meta={{
-    title: blogPage?.data?.SEO?.metaTitle || "Blog",
-    image: blogPage?.data?.SEO?.socialImage?.url || "",
-    description: blogPage?.data?.SEO?.metaDescription || "",
+    title: "Products",
+    description: "Physical & Digital offers from our collective",
   }}
 >
-  <Header activeNav="blog" store={store} />
+  <Header activeNav="pages" store={store} />
   <main id="main-content">
     <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
       {
-        blogPage?.data?.SEO?.socialImage && (
+        store?.data?.SEO?.socialImage && (
           <HeroImage
-            image={blogPage?.data?.SEO?.socialImage}
-            title={blogPage?.data?.Title}
+            image={store?.data?.SEO?.socialImage}
+            title={store?.data?.title}
           />
         )
       }
       <h1 class="text-2xl tracking-wider sm:text-3xl">
-        {blogPage?.data?.Title}
+        {store?.data?.title}
       </h1>
-    </section>
-
-    <section class="">
-      <BlocksRenderer
-        content={blogPage?.data?.Content || ([] as BlocksContent[])}
-      />
+      <p>{store?.data.Description}</p>
     </section>
     <Hr />
   </main>
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
-    <ul>
+  <Main
+    pageTitle="Products"
+    pageDesc="Some products from artists in this markkët instance"
+  >
+    <ul class="-mx-4 flex flex-wrap">
       {
-        paginatedPosts.map(({ data }) => (
+        products.map(({ data }) => (
           <Card
-            href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
-            tags={data.Tags.map((tag: { Label: string }) => tag.Label)}
+            href={`/products/${data.slug || slugifyStr(data.Name)}`}
+            tags={[]}
             frontmatter={{
               author: "x",
-              title: data.Title || data.SEO?.metaTitle || "",
+              title: data.Name || data.SEO?.metaTitle || "---",
               pubDatetime: new Date(data.createdAt),
               modDatetime: new Date(data.updatedAt),
-              description: data.SEO?.metaDescription || "",
-              SEO: { ...data.SEO },
+              description: data.SEO?.metaDescription || data.Description || "",
+              SEO: {
+                ...data.SEO,
+                metaTitle: data.SEO?.metaTitle || data.Name || "Store",
+                socialImage: {
+                  url: data.SEO?.socialImage?.url || data.Thumbnail?.url,
+                },
+              },
             }}
           />
         ))
@@ -98,5 +93,5 @@ const blogPage: { data: Page } | undefined = pages.find(
     nextUrl={`/blog/${currentPage + 1}/`}
   />
 
-  <Footer noMarginTop={totalPages > 1} activeNav="x" />
+  <Footer noMarginTop={totalPages > 1} activeNav="products" />
 </Layout>

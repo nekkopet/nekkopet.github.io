@@ -8,9 +8,12 @@ import SearchBar from "@components/Search";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
 import { slugifyStr } from "@utils/slugify";
+import { markketplace } from "@config";
 
 const stores = await getCollection("stores");
-const store = stores?.[0]?.data as unknown as Store;
+const store = stores.find(
+  (store: Store) => store.data.slug === markketplace.STORE_SLUG
+);
 
 // Retrieve all published articles
 const posts = await getCollection("posts");
@@ -20,7 +23,7 @@ const searchList = posts.map(({ data, id }) => ({
   title: data.Title,
   description: data.SEO?.metaDescription,
   data,
-  slug: `/posts/${id}-${slugifyStr(data.Title)}`,
+  slug: `/blog/${id}-${slugifyStr(data.Title)}`,
 }));
 ---
 

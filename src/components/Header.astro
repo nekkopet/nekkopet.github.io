@@ -4,11 +4,13 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 import type Store from "../interfaces/Store";
 
-export type activeNav = "posts" | "tags" | "about" | "search" | "pages";
+export type activeNav = "tags" | "about" | "search" | "pages" | "blog";
 
 export interface Props {
   activeNav?: activeNav;
-  store?: Store;
+  store?: {
+    data: Store;
+  };
 }
 
 const { activeNav, store } = Astro.props;
@@ -18,16 +20,16 @@ const { activeNav, store } = Astro.props;
   <a id="skip-to-content" href="#main-content">Skip to content</a>
   <div class="nav-container">
     <div class="top-nav-wrap">
-      <a href="/" class="logo whitespace-nowrap">
+      <a href="/" class="logo brand-magenta whitespace-nowrap">
         {
-          store?.Logo?.formats?.small ? (
+          store?.data?.Logo?.url ? (
             <img
-              src={`${store.Logo.formats.small.url}`}
-              alt={store.title}
+              src={`${store?.data?.Logo.url}`}
+              alt={store?.data?.title || store?.data?.SEO?.metaTitle}
               width={120}
             />
           ) : (
-            store?.title
+            store?.data?.title || store?.data?.SEO?.metaTitle || SITE.title
           )
         }
       </a>
@@ -59,8 +61,8 @@ const { activeNav, store } = Astro.props;
         </button>
         <ul id="menu-items" class="display-none sm:flex">
           <li>
-            <a href="/posts/" class={activeNav === "posts" ? "active" : ""}>
-              Posts
+            <a href="/blog/" class={activeNav === "blog" ? "active" : ""}>
+              Blog
             </a>
           </li>
           <li>

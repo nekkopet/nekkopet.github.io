@@ -18,7 +18,7 @@ export async function GET() {
   }))));
 
   items.push(...(posts.map(({ data, id }) => ({
-    link: `posts/${id}-${slugifyStr(data.Title)}`,
+    link: `blog/${id}-${slugifyStr(data.Title)}`,
     title: data.Title,
     description: data.SEO?.metaDescription || '',
     pubDate: new Date(data.createdAt ?? data.updatedAt),
