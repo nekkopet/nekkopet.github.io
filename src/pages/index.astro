@@ -15,9 +15,12 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import { slugifyStr } from "@utils/slugify";
+import { markketplace } from "@config";
 
 const stores = await getCollection("stores");
-const store = stores?.[0]?.data as unknown as Store;
+const store = stores.find(
+  (store: Store) => store.data.slug === markketplace.STORE_SLUG
+);
 
 const posts = await getCollection("posts");
 

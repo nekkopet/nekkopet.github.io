@@ -11,6 +11,7 @@ import Header, { type activeNav } from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Hr from "@components/Hr.astro";
+import { markketplace } from "@config";
 
 export interface Props {
   page: CollectionEntry<"pages">;
@@ -26,7 +27,9 @@ export async function getStaticPaths() {
 }
 
 const stores = await getCollection("stores");
-const store = stores?.[0]?.data as unknown as Store;
+const store = stores.find(
+  (store: Store) => store.data.slug === markketplace.STORE_SLUG
+);
 
 const { page } = Astro.props;
 ---

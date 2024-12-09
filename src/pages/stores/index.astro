@@ -36,7 +36,7 @@ const { currentPage, totalPages } = Astro.props;
     description: "Meet other stores in our markketplace",
   }}
 >
-  <Header activeNav="pages" />
+  <Header activeNav="pages" store={store} />
   <main id="main-content">
     <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
       {

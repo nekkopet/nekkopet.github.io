@@ -8,7 +8,9 @@ export type activeNav = "tags" | "about" | "search" | "pages" | "blog";
 
 export interface Props {
   activeNav?: activeNav;
-  store?: Store;
+  store?: {
+    data: Store;
+  };
 }
 
 const { activeNav, store } = Astro.props;
@@ -20,14 +22,14 @@ const { activeNav, store } = Astro.props;
     <div class="top-nav-wrap">
       <a href="/" class="logo brand-magenta whitespace-nowrap">
         {
-          store?.Logo?.formats?.small ? (
+          store?.data?.Logo?.url ? (
             <img
-              src={`${store.Logo.formats.small.url}`}
-              alt={store.title}
+              src={`${store?.data?.Logo.url}`}
+              alt={store?.data?.title || store?.data?.SEO?.metaTitle}
               width={120}
             />
           ) : (
-            store?.title
+            store?.data?.title || store?.data?.SEO?.metaTitle || SITE.title
           )
         }
       </a>

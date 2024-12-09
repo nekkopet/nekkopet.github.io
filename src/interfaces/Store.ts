@@ -8,7 +8,10 @@ export default interface Store {
   slug: string;
   products: { data: [] };
   URLS: { Label: string, URL: string, }[];
-  SEO: {};
+  SEO: {
+    metaTitle: string,
+    metaDescription: string,
+  };
   Logo: {
     id: string,
     url: string,

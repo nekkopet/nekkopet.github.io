@@ -1,5 +1,6 @@
 import Tag from './Tag.astro';
 import type { SEO } from '../interfaces/Article';
+import { Fragment } from 'react';
 
 export interface Props {
   href?: string;
@@ -61,12 +62,15 @@ export default function Card({ href, frontmatter, tags, secHeading = true }: Pro
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5M6 7l5 5-5 5" />
               </svg>
             </div>
-            <ul>
-              {tags?.map((tag) => {
-                if (!tag) return null;
-                return <Tag tag={tag || 'x'} size="sm" />;
-              })}
-            </ul>
+            {/* <ul>
+              {
+                tags?.map((tag: string, index: number) => (
+                  <Fragment key={index}>
+                    {tag && <Tag tag={tag} size="sm" />}
+                  </Fragment>
+                ))
+              }
+            </ul> */}
           </div>
         </a>
       </article>
