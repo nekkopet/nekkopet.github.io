@@ -130,7 +130,7 @@ const links = store?.URLS || [];
                 ({ data, id }, index) =>
                   index < SITE.postPerIndex && (
                     <Card
-                      href={`/posts/${id}-${slugifyStr(data.Title)}`}
+                      href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
                       frontmatter={{
                         author: "x",
                         tags: data.Tags?.map(tag => tag.Label),
@@ -150,7 +150,7 @@ const links = store?.URLS || [];
       }
 
       <div class="all-posts-btn-wrapper">
-        <LinkButton href="/posts/">
+        <LinkButton href="/blog/">
           All Posts
           <svg xmlns="http://www.w3.org/2000/svg">
             <path

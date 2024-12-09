@@ -43,9 +43,9 @@ const {
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul>
       {
-        paginatedPosts.map(({ data, id }) => (
+        paginatedPosts.map(({ data }) => (
           <Card
-            href={`/posts/${id}-${slugifyStr(data.Title)}`}
+            href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
             tags={data.Tags.map((tag: { Label: string }) => tag.Label)}
             frontmatter={{
               author: "x",
