@@ -66,7 +66,7 @@ const { currentPage, totalPages } = Astro.props;
       {
         products.map(({ data }) => (
           <Card
-            href={`/store/${data.slug || slugifyStr(data.title)}`}
+            href={`/store/${data.slug || slugifyStr(data.Name)}`}
             tags={[]}
             frontmatter={{
               author: "x",
