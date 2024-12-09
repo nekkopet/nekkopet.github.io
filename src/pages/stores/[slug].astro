@@ -10,30 +10,42 @@ import { SITE } from "@config";
 import HeroImage from "@components/HeroImage.astro";
 import Hr from "@components/Hr.astro";
 
+import { getCollection } from "astro:content";
+import type Store from "@interfaces/Store";
+import { slugifyStr } from "@utils/slugify";
+
 export interface Props {
   currentPage: number;
   totalPages: number;
   stores: CollectionEntry<"stores">[];
 }
 
-import { getCollection } from "astro:content";
-import type Store from "../interfaces/Store";
-import { slugifyStr } from "@utils/slugify";
-import { markketplace } from "@config";
+export async function getStaticPaths() {
+  const stores = await getCollection("stores");
 
-const stores = await getCollection("stores");
-const store = stores.find(
-  (store: Store) => store.data.slug === markketplace.STORE_SLUG
-);
+  const postResult = stores.map((post: Store) => ({
+    params: {
+      slug: `${post.data.slug || slugifyStr(post.data.title)}`,
+    },
+    props: { store: post },
+  }));
+
+  return [...postResult];
+}
 
 const { currentPage, totalPages } = Astro.props;
+
+const { slug } = Astro.params;
+
+const stores = await getCollection("stores");
+const store = stores.find((store: Store) => store.data.slug == slug);
 ---
 
 <Layout
-  title={`Posts | ${SITE.title}`}
+  title={`Store | ${store?.data?.title}`}
   meta={{
-    title: "Stores",
-    description: "Meet other stores in our markketplace",
+    title: `Markkët Store | ${store?.data?.title}`,
+    description: store?.data?.SEO?.metaDescription || store?.data?.Description,
   }}
 >
   <Header activeNav="pages" store={store} />
@@ -54,32 +66,6 @@ const { currentPage, totalPages } = Astro.props;
     </section>
     <Hr />
   </main>
-  <Main pageTitle="Stores" pageDesc="Friendly stores in this markkët instance">
-    <ul class="-mx-4 flex flex-wrap">
-      {
-        stores.map(({ data }) => (
-          <Card
-            href={`/stores/${data.slug || slugifyStr(data.title)}`}
-            tags={[]}
-            frontmatter={{
-              author: "x",
-              title: data.title || "---",
-              pubDatetime: new Date(data.createdAt),
-              modDatetime: new Date(data.updatedAt),
-              description: data.SEO?.metaDescription || data.Description || "",
-              SEO: {
-                ...data.SEO,
-                metaTitle: data.SEO?.metaTitle || data.title || "Store",
-                socialImage: {
-                  url: data.SEO?.socialImage?.url || data.Logo?.url,
-                },
-              },
-            }}
-          />
-        ))
-      }
-    </ul>
-  </Main>
 
   <Pagination
     {currentPage}

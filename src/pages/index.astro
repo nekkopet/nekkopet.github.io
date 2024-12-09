@@ -115,7 +115,7 @@ const links = store?.URLS || [];
                 {products.slice(0, 5).map(({ data }) => {
                   return (
                     <Card
-                      href={`/store/${data.slug || slugifyStr(data.Name)}`}
+                      href={`/stores/${data.slug || slugifyStr(data.Name)}`}
                       tags={[]}
                       frontmatter={{
                         author: "x",
@@ -144,7 +144,7 @@ const links = store?.URLS || [];
                 <LinkButton href="/products/">
                   All Products
                   <svg xmlns="http://www.w3.org/2000/svg">
-                    <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"></path>
+                    <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
                   </svg>
                 </LinkButton>
               </div>
