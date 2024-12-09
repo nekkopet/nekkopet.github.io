@@ -46,7 +46,7 @@ This year, we’re inviting developers, designers, artists, and enthusiasts from
  -  [api - strapi](https://github.com/calimania/markketplace)
  - [front end - astro](https://github.com/calimania/markketplace-astro)
 3. Dive into the code, docs, or designs, and start contributing!
-4. Join our [**newsletter**](/posts/calima-newsletter/) to chat with our team, ask questions, or get feedback on your work.
+4. Join our [**newsletter**](/newsletter/) to chat with our team, ask questions, or get feedback on your work.
 
 ## A Big Thank You to DigitalOcean
 

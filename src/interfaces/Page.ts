@@ -1,3 +1,4 @@
+import type { SEOImage } from "./Article";
 /**
  *  Store Interface
  */
@@ -29,7 +30,7 @@ export default interface Page {
   SEO: {
     metaDescription: string,
     metaTitle: string,
-    socialImage: {},
+    socialImage: SEOImage,
   },
   createdAt: string;
   updatedAt: string;

@@ -11,7 +11,7 @@ export const markketplace = {
 
 export const SITE: Site = {
   website: "https://markket.place/",
-  author: "Club Calima",
+  author: "Markket",
   profile: "https://caliman.org/",
   desc: "A minimal, responsive and SEO-friendly Markketplace theme.",
   title: "Morir Soñando",
