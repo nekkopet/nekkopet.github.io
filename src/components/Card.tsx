@@ -21,7 +21,7 @@ export default function Card({ href, frontmatter, tags, secHeading = true }: Pro
   const imageUrl = SEO?.socialImage?.url;
 
   return (
-    <li className="mb-8">
+    <li className="mb-8 w-full md:w-1/2 px-4">
       <article className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
         <a href={href} className="block group">
           {imageUrl && (
@@ -64,7 +64,7 @@ export default function Card({ href, frontmatter, tags, secHeading = true }: Pro
             <ul>
               {tags?.map((tag) => {
                 if (!tag) return null;
-                <Tag tag={tag || 'x'} size="sm" />
+                return <Tag tag={tag || 'x'} size="sm" />;
               })}
             </ul>
           </div>
