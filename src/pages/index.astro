@@ -115,7 +115,7 @@ const links = store?.URLS || [];
                 {products.slice(0, 5).map(({ data }) => {
                   return (
                     <Card
-                      href={`/stores/${data.slug || slugifyStr(data.Name)}`}
+                      href={`/products/${data.slug || slugifyStr(data.Name)}`}
                       tags={[]}
                       frontmatter={{
                         author: "x",
