@@ -15,8 +15,9 @@ const { activeNav, noMarginTop = false } = Astro.props;
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
   <Hr noPadding />
   <div class="footer-wrapper mb-10">
-    <Socials centered />
+    <br />
     <div class="copyright-wrapper">
+      <Socials centered />
       <span>Copyleft &#169; {currentYear}</span>
       <span class="separator">&nbsp;|&nbsp;</span>
       <span>Some rights reserved.</span>
@@ -30,6 +31,12 @@ const { activeNav, noMarginTop = false } = Astro.props;
       <span>
         <a href="/stores/" class={activeNav === "stores" ? "active" : ""}>
           Stores
+        </a>
+      </span>
+      &nbsp;|&nbsp;
+      <span>
+        <a href="/products/" class={activeNav === "products" ? "active" : ""}>
+          Products
         </a>
       </span>
     </div>
