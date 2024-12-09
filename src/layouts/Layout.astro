@@ -2,7 +2,7 @@
 import { LOCALE, SITE, markketplace } from "@config";
 import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -16,6 +16,12 @@ export interface Props {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
+  post?: CollectionEntry<"posts">;
+  meta?: {
+    title: string;
+    image: string;
+    description: string;
+  };
 }
 
 const {
@@ -27,7 +33,9 @@ const {
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   pubDatetime,
   modDatetime,
+  post,
   scrollSmooth = false,
+  meta,
 } = Astro.props;
 
 const socialImageURL = new URL(
@@ -55,6 +63,7 @@ const stores = await getCollection("stores");
 const store = stores.find(
   store => store.data.slug == markketplace.STORE_SLUG
 )?.data;
+console.log({ store });
 ---
 
 <!doctype html>
@@ -65,30 +74,63 @@ const store = stores.find(
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href={`${store?.Favicon || "/favicon.png"}`}
+    />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
     <!-- General Meta Tags -->
-    <title>{store?.title || title}</title>
-    <meta name="title" content={store?.title || title} />
-    <meta name="description" content={store?.Description || description} />
+    <title>
+      {
+        meta?.title ||
+          post?.data?.SEO?.metaTitle ||
+          store?.SEO?.metaTitle ||
+          store?.title ||
+          title
+      }
+    </title>
+
+    <meta
+      name="description"
+      content={meta?.description ||
+        post?.data?.SEO?.metaDescription ||
+        store?.SEO?.metaDescription ||
+        store?.Description ||
+        description}
+    />
     <meta name="author" content={author} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
     <meta
       property="og:title"
-      content={store?.SEO?.metaTitle || store?.title || title}
+      content={meta?.title ||
+        post?.data?.SEO?.metaTitle ||
+        store?.SEO?.metaTitle ||
+        store?.title ||
+        title}
     />
     <meta
       property="og:description"
-      content={store?.SEO?.metaDescription || store?.Description || description}
+      content={meta?.description ||
+        post?.data?.SEO?.metaDescription ||
+        store?.SEO?.metaDescription ||
+        store?.Description ||
+        description}
     />
-    <meta property="og:url" content={store?.SEO?.metaUrl || canonicalURL} />
+    <meta
+      property="og:url"
+      content={post?.data?.SEO?.metaUrl || store?.SEO?.metaUrl || canonicalURL}
+    />
     <meta
       property="og:image"
-      content={store?.SEO?.socialImage?.url || socialImageURL}
+      content={meta?.image ||
+        post?.data?.SEO?.socialImage?.url ||
+        store?.SEO?.socialImage?.url ||
+        socialImageURL}
     />
 
     <!-- Article Published/Modified time -->
@@ -108,13 +150,6 @@ const store = stores.find(
         />
       )
     }
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={socialImageURL} />
 
     <!-- Google JSON-LD Structured data -->
     <script
