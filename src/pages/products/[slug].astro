@@ -49,9 +49,10 @@ const htmlDescription = marked.parse(product?.data?.Description);
 ---
 
 <Layout
-  title={`Product | ${product?.data?.title}`}
+  title={`Product | ${product?.data?.Name}`}
   meta={{
-    title: `Markkët Product | ${product?.data?.title}`,
+    title: `Markkët Product | ${product?.data?.Name}`,
+    image: product?.data?.SEO?.socialImage?.url || "",
     description:
       product?.data?.SEO?.metaDescription || store?.data?.Description,
   }}
