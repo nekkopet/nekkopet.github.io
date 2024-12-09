@@ -6,9 +6,12 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
+import { markketplace } from "@config";
 
 const stores = await getCollection("stores");
-const store = stores?.[0]?.data as unknown as Store;
+const store = stores.find(
+  (store: Store) => store.data.slug === markketplace.STORE_SLUG
+);
 ---
 
 <Layout title={`404 Not Found | ${SITE.title}`}>

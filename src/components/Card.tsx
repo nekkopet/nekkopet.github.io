@@ -1,5 +1,6 @@
 import Tag from './Tag.astro';
 import type { SEO } from '../interfaces/Article';
+import { Fragment } from 'react';
 
 export interface Props {
   href?: string;
@@ -21,7 +22,7 @@ export default function Card({ href, frontmatter, tags, secHeading = true }: Pro
   const imageUrl = SEO?.socialImage?.url;
 
   return (
-    <li className="mb-8">
+    <li className="mb-8 w-full md:w-1/2 px-4">
       <article className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
         <a href={href} className="block group">
           {imageUrl && (
@@ -61,12 +62,15 @@ export default function Card({ href, frontmatter, tags, secHeading = true }: Pro
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5M6 7l5 5-5 5" />
               </svg>
             </div>
-            <ul>
-              {tags?.map((tag) => {
-                if (!tag) return null;
-                <Tag tag={tag || 'x'} size="sm" />
-              })}
-            </ul>
+            {/* <ul>
+              {
+                tags?.map((tag: string, index: number) => (
+                  <Fragment key={index}>
+                    {tag && <Tag tag={tag} size="sm" />}
+                  </Fragment>
+                ))
+              }
+            </ul> */}
           </div>
         </a>
       </article>

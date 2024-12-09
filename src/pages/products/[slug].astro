@@ -1,0 +1,100 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Pagination from "@components/Pagination.astro";
+// import Card from "@components/Card";
+import { markketplace, SITE } from "@config";
+import HeroImage from "@components/HeroImage.astro";
+import Hr from "@components/Hr.astro";
+import Slides from "@components/Slides.astro";
+
+import { marked } from "marked";
+
+import { getCollection } from "astro:content";
+import type Store from "@interfaces/Store";
+import { slugifyStr } from "@utils/slugify";
+import type Product from "@interfaces/Product";
+
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  stores: CollectionEntry<"stores">[];
+  product?: Product;
+}
+
+export async function getStaticPaths() {
+  const products = await getCollection("products");
+
+  const productsResult = products.map((product: { data: Product }) => ({
+    params: {
+      slug: `${product.data.slug || slugifyStr(product.data.Name)}`,
+    },
+    props: { product: product },
+  }));
+
+  return [...productsResult];
+}
+
+const { currentPage, totalPages, product } = Astro.props;
+
+const stores = await getCollection("stores");
+const store = stores.find(
+  (store: { data: Store }) => store.data.slug == markketplace.STORE_SLUG
+);
+
+const htmlDescription = marked.parse(product?.data?.Description);
+---
+
+<Layout
+  title={`Product | ${product?.data?.title}`}
+  meta={{
+    title: `Markkët Product | ${product?.data?.title}`,
+    description:
+      product?.data?.SEO?.metaDescription || store?.data?.Description,
+  }}
+>
+  <Header activeNav="pages" store={store} />
+  <main id="main-content">
+    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
+      {
+        store?.data?.SEO?.socialImage && (
+          <HeroImage
+            image={product?.data?.Thumbnail}
+            title={product?.data?.Name}
+          />
+        )
+      }
+      <h1 class="text-2xl tracking-wider sm:text-3xl">
+        {product?.data?.Name}
+      </h1>
+      <div set:html={htmlDescription} />
+      <Hr />
+      {
+        product?.data?.Slides?.length > 0 && (
+          <section class="my-10">
+            <h2 class="mb-4 text-xl font-bold">Product Images</h2>
+            <Slides slides={product?.data?.Slides} />
+          </section>
+        )
+      }
+      <button
+        class="brand-yellow bg-accent-600 mt-6 rounded-lg px-4 py-2 text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
+        disabled
+      >
+        Coming Soon
+      </button>
+    </section>
+  </main>
+
+  <Pagination
+    {currentPage}
+    {totalPages}
+    prevUrl={`/blog${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
+    nextUrl={`/blog/${currentPage + 1}/`}
+  />
+
+  <Footer noMarginTop={totalPages > 1} activeNav="x" />
+</Layout>

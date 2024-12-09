@@ -165,9 +165,21 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
     color: #fbda0d !important;
   }
 
+
   .brand-blue {
     color: #0157ad;
   }
+/*** Buttons ***/
+button.brand-yellow {
+  border: 1px solid;
+  border-color: #fbda0d !important;
+}
+
+button.brand-yellow:hover {
+  color: #0157ad !important;
+  background-color: white;
+  border-color: #0157ad !important;
+}
 }
 
 @layer components {

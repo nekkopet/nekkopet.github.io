@@ -6,21 +6,35 @@ import { strapiLoader } from "../lib/strapi-loader";
 
 const pages = defineCollection({
   loader: strapiLoader({
-    contentType: "page", filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO.socialImage,store'
+    contentType: "page",
+    filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
+    populate: 'SEO.socialImage'
   }),
 
 });
 
 const stores = defineCollection({
-  loader: strapiLoader({ contentType: "store", filter: `filters[slug][$eq]=${markketplace.STORE_SLUG}` }),
+  loader: strapiLoader({
+    contentType: "store",
+    filter: `filters[active]=true`,
+    populate: 'SEO.socialImage,Logo,URLS'
+  }),
+});
+
+const products = defineCollection({
+  loader: strapiLoader({
+    contentType: "product",
+    filter: `filters[stores][slug][$eq]=${markketplace.STORE_SLUG}`,
+    populate: 'SEO.socialImage,Thumbnail,Slides'
+  }),
 });
 
 const posts = defineCollection({
   loader: strapiLoader({
-    contentType: "article", filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
+    contentType: "article",
+    filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
     populate: 'SEO.socialImage,Tags,store'
   }),
 });
 
-export const collections = { posts, pages, stores };
+export const collections = { posts, pages, stores, products };
