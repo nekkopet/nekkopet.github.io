@@ -25,7 +25,7 @@ const products = defineCollection({
   loader: strapiLoader({
     contentType: "product",
     filter: `filters[stores][slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO.socialImage'
+    populate: 'SEO.socialImage,Thumbnail,Slides'
   }),
 });
 

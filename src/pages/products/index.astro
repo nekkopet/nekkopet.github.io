@@ -17,7 +17,7 @@ export interface Props {
 }
 
 import { getCollection } from "astro:content";
-import type Store from "../interfaces/Store";
+import type Store from "@interfaces/Store";
 import { slugifyStr } from "@utils/slugify";
 import { markketplace } from "@config";
 
@@ -27,8 +27,6 @@ const store = stores.find(
 );
 
 const products = await getCollection("products");
-
-console.log({ products });
 
 const { currentPage, totalPages } = Astro.props;
 ---
@@ -66,7 +64,7 @@ const { currentPage, totalPages } = Astro.props;
       {
         products.map(({ data }) => (
           <Card
-            href={`/store/${data.slug || slugifyStr(data.Name)}`}
+            href={`/products/${data.slug || slugifyStr(data.Name)}`}
             tags={[]}
             frontmatter={{
               author: "x",
@@ -76,7 +74,7 @@ const { currentPage, totalPages } = Astro.props;
               description: data.SEO?.metaDescription || data.Description || "",
               SEO: {
                 ...data.SEO,
-                metaTitle: data.SEO?.metaTitle || data.title || "Store",
+                metaTitle: data.SEO?.metaTitle || data.Name || "Store",
                 socialImage: {
                   url: data.SEO?.socialImage?.url || data.Thumbnail?.url,
                 },
