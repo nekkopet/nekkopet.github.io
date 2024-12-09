@@ -9,6 +9,7 @@ import Card from "@components/Card";
 import { SITE } from "@config";
 import HeroImage from "@components/HeroImage.astro";
 import Hr from "@components/Hr.astro";
+import LinkButton from "@components/LinkButton.astro";
 
 import { getCollection } from "astro:content";
 import type Store from "@interfaces/Store";
@@ -39,6 +40,7 @@ const { slug } = Astro.params;
 
 const stores = await getCollection("stores");
 const store = stores.find((store: Store) => store.data.slug == slug);
+console.log({ store, urls: store?.data?.URLS });
 ---
 
 <Layout
@@ -63,8 +65,28 @@ const store = stores.find((store: Store) => store.data.slug == slug);
         {store?.data?.title}
       </h1>
       <p>{store?.data.Description}</p>
+      <Hr />
+      <h2 class="brand-yellow mt-2 text-2xl tracking-wider sm:text-3xl">
+        Urls
+      </h2>
+      <div class="all-posts-btn-wrapper">
+        {
+          store?.data?.URLS.map(url => {
+            return (
+              <p class="mb-5 mt-2">
+                <LinkButton href={url.URL}>
+                  {url.Label}
+                  <svg xmlns="http://www.w3.org/2000/svg">
+                    <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+                  </svg>
+                </LinkButton>
+              </p>
+            );
+          })
+        }
+      </div>
+      <Hr />
     </section>
-    <Hr />
   </main>
 
   <Pagination
