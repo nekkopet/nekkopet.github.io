@@ -40,7 +40,6 @@ const { slug } = Astro.params;
 
 const stores = await getCollection("stores");
 const store = stores.find((store: Store) => store.data.slug == slug);
-console.log({ store, urls: store?.data?.URLS });
 ---
 
 <Layout
@@ -72,16 +71,17 @@ console.log({ store, urls: store?.data?.URLS });
       <div class="all-posts-btn-wrapper">
         {
           store?.data?.URLS.map(url => {
-            return (
-              <p class="mb-5 mt-2">
-                <LinkButton target="_blank" href={url.URL}>
-                  {url.Label}
-                  <svg xmlns="http://www.w3.org/2000/svg">
-                    <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
-                  </svg>
-                </LinkButton>
-              </p>
-            );
+            if (url.URL && url.Label)
+              return (
+                <p class="mb-5 mt-2">
+                  <LinkButton target="_blank" href={url.URL}>
+                    {url.Label}
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                      <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+                    </svg>
+                  </LinkButton>
+                </p>
+              );
           })
         }
       </div>

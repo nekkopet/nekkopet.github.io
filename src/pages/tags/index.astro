@@ -27,7 +27,7 @@ let tags = getUniqueTags(posts);
   <Header activeNav="tags" store={store} />
   <Main pageTitle="Tags" pageDesc="All the tags used in posts.">
     <ul>
-      {tags.map(({ tag }) => <Tag {tag} size="lg" />)}
+      {tags.map(({ tag }) => tag && <Tag {tag} size="lg" />)}
     </ul>
   </Main>
   <Footer />
