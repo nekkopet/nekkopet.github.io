@@ -180,6 +180,15 @@ button.brand-yellow:hover {
   background-color: white;
   border-color: #0157ad !important;
 }
+.nav-container {
+  min-height: 120px;
+}
+
+@media (max-width: 640px) {
+  .logo {
+    width: 80px !important;
+  }
+}
 }
 
 @layer components {

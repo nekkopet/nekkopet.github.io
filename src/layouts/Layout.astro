@@ -18,9 +18,10 @@ export interface Props {
   scrollSmooth?: boolean;
   post?: CollectionEntry<"posts">;
   meta?: {
-    title: string;
-    image: string;
-    description: string;
+    title?: string;
+    image?: string;
+    description?: string;
+    url?: string;
   };
 }
 
@@ -122,7 +123,10 @@ const store = stores.find(
     />
     <meta
       property="og:url"
-      content={post?.data?.SEO?.metaUrl || store?.SEO?.metaUrl || canonicalURL}
+      content={meta?.url ||
+        post?.data?.SEO?.metaUrl ||
+        store?.SEO?.metaUrl ||
+        canonicalURL}
     />
     <meta
       property="og:image"
