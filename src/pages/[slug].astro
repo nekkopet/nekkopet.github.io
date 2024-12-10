@@ -34,7 +34,14 @@ const store = stores.find(
 const { page } = Astro.props;
 ---
 
-<Layout>
+<Layout
+  meta={{
+    title: page?.SEO?.metaTitle || page?.Title,
+    image: page?.SEO?.socialImage?.url,
+    description: page?.SEO?.metaDescription,
+    url: `/${page?.slug}`,
+  }}
+>
   <Header store={store} activeNav={page?.data?.slug as activeNav} />
   <Breadcrumbs />
   <main id="main-content">
