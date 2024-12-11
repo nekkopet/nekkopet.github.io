@@ -6,7 +6,8 @@ export const markketplace = {
   colors: {
     primary: import.meta.env.COLOR_PRIMARY as string || '#fbda0c',
     accent: import.meta.env.COLOR_ACCENT as string || '#38b2ac',
-  }
+  },
+  POSTHOG_ID: import.meta.env.POSTHOG_ID as string || '',
 };
 
 export const SITE: Site = {

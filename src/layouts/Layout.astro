@@ -3,6 +3,7 @@ import { LOCALE, SITE, markketplace } from "@config";
 import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
 import { getCollection, type CollectionEntry } from "astro:content";
+import Posthog from "@components/posthog.astro";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -184,6 +185,7 @@ const store = stores.find(
 
     <ViewTransitions />
 
+    <Posthog />
     <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
