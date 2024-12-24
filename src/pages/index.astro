@@ -117,6 +117,7 @@ const links = store?.URLS || [];
                     <Card
                       href={`/products/${data.slug || slugifyStr(data.Name)}`}
                       tags={[]}
+                      image={data.Thumbnail || data.SEO?.socialImage}
                       frontmatter={{
                         author: "x",
                         title: data.Name || data.SEO?.metaTitle || "---",
@@ -164,6 +165,7 @@ const links = store?.URLS || [];
                   index < SITE.postPerIndex && (
                     <Card
                       href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
+                      image={data?.cover || data.SEO?.metaImage}
                       frontmatter={{
                         author: "x",
                         tags: data.Tags?.map(tag => tag.Label),

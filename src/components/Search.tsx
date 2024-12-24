@@ -3,6 +3,7 @@ import Fuse from "fuse.js";
 import { useEffect, useRef, useState, useMemo } from "react";
 import Card from "@components/Card";
 import type { CollectionEntry } from "astro:content";
+import { slugifyStr } from "@utils/slugify";
 
 export type SearchItem = {
   title: string;
@@ -113,8 +114,9 @@ export default function SearchBar({ searchList }: Props) {
         {searchResults &&
           searchResults.map(({ item, refIndex }) => (
             <Card
-              href={item.slug}
+              href={`/blog/${new Date(item.data.updatedAt).getFullYear()}-${slugifyStr(item.data.Title)}`}
               tags={item?.data?.Tags?.map((tag: { Label: string }) => tag.Label) || []}
+              image={item?.data?.cover || item?.data?.SEO?.socialImage}
               frontmatter={{
                 author: "x",
                 title: item.data.Title,

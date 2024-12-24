@@ -14,7 +14,7 @@ import { slugifyStr } from "@utils/slugify";
 const stores = await getCollection("stores");
 const store = stores?.find(
   (store: { data: Store }) => store.data.slug === markketplace.STORE_SLUG
-)?.data;
+);
 
 export interface Props {
   currentPage: number;
@@ -47,6 +47,7 @@ const {
           <Card
             href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
             tags={data.Tags.map((tag: { Label: string }) => tag.Label)}
+            image={data?.cover || data?.SEO?.metaImage}
             frontmatter={{
               author: "x",
               title: data.Title,

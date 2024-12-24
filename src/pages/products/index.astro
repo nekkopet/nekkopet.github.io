@@ -66,6 +66,7 @@ const { currentPage, totalPages } = Astro.props;
           <Card
             href={`/products/${data.slug || slugifyStr(data.Name)}`}
             tags={[]}
+            image={data.Thumbnail || data.SEO?.socialImage}
             frontmatter={{
               author: "x",
               title: data.Name || data.SEO?.metaTitle || "---",
