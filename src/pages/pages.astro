@@ -30,6 +30,7 @@ pages = pages.sort(
         pages.map(page => (
           <Card
             href={`/${slugifyStr(page.data.slug) || "#"}/`}
+            image={page?.data?.SEO?.socialImage}
             frontmatter={{
               title: page.data.Title,
               pubDatetime: new Date(page.data.createdAt),

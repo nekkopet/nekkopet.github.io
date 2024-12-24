@@ -4,6 +4,10 @@ import TagPosts from "@layouts/TagPosts.astro";
 import getPostsByTag from "@utils/getPostsByTag";
 import getPagination from "@utils/getPagination";
 import getUniqueTags from "@utils/getUniqueTags";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { markketplace } from "@config";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -34,6 +38,13 @@ const pagination = getPagination({
   page: 1,
   isIndex: true,
 });
+
+const stores = await getCollection("stores");
+const store = stores.find(
+  (store: Store) => store.data.slug === markketplace.STORE_SLUG
+);
 ---
 
-<TagPosts {...pagination} {tag} {tagName} />
+<main id="main-content">
+  <TagPosts {...pagination} {tag} {tagName} />
+</main>
