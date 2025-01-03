@@ -11,6 +11,25 @@ export default interface Store {
   SEO: {
     metaTitle: string,
     metaDescription: string,
+    metaAuthor: string,
+    socialImage: {
+      id: string,
+      url: string,
+      formats: {
+        medium: {
+          ext: string,
+          url: string,
+          width: number,
+          height: number,
+        },
+        small: {
+          ext: string,
+          url: string,
+          width: number,
+          height: number,
+        }
+      }
+    }
   };
   Logo: {
     id: string,

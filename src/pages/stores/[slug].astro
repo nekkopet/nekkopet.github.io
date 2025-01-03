@@ -19,16 +19,16 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  const stores = await getCollection("stores");
+  const stores: { data: Store }[] = (await getCollection("stores")) as any;
 
-  const postResult = stores.map((post: Store) => ({
+  const storesResult = stores.map((store: { data: Store }) => ({
     params: {
-      slug: `${post.data.slug || slugifyStr(post.data.title)}`,
+      slug: `${store?.data?.slug || slugifyStr(store.data.title)}`,
     },
-    props: { store: post },
+    props: { store },
   }));
 
-  return [...postResult];
+  return [...storesResult];
 }
 
 const { currentPage, totalPages } = Astro.props;
@@ -36,62 +36,71 @@ const { currentPage, totalPages } = Astro.props;
 const { slug } = Astro.params;
 
 const stores = await getCollection("stores");
-const store = stores.find((store: Store) => store.data.slug == slug);
+const store: { data: Store } = stores.find(
+  (store: { data: Store }) => store?.data?.slug == slug
+) as any;
 ---
 
 <Layout
   title={`Store | ${store?.data?.title}`}
+  author={store?.data?.SEO?.metaAuthor || "Markkët"}
   meta={{
     title: `Markkët Store | ${store?.data?.title}`,
     description: store?.data?.SEO?.metaDescription || store?.data?.Description,
+    url: `/stores/${store?.data?.slug}`,
   }}
 >
   <Header activeNav="pages" store={store} />
-  <main id="main-content">
-    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
-      {
-        store?.data?.SEO?.socialImage && (
-          <HeroImage
-            image={store?.data?.SEO?.socialImage}
-            title={store?.data?.title}
-          />
-        )
-      }
-      <h1 class="text-2xl tracking-wider sm:text-3xl">
-        {store?.data?.title}
-      </h1>
-      <p>{store?.data.Description}</p>
-      <Hr />
-      <h2 class="brand-yellow mt-2 text-2xl tracking-wider sm:text-3xl">
-        Urls
-      </h2>
-      <div class="all-posts-btn-wrapper">
+  <Main pageTitle={store?.data?.title}>
+    <main id="main-content">
+      <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
         {
-          store?.data?.URLS.map(url => {
-            if (url.URL && url.Label)
-              return (
-                <p class="mb-5 mt-2">
-                  <LinkButton target="_blank" href={url.URL}>
-                    {url.Label}
-                    <svg xmlns="http://www.w3.org/2000/svg">
-                      <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
-                    </svg>
-                  </LinkButton>
-                </p>
-              );
-          })
+          store?.data?.SEO?.socialImage && (
+            <HeroImage
+              image={store?.data?.SEO?.socialImage}
+              title={store?.data?.title}
+            />
+          )
         }
-      </div>
-      <Hr />
-    </section>
-  </main>
+        <section>
+          {
+            store?.data.Description?.split("\n").map(desc => (
+              <p class="mb-5">{desc}</p>
+            ))
+          }
+        </section>
+        <Hr />
+        <h2 class="brand-yellow mt-2 text-2xl tracking-wider sm:text-3xl">
+          Urls
+        </h2>
+        <div class="all-posts-btn-wrapper">
+          {
+            store?.data?.URLS.map(url => {
+              if (url.URL && url.Label)
+                return (
+                  <p class="mb-5 mt-2">
+                    <LinkButton target="_blank" href={url.URL}>
+                      {url.Label}
+                      <svg xmlns="http://www.w3.org/2000/svg">
+                        <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+                      </svg>
+                    </LinkButton>
+                  </p>
+                );
+            })
+          }
+        </div>
+        <Hr />
+      </section>
+    </main>
 
-  <Pagination
-    {currentPage}
-    {totalPages}
-    prevUrl={`/blog${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
-    nextUrl={`/blog/${currentPage + 1}/`}
-  />
+    <Pagination
+      {currentPage}
+      {totalPages}
+      prevUrl={`/blog${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
+      nextUrl={`/blog/${currentPage + 1}/`}
+    />
 
-  <Footer noMarginTop={totalPages > 1} activeNav="x" />
+    <Footer noMarginTop={totalPages > 1} activeNav="x" />
+  </Main>
 </Layout>
