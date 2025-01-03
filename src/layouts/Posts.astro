@@ -77,6 +77,7 @@ const blogPage: { data: Page } | undefined = pages.find(
           <Card
             href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
             tags={data.Tags.map((tag: { Label: string }) => tag.Label)}
+            image={data?.cover || data.SEO?.metaImage}
             frontmatter={{
               author: "x",
               title: data.Title || data.SEO?.metaTitle || "",

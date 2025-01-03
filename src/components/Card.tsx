@@ -1,7 +1,3 @@
-import Tag from './Tag.astro';
-import type { SEO } from '../interfaces/Article';
-import { Fragment } from 'react';
-
 export interface Props {
   href?: string;
   author?: string;
@@ -11,28 +7,32 @@ export interface Props {
     pubDatetime: Date;
     modDatetime: Date;
     description: string;
-    SEO?: SEO;
     author?: string;
+  };
+  image?: {
+    url: string;
+    alternativeText: string | null;
+    width: number;
+    height: number;
   };
   secHeading?: boolean;
 }
 
-export default function Card({ href, frontmatter, tags, secHeading = true }: Props) {
-  const { title, pubDatetime, description, SEO } = frontmatter;
-  const imageUrl = SEO?.socialImage?.url;
+export default function Card({ href, frontmatter, tags, image, secHeading = true }: Props) {
+  const { title, pubDatetime, description } = frontmatter;
 
   return (
     <li className="mb-8 w-full md:w-1/2 px-4">
       <article className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
         <a href={href} className="block group">
-          {imageUrl && (
+          {image?.url && (
             <div className="relative aspect-video overflow-hidden">
               <img
-                src={imageUrl}
-                alt={SEO?.socialImage?.alternativeText || title}
+                src={image?.url}
+                alt={image?.alternativeText || title}
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                width={SEO?.socialImage?.width}
-                height={SEO?.socialImage?.height}
+                width={image?.width}
+                height={image?.height}
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -62,15 +62,31 @@ export default function Card({ href, frontmatter, tags, secHeading = true }: Pro
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5M6 7l5 5-5 5" />
               </svg>
             </div>
-            {/* <ul>
+            <ul>
               {
                 tags?.map((tag: string, index: number) => (
-                  <Fragment key={index}>
-                    {tag && <Tag tag={tag} size="sm" />}
-                  </Fragment>
+
+                  <li
+                    className={`inline-block  my-1 underline-offset-4"`}
+                  >
+                    <a
+                      href={`/tags/${tag?.toLowerCase()}/`}
+                      className=" text-md pr-2 group"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"
+                        >
+                        </path>
+                      </svg>
+                      &nbsp;<span>{tag}</span>
+                    </a>
+                  </li>
                 ))
               }
-            </ul> */}
+            </ul>
           </div>
         </a>
       </article>

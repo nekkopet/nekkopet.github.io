@@ -10,7 +10,6 @@ const pages = defineCollection({
     filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
     populate: 'SEO.socialImage'
   }),
-
 });
 
 const stores = defineCollection({
@@ -25,7 +24,7 @@ const products = defineCollection({
   loader: strapiLoader({
     contentType: "product",
     filter: `filters[stores][slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO.socialImage,Thumbnail,Slides'
+    populate: 'SEO.socialImage,Thumbnail,Slides,PRICES'
   }),
 });
 
@@ -33,7 +32,7 @@ const posts = defineCollection({
   loader: strapiLoader({
     contentType: "article",
     filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO.socialImage,Tags,store'
+    populate: 'SEO.socialImage,Tags,store,cover'
   }),
 });
 
