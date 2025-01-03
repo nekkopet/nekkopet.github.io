@@ -1,9 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import Main from "@layouts/Main.astro";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Pagination from "@components/Pagination.astro";
+// import Pagination from "@components/Pagination.astro";
 import HeroImage from "@components/HeroImage.astro";
 import Hr from "@components/Hr.astro";
 import LinkButton from "@components/LinkButton.astro";
@@ -31,7 +32,7 @@ export async function getStaticPaths() {
   return [...storesResult];
 }
 
-const { currentPage, totalPages } = Astro.props;
+const { totalPages } = Astro.props;
 
 const { slug } = Astro.params;
 
@@ -51,7 +52,7 @@ const store: { data: Store } = stores.find(
   }}
 >
   <Header activeNav="pages" store={store} />
-  <Main pageTitle={store?.data?.title}>
+  <Main pageTitle={store?.data?.title} pageDesc={`Store `}>
     <main id="main-content">
       <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
         {
@@ -90,17 +91,18 @@ const store: { data: Store } = stores.find(
             })
           }
         </div>
-        <Hr />
+        <!-- <Hr /> -->
+        <!-- {store.slides} -->
       </section>
     </main>
 
-    <Pagination
+    <!-- <Pagination
       {currentPage}
       {totalPages}
       prevUrl={`/blog${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
       nextUrl={`/blog/${currentPage + 1}/`}
-    />
+    /> -->
 
-    <Footer noMarginTop={totalPages > 1} activeNav="x" />
+    <Footer noMarginTop={totalPages > 1} activeNav="stores" />
   </Main>
 </Layout>
