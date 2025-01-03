@@ -10,7 +10,6 @@ const pages = defineCollection({
     filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
     populate: 'SEO.socialImage'
   }),
-
 });
 
 const stores = defineCollection({
