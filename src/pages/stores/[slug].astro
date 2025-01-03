@@ -49,6 +49,7 @@ const store: { data: Store } = stores.find(
     title: `Markkët Store | ${store?.data?.title}`,
     description: store?.data?.SEO?.metaDescription || store?.data?.Description,
     url: `/stores/${store?.data?.slug}`,
+    image: store?.data?.SEO?.socialImage?.formats?.medium?.url,
   }}
 >
   <Header activeNav="pages" store={store} />
@@ -58,7 +59,7 @@ const store: { data: Store } = stores.find(
         {
           store?.data?.SEO?.socialImage && (
             <HeroImage
-              image={store?.data?.SEO?.socialImage}
+              image={store?.data?.SEO?.socialImage?.formats?.medium}
               title={store?.data?.title}
             />
           )
