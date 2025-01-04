@@ -53,28 +53,8 @@ const selectedPrice = prices[0];
 ---
 
 <script>
-  // Front matter TS is executed in the ~server during the build process
-  // import confetti from 'canvas-confetti';
-
-  const buttons = document.querySelectorAll("[data-astro-image]");
-
-  // Add event listeners to fire confetti when a button is clicked.
-  buttons.forEach(button => {
-    button.addEventListener("click", e => {
-      const jsonData = e.target?.dataset?.astroImage; // Access the data attribute
-      try {
-        const jsonObject = JSON.parse(jsonData); // Parse the JSON string
-        const heroImage = document.querySelector(".hero-image");
-        if (heroImage) {
-          heroImage.src = jsonObject.url;
-        }
-
-        console.log({ e, jsonData, jsonObject });
-      } catch (error) {
-        console.error("Error parsing JSON", error);
-      }
-    });
-  });
+  import { ProductSlideshow } from "../../scripts/ui";
+  ProductSlideshow();
 </script>
 
 <Layout
@@ -104,9 +84,9 @@ const selectedPrice = prices[0];
                   {product?.data?.Slides?.map((slide: any) => (
                     <div class="aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
                       <img
-                        src={slide.url}
+                        src={slide?.formats?.thumbnail?.url}
                         alt={slide.alternativeText || ""}
-                        data-astro-image={JSON.stringify(slide?.formats?.large)}
+                        data-astro-image={JSON.stringify(slide?.formats?.small)}
                         class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
                       />
                     </div>
@@ -136,8 +116,8 @@ const selectedPrice = prices[0];
           {/* Price selector */}
           <div class="mt-8">
             <div class="flex items-center justify-between">
-              <h2 class="text-sm font-medium text-gray-900 dark:text-white">
-                Size
+              <h2 class="text-2xl font-medium text-gray-900 dark:text-white">
+                Available Options
               </h2>
               <span class="text-sm text-gray-500">
                 Select your preferred option

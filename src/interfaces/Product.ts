@@ -9,6 +9,24 @@ export default interface Product {
     metaTitle: string,
     metaDescription: string,
   };
+  Slides: {
+    id: string,
+    url: string,
+    formats: {
+      medium: {
+        ext: string,
+        url: string,
+        width: number,
+        height: number,
+      },
+      small: {
+        ext: string,
+        url: string,
+        width: number,
+        height: number
+      }
+    }
+  }[],
   Thumbnail: {
     id: string,
     url: string,
