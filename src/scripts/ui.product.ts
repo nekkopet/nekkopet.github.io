@@ -1,4 +1,5 @@
 import { type Product } from '../interfaces';
+import { markketplace } from '@config';
 /**
  *
  */
@@ -64,9 +65,13 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
     action: 'stripe.link',
   };
 
-  const request = await fetch('http://localhost:1337/api/markket', {
+  // markketplace.STRAPI_URL = 'http://localhost:1337';
+  const request = await fetch(`${markketplace.STRAPI_URL}/api/markket`, {
     method: 'POST',
-    body: JSON.stringify(body)
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
   });
 
   const response = await request.json();

@@ -15,13 +15,19 @@ import Hr from "@components/Hr.astro";
 import HeroImage from "@components/HeroImage.astro";
 
 const pages = await getCollection("pages");
-const page = pages.find(page => page.data.slug === "newsletter")?.data;
+const page = pages.find(page => page.data.slug === "receipt")?.data;
 const stores = await getCollection("stores");
 const store = stores?.find(
   store => store.data.slug === markketplace.STORE_SLUG
 );
 ---
 
+<script>
+  import { receiptPage } from "../scripts/ui.receipt";
+  const urlParams = new URLSearchParams(window.location.search);
+  const sessionId: string = urlParams.get("session_id") || "";
+  receiptPage(sessionId);
+</script>
 <Layout
   title={page?.SEO?.metaTitle || "Newsletter"}
   description={page?.SEO?.metaDescription || ""}
@@ -50,12 +56,45 @@ const store = stores?.find(
         <BlocksRenderer content={page?.Content || ([] as BlocksContent[])} />
       </section>
 
+      <section>
+        <h2 class="mb-4 text-2xl font-bold tracking-wider sm:text-3xl">
+          Thank you for your purchase!
+        </h2>
+        <p class="mb-4 text-lg text-gray-500 dark:text-gray-400"></p>
+      </section>
+
       <section
-        class="rounded-2xl bg-white bg-opacity-90 p-8 shadow-xl backdrop-blur-sm dark:bg-gray-800 dark:bg-opacity-90"
+        class="max-w-md rounded-2xl bg-white bg-opacity-90 p-8 shadow-xl backdrop-blur-sm dark:bg-gray-800 dark:bg-opacity-90"
       >
+        <div class="mb-6">
+          <h3 class="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
+            Order Summary
+          </h3>
+          <p class="mb-2 text-gray-700 dark:text-gray-300">
+            <strong>Total Amount:</strong>
+            <span data-output="total-amount"></span>
+          </p>
+          <!-- <p class="mb-2 text-gray-700 dark:text-gray-300">
+            Payment Status: <span data-output="payment-status"></span>
+          </p> -->
+          <p class="mb-2 text-gray-700 dark:text-gray-300">
+            <strong>Customer Email:</strong><span data-output="customer-email">
+            </span>
+          </p>
+          <p class="mb-2 text-gray-700 dark:text-gray-300">
+            <strong>Shipping Address:</strong>
+            <span data-output="shipping-address"></span>
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="mt-8 rounded-2xl bg-white bg-opacity-90 p-8 shadow-xl backdrop-blur-sm dark:bg-gray-800 dark:bg-opacity-90"
+      >
+        <h3 class="mb-4 text-2xl font-bold tracking-wider">Markkët Updates</h3>
         <Subscribe
           storeId={store?.id || ""}
-          storeName={store?.data?.title || ""}
+          storeName={store?.data?.title || store?.data?.SEO.metaTitle}
           client:load
         />
         <p class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
