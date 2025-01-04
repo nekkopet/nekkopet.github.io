@@ -1,7 +1,10 @@
 import type { Site, SocialObjects } from "./types";
 
+/**
+ * @type {{[string]: string}} Global Configuration attributes for the markket instance
+ */
 export const markketplace = {
-  STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.morirsoniando.com',
+  STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place',
   STORE_SLUG: import.meta.env.STORE_SLUG as string || 'markket',
   colors: {
     primary: import.meta.env.COLOR_PRIMARY as string || '#fbda0c',
@@ -10,10 +13,15 @@ export const markketplace = {
   POSTHOG_ID: import.meta.env.POSTHOG_ID as string || '',
 };
 
+/**
+ * Global configuration attributes for the astro site
+ *
+ * @TODO: Read these values from the API during launch or build time
+ */
 export const SITE: Site = {
   website: "https://markket.place/",
   author: "Markket",
-  profile: "https://caliman.org/",
+  profile: "https://markket.place/stores/markket",
   desc: "A minimal, responsive and SEO-friendly Markketplace theme.",
   title: "Morir Soñando",
   ogImage: "https://markketplace.nyc3.digitaloceanspaces.com/uploads/3852868ed9aad1e45e4ee4992fe43177.png",
