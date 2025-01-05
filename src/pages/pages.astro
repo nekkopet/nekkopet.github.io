@@ -23,7 +23,8 @@ pages = pages
       new Date(a.data.createdAt).getTime()
   )
   .filter(
-    page => page.data.Active && !["about", "home"].includes(page.data.slug)
+    page =>
+      page.data.Active && !["about", "home", "receipt"].includes(page.data.slug)
   );
 ---
 
