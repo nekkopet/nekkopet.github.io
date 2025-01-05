@@ -14,6 +14,24 @@ export default interface Product {
   SEO: {
     metaTitle: string,
     metaDescription: string,
+    socialImage: {
+      id: string,
+      url: string,
+      formats: {
+        medium: {
+          ext: string,
+          url: string,
+          width: number,
+          height: number,
+        },
+        small: {
+          ext: string,
+          url: string,
+          width: number,
+          height: number,
+        }
+      }
+    },
     metaImage: {
       id: string,
       url: string,
