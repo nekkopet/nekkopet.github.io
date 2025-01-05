@@ -70,7 +70,10 @@ const blogPage: { data: Page } | undefined = pages.find(
     </section>
     <Hr />
   </main>
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+  <Main
+    pageTitle={blogPage?.data?.SEO?.metaTitle || "Articles"}
+    pageDesc={blogPage?.data?.SEO?.metaDescription || "Articles"}
+  >
     <ul>
       {
         paginatedPosts.map(({ data }) => (
