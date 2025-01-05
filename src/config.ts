@@ -153,7 +153,7 @@ export const SOCIALS: SocialObjects = [
   //   active: false,
   // },
   //   name: "BlueSky",
-  //   href: "https://bsky.app/profile/markketplace.bsky.social",
+  //   href: "https://bsky.app/profile/markket.place",
   //   linkTitle: `${SITE.title} on BlueSKy`,
   //   active: false,
   // },
