@@ -44,7 +44,9 @@ export type Price = {
 export type PaymentLinkOptions = {
   totalPrice: number,
   product: string,
-  prices: Price[]
+  prices: Price[],
+  includes_shipping: boolean,
+  stripe_test: boolean,
 };
 
 /**
@@ -63,6 +65,8 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
     total: options.totalPrice,
     product: options.product,
     action: 'stripe.link',
+    includes_shipping: options.includes_shipping,
+    stripe_test: options.stripe_test,
   };
 
   // markketplace.STRAPI_URL = 'http://localhost:1337';
@@ -78,8 +82,9 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
 
   console.log("Payment link", { request, response });
 
-  if (request.ok && response?.data?.link?.url) {
-    window.location.href = response.data.link.url;
+  const url = response?.data?.link?.response?.url;
+  if (request.ok && url) {
+    window.location.href = url;
   }
 
   return request;
@@ -94,6 +99,8 @@ export const ProductForm = function () {
     totalPrice: 0,
     product: '',
     prices: [],
+    includes_shipping: true,
+    stripe_test: false,
   };
 
   const form = document.querySelector('form[data-product-price]')
@@ -107,6 +114,8 @@ export const ProductForm = function () {
       totalPrice: options.totalPrice,
       product: options.product,
       prices: options.prices,
+      includes_shipping: options.includes_shipping,
+      stripe_test: options.stripe_test,
     });
 
     console.log({ options, response });
@@ -124,6 +133,16 @@ export const ProductForm = function () {
     }
 
     const productData = JSON.parse(productDataString) as Product;
+
+    if (productData.Name?.match(/test/i)) {
+      // @TODO: Read from Product JSON
+      options.stripe_test = true;
+    }
+
+    if (productData.Name?.match(/digital/i)) {
+      // @TODO: Read from Product JSON
+      options.includes_shipping = false;
+    }
 
     options.product = '' + productData.id;
 

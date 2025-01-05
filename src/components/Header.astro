@@ -4,16 +4,17 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 import type Store from "../interfaces/Store";
 
-export type activeNav = "tags" | "about" | "search" | "pages" | "blog";
+export type activeNav = "tags" | "about" | "search" | "pages" | "blog" | "products";
 
 export interface Props {
   activeNav?: activeNav;
   store?: {
     data: Store;
   };
+  products: any;
 }
 
-const { activeNav, store } = Astro.props;
+const { activeNav, store, products } = Astro.props;
 ---
 
 <header>
@@ -65,6 +66,18 @@ const { activeNav, store } = Astro.props;
               Blog
             </a>
           </li>
+          {
+            products?.length > 0 && (
+              <li>
+                <a
+                  href="/products/"
+                  class={activeNav === "products" ? "active" : ""}
+                >
+                  Products
+                </a>
+              </li>
+            )
+          }
           <li>
             <a href="/tags/" class={activeNav === "tags" ? "active" : ""}>
               Tags
