@@ -73,19 +73,25 @@ const store = stores?.find(
             Order Summary
           </h3>
           <p class="mb-2 text-gray-700 dark:text-gray-300">
-            <strong>Total Amount:</strong>
+            <strong>Total Amount:&nbsp;</strong>
             <span data-output="total-amount"></span>
           </p>
           <!-- <p class="mb-2 text-gray-700 dark:text-gray-300">
             Payment Status: <span data-output="payment-status"></span>
           </p> -->
           <p class="mb-2 text-gray-700 dark:text-gray-300">
-            <strong>Customer Email:</strong><span data-output="customer-email">
+            <strong>Customer Email:&nbsp;</strong><span
+              data-output="customer-email"
+            >
             </span>
           </p>
           <p class="mb-2 text-gray-700 dark:text-gray-300">
-            <strong>Shipping Address:</strong>
+            <strong>Shipping Address:&nbsp;</strong>
             <span data-output="shipping-address"></span>
+          </p>
+          <p class="mb-2 text-gray-700 dark:text-gray-300">
+            <strong>Stripe Session ID:&nbsp;</strong>
+            <code data-output="session-id"></code>
           </p>
         </div>
       </section>
