@@ -65,6 +65,8 @@ const stores = await getCollection("stores");
 const store = stores.find(
   store => store.data.slug == markketplace.STORE_SLUG
 )?.data;
+
+let href = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -124,7 +126,8 @@ const store = stores.find(
     />
     <meta
       property="og:url"
-      content={meta?.url ||
+      content={href ||
+        meta?.url ||
         post?.data?.SEO?.metaUrl ||
         store?.SEO?.metaUrl ||
         canonicalURL}
