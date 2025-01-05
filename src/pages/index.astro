@@ -23,7 +23,7 @@ const store = stores.find(
   (store: Store) => store.data.slug === markketplace.STORE_SLUG
 );
 
-const products = await getCollection("products");
+const products: Product[] = await getCollection("products");
 
 const posts = await getCollection("posts");
 
@@ -41,7 +41,7 @@ const links = store?.URLS || [];
 ---
 
 <Layout title={`Home | ${SITE.title}`}>
-  <Header store={store} />
+  <Header store={store} products={products} />
   <main id="main-content">
     <section id="hero">
       <h1>{store?.title || "Markketplace"}</h1>

@@ -3,7 +3,6 @@ import { SITE } from "@config";
 import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 import type Store from "../interfaces/Store";
-import { getCollection } from "astro:content";
 
 export type activeNav = "tags" | "about" | "search" | "pages" | "blog" | "products";
 
@@ -12,11 +11,10 @@ export interface Props {
   store?: {
     data: Store;
   };
+  products: any;
 }
 
-const products = await getCollection("products");
-
-const { activeNav, store } = Astro.props;
+const { activeNav, store, products } = Astro.props;
 ---
 
 <header>

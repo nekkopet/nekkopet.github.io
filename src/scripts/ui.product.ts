@@ -82,8 +82,9 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
 
   console.log("Payment link", { request, response });
 
-  if (request.ok && response?.data?.link?.url) {
-    window.location.href = response.data.link.url;
+  const url = response?.data?.link?.response?.url;
+  if (request.ok && url) {
+    window.location.href = url;
   }
 
   return request;
