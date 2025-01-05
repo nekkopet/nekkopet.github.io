@@ -53,8 +53,10 @@ const selectedImage =
 
 <script>
   import { ProductSlideshow, ProductForm } from "../../scripts/ui.product";
-  ProductForm();
-  ProductSlideshow();
+  document.addEventListener("astro:page-load", () => {
+    ProductForm();
+    ProductSlideshow();
+  });
 </script>
 
 <Layout
