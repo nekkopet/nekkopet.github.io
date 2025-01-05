@@ -3,8 +3,9 @@ import { SITE } from "@config";
 import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 import type Store from "../interfaces/Store";
+import { getCollection } from "astro:content";
 
-export type activeNav = "tags" | "about" | "search" | "pages" | "blog";
+export type activeNav = "tags" | "about" | "search" | "pages" | "blog" | "products";
 
 export interface Props {
   activeNav?: activeNav;
@@ -12,6 +13,8 @@ export interface Props {
     data: Store;
   };
 }
+
+const products = await getCollection("products");
 
 const { activeNav, store } = Astro.props;
 ---
@@ -65,6 +68,18 @@ const { activeNav, store } = Astro.props;
               Blog
             </a>
           </li>
+          {
+            products?.length > 0 && (
+              <li>
+                <a
+                  href="/products/"
+                  class={activeNav === "products" ? "active" : ""}
+                >
+                  Products
+                </a>
+              </li>
+            )
+          }
           <li>
             <a href="/tags/" class={activeNav === "tags" ? "active" : ""}>
               Tags

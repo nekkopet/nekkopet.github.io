@@ -26,7 +26,9 @@ const store = stores?.find(
   import { receiptPage } from "../scripts/ui.receipt";
   const urlParams = new URLSearchParams(window.location.search);
   const sessionId: string = urlParams.get("session_id") || "";
-  receiptPage(sessionId);
+  document.addEventListener("astro:page-load", () => {
+    receiptPage(sessionId);
+  });
 </script>
 <Layout
   title={page?.SEO?.metaTitle || "Newsletter"}
