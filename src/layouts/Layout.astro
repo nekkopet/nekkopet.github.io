@@ -4,6 +4,7 @@ import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Posthog from "@components/posthog.astro";
+import type Store from "@interfaces/Store";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -26,13 +27,20 @@ export interface Props {
   };
 }
 
+const stores = await getCollection("stores");
+const store: Store = stores.find(
+  store => store.data.slug == markketplace.STORE_SLUG
+)?.data as any as Store;
+
+const baseUrl = store?.URLS?.[0]?.URL || Astro.site;
+
 const {
   title = SITE.title,
   author = SITE.author,
   profile = SITE.profile,
   description = Astro.props.description ?? SITE.desc,
   ogImage = SITE.ogImage,
-  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  canonicalURL = new URL(Astro.url.pathname, baseUrl).href,
   pubDatetime,
   modDatetime,
   post,
@@ -60,11 +68,6 @@ const structuredData = {
     },
   ],
 };
-
-const stores = await getCollection("stores");
-const store = stores.find(
-  store => store.data.slug == markketplace.STORE_SLUG
-)?.data;
 
 let href = new URL(Astro.url.pathname, Astro.site);
 ---
