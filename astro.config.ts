@@ -4,14 +4,30 @@ import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
-import { SITE } from "./src/config";
+import { SITE, markketplace } from "./src/config";
 
-// https://astro.build/config
+
+
+
+let baseURL = SITE.website;
+
+try {
+  const url = `${markketplace.STRAPI_URL}/api/stores?filters[slug][$eq]=${markketplace.STORE_SLUG}&populate[1]=URLS&populate[2]=SEO`;
+  const storeRequest = await fetch(url);
+  const StoreData = await storeRequest.json();
+  baseURL = StoreData?.data?.[0]?.URLS?.[0]?.URL || '';
+} catch (error) {
+  console.error("Error fetching store data", error);
+}
+
+/**
+ * @type {import('astro/types').RuntimeConfig}
+ */
 export default defineConfig({
-  site: SITE.website,
+  site: baseURL,
   integrations: [
     tailwind({
-      applyBaseStyles: false,
+      applyBaseStyles: true,
     }),
     react(),
     sitemap(),
