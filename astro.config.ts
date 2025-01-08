@@ -4,14 +4,17 @@ import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
-import { SITE } from "./src/config";
+import { markketplace } from "./src/config";
 
-// https://astro.build/config
+
+/**
+ * @type {import('astro/types').RuntimeConfig}
+ */
 export default defineConfig({
-  site: SITE.website,
+  site: markketplace.url,
   integrations: [
     tailwind({
-      applyBaseStyles: false,
+      applyBaseStyles: true,
     }),
     react(),
     sitemap(),
