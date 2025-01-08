@@ -1,11 +1,32 @@
+import type Store from "@interfaces/Store";
 import type { Site, SocialObjects } from "./types";
+
+const STRAPI_URL = (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place';
+const STORE_SLUG = import.meta.env.STORE_SLUG as string || 'markket';
+
+let baseURL = '';
+let store: Store = {} as Store;
+
+try {
+  const url = `${STRAPI_URL}/api/stores?filters[slug][$eq]=${STORE_SLUG}&populate[1]=URLS&populate[2]=SEO`;
+  const storeRequest = await fetch(url);
+  const StoreData = await storeRequest.json();
+  if (StoreData?.data?.[0]?.slug) {
+    store = StoreData.data[0];
+  }
+
+  baseURL = store?.URLS?.[0]?.URL || '';
+} catch (error) {
+  console.error("Error fetching store data", error);
+}
 
 /**
  * @type {{[string]: string}} Global Configuration attributes for the markket instance
  */
 export const markketplace = {
-  STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place',
-  STORE_SLUG: import.meta.env.STORE_SLUG as string || 'markket',
+  STORE_SLUG,
+  STRAPI_URL,
+  url: baseURL,
   colors: {
     primary: import.meta.env.COLOR_PRIMARY as string || '#fbda0c',
     accent: import.meta.env.COLOR_ACCENT as string || '#38b2ac',
@@ -19,14 +40,14 @@ export const markketplace = {
  * @TODO: Read these values from the API during launch or build time
  */
 export const SITE: Site = {
-  website: "https://markket.place/",
-  author: "Markket",
-  profile: "https://markket.place/stores/markket",
-  desc: "A minimal, responsive and SEO-friendly Markketplace theme.",
-  title: "Morir Soñando",
-  ogImage: "https://markketplace.nyc3.digitaloceanspaces.com/uploads/3852868ed9aad1e45e4ee4992fe43177.png",
+  website: baseURL || "https://markket.place",
+  author: store.SEO?.metaAuthor || "Markket",
+  profile: `https://markket.place/stores/${STORE_SLUG}`,
+  desc: store.Description || "markketplace store for creators ",
+  title: store.title || "Markket",
+  ogImage: store.SEO?.socialImage?.url || "https://markketplace.nyc3.digitaloceanspaces.com/uploads/3852868ed9aad1e45e4ee4992fe43177.png",
   lightAndDarkMode: true,
-  postPerIndex: 4,
+  postPerIndex: 3,
   postPerPage: 8,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };
