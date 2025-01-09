@@ -148,7 +148,7 @@ const selectedImage =
                         value={price.STRIPE_ID}
                         data-price-data={JSON.stringify(price)}
                       >
-                        {price.Name.replace("_", " ")} - ${price.Price}{" "}
+                        {price.Name.replace(/_/gi, " ")} - ${price.Price}{" "}
                         {price.Currency}
                       </option>
                     ))
