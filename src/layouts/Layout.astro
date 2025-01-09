@@ -83,7 +83,7 @@ let href = new URL(Astro.url.pathname, Astro.site);
     <link
       rel="icon"
       type="image/png"
-      href={`${store?.Favicon || "/favicon.png"}`}
+      href={`${store?.Favicon?.url || "/favicon.png"}`}
     />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
@@ -192,6 +192,17 @@ let href = new URL(Astro.url.pathname, Astro.site);
     <ViewTransitions />
 
     <Posthog />
+    <style
+      define:vars={{
+        primary: markketplace?.colors?.primary,
+        accent: markketplace?.colors?.accent || "#c7009c",
+      }}
+    >
+      :root {
+        --color-primary: var(--primary);
+        --color-accent: var(--accent);
+      }
+    </style>
     <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
