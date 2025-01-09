@@ -5,6 +5,18 @@ import dotenv from 'dotenv';
 let StoreRequest = null,
   StoreData: Store | null = null;
 
+export type markketConfig = {
+  STORE_SLUG: string;
+  STRAPI_URL: string;
+  url: string;
+  colors: {
+    primary: string;
+    accent: string;
+  };
+  POSTHOG_ID: string;
+};
+
+
 if (typeof process !== 'undefined') {
   dotenv.config();
 
@@ -22,18 +34,6 @@ export const STORE_SLUG = import.meta.env.STORE_SLUG || "markket";
 export const POSTHOG_ID = import.meta.env.POSTHOG_ID || "";
 export const BASE_URL = StoreData?.URLS?.[0]?.URL || import.meta.env.BASE_URL || "https://markket.place";
 
-console.log({ StoreRequest, StoreData, STRAPI_URL, STORE_SLUG, POSTHOG_ID, BASE_URL });
-
-export type markketConfig = {
-  STORE_SLUG: string;
-  STRAPI_URL: string;
-  url: string;
-  colors: {
-    primary: string;
-    accent: string;
-  };
-  POSTHOG_ID: string;
-};
 
 /**
  * @type {{[string]: string}} Global Configuration attributes for the markket instance
@@ -49,7 +49,7 @@ export const markketplace: markketConfig = {
   POSTHOG_ID: import.meta.env.POSTHOG_ID as string || '',
 };
 
-console.log({ markketplace });
+console.log('Markket', { markketplace });
 
 /**
  * Global configuration attributes for the astro site
