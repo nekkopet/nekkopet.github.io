@@ -175,6 +175,9 @@ button.brand-yellow {
   border-color: #fbda0d !important;
 }
 
+nav li a {
+  color: var(--color-accent);
+}
 button.brand-yellow:hover {
   color: #0157ad !important;
   background-color: white;

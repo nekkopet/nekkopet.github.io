@@ -1,32 +1,49 @@
-import type Store from "@interfaces/Store";
 import type { Site, SocialObjects } from "./types";
+import type Store from './interfaces/Store';
+import dotenv from 'dotenv';
 
-const STRAPI_URL = (process.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place';
-const STORE_SLUG = process.env.STORE_SLUG as string || 'markket';
+let StoreRequest = null,
+  StoreData: Store | null = null;
 
-let baseURL = '';
-let store: Store = {} as Store;
+export type markketConfig = {
+  STORE_SLUG: string;
+  STRAPI_URL: string;
+  url: string;
+  colors: {
+    primary: string;
+    accent: string;
+  };
+  POSTHOG_ID: string;
+};
 
-try {
-  const url = `${STRAPI_URL}/api/stores?filters[slug][$eq]=${STORE_SLUG}&populate[1]=URLS&populate[2]=SEO`;
-  const storeRequest = await fetch(url);
-  const StoreData = await storeRequest.json();
-  if (StoreData?.data?.[0]?.slug) {
-    store = StoreData.data[0];
+
+if (typeof process !== 'undefined') {
+  dotenv.config();
+
+  if (process.env.STRAPI_URL && process.env.STORE_SLUG) {
+    const url = `${process.env.STRAPI_URL}/api/stores?filters[slug][$eq]=${process.env.STORE_SLUG}&populate[0]=URLS&populate[1]=SEO`
+      .replace('//api/', '/api/');
+
+    console.log("Fetching store data", { x: process.env.STRAPI_URL, url });
+    StoreRequest = await fetch(url, { headers: { 'Content-Type': 'application/json' } });
+    const StoreRequestData = await StoreRequest.json();
+    StoreData = StoreRequestData?.data?.[0] as Store;
   }
-
-  baseURL = store?.URLS?.[0]?.URL || '';
-} catch (error) {
-  console.error("Error fetching store data", error);
 }
+
+export const STRAPI_URL = import.meta.env.STRAPI_URL || "https://api.markket.place";
+export const STORE_SLUG = import.meta.env.STORE_SLUG || "markket";
+export const POSTHOG_ID = import.meta.env.POSTHOG_ID || "";
+export const BASE_URL = StoreData?.URLS?.[0]?.URL || import.meta.env.BASE_URL || "https://markket.place";
+
 
 /**
  * @type {{[string]: string}} Global Configuration attributes for the markket instance
  */
-export const markketplace = {
+export const markketplace: markketConfig = {
   STORE_SLUG,
   STRAPI_URL,
-  url: baseURL,
+  url: StoreData?.URLS?.[0]?.URL || BASE_URL,
   colors: {
     primary: import.meta.env.COLOR_PRIMARY as string || '#fbda0c',
     accent: import.meta.env.COLOR_ACCENT as string || '#38b2ac',
@@ -34,18 +51,20 @@ export const markketplace = {
   POSTHOG_ID: import.meta.env.POSTHOG_ID as string || '',
 };
 
+console.log('Markket', { markketplace });
+
 /**
  * Global configuration attributes for the astro site
  *
  * @TODO: Read these values from the API during launch or build time
  */
 export const SITE: Site = {
-  website: baseURL || "https://markket.place",
-  author: store.SEO?.metaAuthor || "Markket",
+  website: BASE_URL || "https://markket.place",
+  author: StoreData?.SEO?.metaAuthor || import.meta.env.STORE_AUTHOR || "Markket",
   profile: `https://markket.place/stores/${STORE_SLUG}`,
-  desc: store.Description || "markketplace store for creators ",
-  title: store.title || "Markket",
-  ogImage: store.SEO?.socialImage?.url || "https://markketplace.nyc3.digitaloceanspaces.com/uploads/3852868ed9aad1e45e4ee4992fe43177.png",
+  desc: StoreData?.SEO?.metaDescription || import.meta.env.STORE_DESCRIPTION || "markketplace store for creators ",
+  title: StoreData?.title || import.meta.env.STORE_TITLE || "Markket",
+  ogImage: StoreData?.SEO?.socialImage?.url || import.meta.env.STORE_OG_IMAGE || "https://markketplace.nyc3.digitaloceanspaces.com/uploads/3852868ed9aad1e45e4ee4992fe43177.png",
   lightAndDarkMode: true,
   postPerIndex: 3,
   postPerPage: 8,
