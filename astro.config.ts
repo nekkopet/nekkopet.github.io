@@ -6,7 +6,6 @@ import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { markketplace } from "./src/config";
 
-
 /**
  * @type {import('astro/types').RuntimeConfig}
  */
