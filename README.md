@@ -14,8 +14,18 @@ customize the store being used. Default values show below:
 export const markketplace = {
   STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.morirsoniando.com',
   STORE_SLUG: import.meta.env.STORE_SLUG as string || 'morirsoniando',
+  url: import.meta.env.BASE_URL as string || 'https://localhost:4321',
+  POSTHOG_ID: import.meta.env.POSTHOG_ID || '',
+  COLOR_PRIMARY: import.meta.env.COLOR_PRIMARY || ''.
+  COLOR_ACCENT: import.meta.env.COLOR_ACCENT || '',
+  STORE_AUTHOR: import.meta.env.STORE_AUTHOR || '',
+  STORE_OG_IMAGE: import.meta.env.STORE_OG_IMAGE || '',
 };
 ```
+
+Environment variables read during build time and used as defaults
+
+Some layout components and pages use data from the API during render
 
 ## Reference
 
