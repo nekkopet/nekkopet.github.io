@@ -21,9 +21,10 @@ if (typeof process !== 'undefined') {
   dotenv.config();
 
   if (process.env.STRAPI_URL && process.env.STORE_SLUG) {
-    const url = `${process.env.STRAPI_URL}/api/stores?filters[slug][$eq]=${process.env.STORE_SLUG}&populate[0]=URLS&populate[1]=SEO`.replace(/\/\//g, '/');
+    const url = `${process.env.STRAPI_URL}/api/stores?filters[slug][$eq]=${process.env.STORE_SLUG}&populate[0]=URLS&populate[1]=SEO`
+      .replace('//api/', '/api/');
 
-    console.log("Fetching store data", { url });
+    console.log("Fetching store data", { x: process.env.STRAPI_URL, url });
     StoreRequest = await fetch(url, { headers: { 'Content-Type': 'application/json' } });
     const StoreRequestData = await StoreRequest.json();
     StoreData = StoreRequestData?.data?.[0] as Store;
