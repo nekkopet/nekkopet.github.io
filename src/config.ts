@@ -34,7 +34,8 @@ if (typeof process !== 'undefined') {
 export const STRAPI_URL = import.meta.env.STRAPI_URL || "https://api.markket.place";
 export const STORE_SLUG = import.meta.env.STORE_SLUG || "markket";
 export const POSTHOG_ID = import.meta.env.POSTHOG_ID || "";
-export const BASE_URL = StoreData?.URLS?.[0]?.URL || import.meta.env.BASE_URL || "https://markket.place";
+export const BASE_URL = StoreData?.URLS?.[0]?.URL
+  || import.meta.env.BASE_URL || "https://markket.place";
 
 
 /**
@@ -43,7 +44,7 @@ export const BASE_URL = StoreData?.URLS?.[0]?.URL || import.meta.env.BASE_URL ||
 export const markketplace: markketConfig = {
   STORE_SLUG,
   STRAPI_URL,
-  url: StoreData?.URLS?.[0]?.URL || BASE_URL,
+  url: BASE_URL,
   colors: {
     primary: import.meta.env.COLOR_PRIMARY as string || '#fbda0c',
     accent: import.meta.env.COLOR_ACCENT as string || '#38b2ac',
