@@ -44,7 +44,7 @@ const { page } = Astro.props;
 >
   <Header store={store} activeNav={page?.data?.slug as activeNav} />
   <Breadcrumbs />
-  <main id="main-content">
+  <main id="main-content" class="content-page">
     <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
       {
         page?.SEO?.socialImage && (
