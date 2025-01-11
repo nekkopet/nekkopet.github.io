@@ -11,43 +11,45 @@ import { marked } from "marked";
 
 import { getCollection } from "astro:content";
 import type Store from "@interfaces/Store";
+import type Event from "@interfaces/Event";
 import { slugifyStr } from "@utils/slugify";
-import type Product from "@interfaces/Product";
 
 export interface Props {
   currentPage: number;
   totalPages: number;
   stores: CollectionEntry<"stores">[];
-  product?: { data: Product };
+  event?: { data: Event };
 }
 
 export async function getStaticPaths() {
-  const products = await getCollection("products");
+  const events = await getCollection("events");
 
-  const productsResult = products.map((product: { data: Product }) => ({
+  type eventPage = { params: { slug: string }; props: { event: Event } };
+
+  const eventsResult: eventPage[] = events.map((event: { data: Event }) => ({
     params: {
-      slug: `${product.data.slug || slugifyStr(product.data.Name)}`,
+      slug: event.data.slug || `2025-${slugifyStr(event.data.title)}`,
     },
-    props: { product },
-  })) as { params: { slug: string }; props: { product: Product } }[];
+    props: { event },
+  }));
 
-  return [...productsResult];
+  return [...eventsResult];
 }
 
-const { product } = Astro.props;
+const { event } = Astro.props;
 
 const stores = await getCollection("stores");
 const store = stores.find(
   (store: { data: Store }) => store.data.slug == markketplace.STORE_SLUG
 );
 
-const htmlDescription = marked.parse(product?.data?.Description || "");
-const prices = product?.data?.PRICES || [];
+const htmlDescription = marked.parse(event?.data?.Description || "");
+const prices = event?.data?.PRICES || [];
 
 const selectedImage =
-  product?.data?.Thumbnail ||
-  product?.data?.Slides?.[0] ||
-  product?.data?.SEO?.socialImage ||
+  event?.data?.Thumbnail ||
+  event?.data?.Slides?.[0] ||
+  event?.data?.SEO?.socialImage ||
   {};
 ---
 
@@ -60,17 +62,17 @@ const selectedImage =
 </script>
 
 <Layout
-  title={`${product?.data?.Name} | ${store?.data?.title}`}
+  title={`${event?.data?.Name} | ${store?.data?.title}`}
   meta={{
-    title: product?.data?.SEO?.metaTitle,
-    image: product?.data?.Thumbnail?.url,
-    description: product?.data?.SEO?.metaDescription,
+    title: event?.data?.SEO?.metaTitle,
+    image: event?.data?.Thumbnail?.url,
+    description: event?.data?.SEO?.metaDescription,
   }}
 >
   <Header store={store} />
   <Main
-    pageTitle={product?.data?.Name as string}
-    pageDesc={product?.data?.SEO?.metaDescription || "Product Details"}
+    pageTitle={event?.data?.Name as string}
+    pageDesc={event?.data?.SEO?.metaDescription || "Event Details"}
   />
 
   <main class="lg:px-8 product-page px-4 py-12 sm:px-6">
@@ -80,16 +82,16 @@ const selectedImage =
           class="aspect-w-3 aspect-h-4 max-sm max-w-2xl overflow-hidden rounded-l"
         >
           <HeroImage
-            title={product?.data?.Name as string}
+            title={event?.data?.Name as string}
             image={selectedImage}
           />
         </div>
         <div class="flex flex-col">
           {
-            product?.data?.Slides?.length > 0 && (
+            event?.data?.Slides?.length > 0 && (
               <div class="mt-8">
                 <div class="grid grid-cols-3 gap-2">
-                  {product?.data?.Slides?.map((slide: any) => (
+                  {event?.data?.Slides?.map((slide: any) => (
                     <div class="product-slide aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
                       <img
                         src={slide?.formats?.thumbnail?.url}
@@ -108,7 +110,7 @@ const selectedImage =
           <h1
             class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
           >
-            {product?.data?.Name}
+            {event?.data?.title}
           </h1>
 
           {/* Product description */}
@@ -120,10 +122,10 @@ const selectedImage =
           </div>
 
           {/* Price selector */}
-          <div class="product-form-container mt-8">
+          <div class="product-form-container mt-8 hidden">
             <form
-              data-product-price={product?.data.id}
-              data-product-json={JSON.stringify(product?.data)}
+              data-product-price={event?.data.id}
+              data-product-json={JSON.stringify(event?.data)}
             >
               <div class="flex items-center justify-between">
                 <h2 class="text-2xl font-medium text-gray-900 dark:text-white">
@@ -244,7 +246,10 @@ const selectedImage =
         </div> -->
         </div>
       </div>
+      <button class="mt-8 text-accent-500 dark:text-accent-300" disabled>
+        <a href="#">RSVP Coming soon</a>
+      </button>
     </div>
+    <Footer />
   </main>
-  <Footer />
 </Layout>
