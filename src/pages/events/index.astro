@@ -1,0 +1,105 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Pagination from "@components/Pagination.astro";
+import Card from "@components/Card";
+import HeroImage from "@components/HeroImage.astro";
+import Hr from "@components/Hr.astro";
+
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  stores: CollectionEntry<"stores">[];
+}
+
+import { getCollection } from "astro:content";
+import type Store from "@interfaces/Store";
+import { slugifyStr } from "@utils/slugify";
+import { markketplace } from "@config";
+
+const stores = await getCollection("stores");
+const events = await getCollection("events");
+const store = stores.find(
+  (store: Store) => store.data.slug === markketplace.STORE_SLUG
+);
+
+const pages = await getCollection("pages");
+
+const eventPage = pages.find(page => page.data.slug === "events");
+
+const title =
+  eventPage?.data.SEO?.metaTitle ||
+  eventPage?.data?.Title ||
+  `Events | ${store?.data?.title}`;
+
+const description =
+  eventPage?.data.SEO?.metaDescription || store?.data?.Description;
+
+const { currentPage, totalPages } = Astro.props;
+---
+
+<Layout
+  title={title}
+  meta={{
+    title,
+    description,
+  }}
+>
+  <Header activeNav="events" store={store} />
+  <main id="main-content">
+    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
+      {
+        eventPage?.data?.SEO?.socialImage && (
+          <HeroImage
+            image={eventPage?.data?.SEO?.socialImage}
+            title={eventPage?.data?.title}
+          />
+        )
+      }
+      <h1 class="text-2xl tracking-wider sm:text-3xl">
+        {eventPage?.data?.Title || store?.data?.title}
+      </h1>
+      <p>{eventPage?.data?.SEO?.metaDescription}</p>
+    </section>
+    <Hr />
+  </main>
+  <Main pageTitle="Gatherings" pageDesc="Join us AFK or online">
+    <ul class="-mx-4 flex flex-wrap">
+      {
+        events.map(({ data }) => (
+          <Card
+            href={`/events/${data.slug || slugifyStr("2025" + data.title)}`}
+            tags={[]}
+            image={data.Thumbnail || data.SEO?.socialImage}
+            frontmatter={{
+              author: "x",
+              title: data.Name || data.SEO?.metaTitle || "---",
+              pubDatetime: new Date(data.createdAt),
+              modDatetime: new Date(data.updatedAt),
+              description: data.SEO?.metaDescription || data.Description || "",
+              SEO: {
+                ...data.SEO,
+                metaTitle: data.SEO?.metaTitle || data.Name || "Store",
+                socialImage: {
+                  url: data.SEO?.socialImage?.url || data.Thumbnail?.url,
+                },
+              },
+            }}
+          />
+        ))
+      }
+    </ul>
+  </Main>
+
+  <Pagination
+    {currentPage}
+    {totalPages}
+    prevUrl={`/events${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
+    nextUrl={`/events/${currentPage + 1}/`}
+  />
+
+  <Footer noMarginTop={totalPages > 1} activeNav="events" />
+</Layout>

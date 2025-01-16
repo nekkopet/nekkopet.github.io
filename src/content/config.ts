@@ -16,7 +16,7 @@ const stores = defineCollection({
   loader: strapiLoader({
     contentType: "store",
     filter: `filters[active]=true`,
-    populate: 'SEO.socialImage,Logo,URLS'
+    populate: 'SEO.socialImage,Logo,URLS,Favicon'
   }),
 });
 
@@ -32,8 +32,19 @@ const posts = defineCollection({
   loader: strapiLoader({
     contentType: "article",
     filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO.socialImage,Tags,store,cover'
+    populate: 'SEO.socialImage,Tags,store,cover',
+    paginate: {
+      limit: 100,
+    }
   }),
 });
 
-export const collections = { posts, pages, stores, products };
+const events = defineCollection({
+  loader: strapiLoader({
+    contentType: "event",
+    filter: `filters[stores][slug][$eq]=${markketplace.STORE_SLUG}`,
+    populate: 'SEO,SEO.socialImage,Tag,stores,Thumbnail,Slides'
+  }),
+});
+
+export const collections = { posts, pages, stores, products, events };
