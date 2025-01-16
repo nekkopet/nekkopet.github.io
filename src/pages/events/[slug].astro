@@ -247,7 +247,18 @@ const selectedImage =
         </div>
       </div>
       <button class="mt-8 text-accent-500 dark:text-accent-300" disabled>
-        <a href="#">RSVP Coming soon</a>
+        {
+          event?.data?.SEO?.metaUrl && (
+            <a
+              href={event?.data?.SEO?.metaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              RSVP in external site
+            </a>
+          )
+        }
+        {!event?.data?.SEO?.metaUrl && <span>RSVP Coming soon</span>}
       </button>
     </div>
     <Footer />
