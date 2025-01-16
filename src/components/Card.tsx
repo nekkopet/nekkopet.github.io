@@ -22,7 +22,7 @@ export default function Card({ href, frontmatter, tags, image, secHeading = true
   const { title, pubDatetime, description } = frontmatter;
 
   return (
-    <li className="mb-8 w-full md:w-1/2 px-4">
+    <li className="mb-8 w-1/3 md:w-1/2 px-4">
       <article className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
         <a href={href} className="block group">
           {image?.url && (

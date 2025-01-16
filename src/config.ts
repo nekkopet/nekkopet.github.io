@@ -2,7 +2,7 @@ import type Store from "@interfaces/Store";
 import type { Site, SocialObjects } from "./types";
 
 const STRAPI_URL = (process.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place';
-const STORE_SLUG = process.env.STORE_SLUG as string || 'markket';
+const STORE_SLUG = process.env.STORE_SLUG as string || 'fika';
 
 let baseURL = '';
 let store: Store = {} as Store;
