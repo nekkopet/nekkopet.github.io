@@ -14,7 +14,7 @@ const SYNC_INTERVAL = 60 * 1000; // 1 minute in milliseconds
  * @param filter The filter to apply to the content &filters[store][id][$eq]=${STRAPI_STORE_ID}
  * @returns An Astro loader for the specified content type
  */
-export function strapiLoader({ contentType, filter, populate = 'SEO.socialImage' }: { contentType: string, filter?: string, populate?: string }): Loader {
+export function strapiLoader({ contentType, filter, populate = 'SEO.socialImage', paginate }: { contentType: string, filter?: string, populate?: string, paginate?: { limit: number } }): Loader {
   return {
     name: `strapi-${contentType}`,
 
@@ -46,6 +46,7 @@ export function strapiLoader({ contentType, filter, populate = 'SEO.socialImage'
         const data = await fetchFromStrapi(`/api/${contentType}s?`, {
           [filterKey]: filterValue,
           populate,
+          'pagination[limit]': (paginate?.limit || '') as string || '25',
         });
         let posts = data?.data;
 
