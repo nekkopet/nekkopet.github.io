@@ -54,8 +54,6 @@ export const markketplace: markketConfig = {
   store: StoreData as Store,
 };
 
-console.log('Markket', { markketplace });
-
 /**
  * Global configuration attributes for the astro site
  *
