@@ -11,7 +11,7 @@ export interface Props {
   store?: {
     data: Store;
   };
-  products: any;
+  products?: any;
 }
 
 const { activeNav, store, products } = Astro.props;
@@ -86,13 +86,13 @@ const { activeNav, store, products } = Astro.props;
               width={120}
             />
           ) : (
-            store?.data?.title || store?.data?.SEO?.metaTitle || SITE.title
+            store?.data?.title || store?.data?.SEO?.metaTitle
           )
         }
       </a>
 
-      <nav id="nav-menu" class="sm:justify-end mr-6">
-        <ui id="menu-items" class="display-none sm:flex list-none gap-x-8 ml-6">
+      <nav id="nav-menu" class="mr-6 sm:justify-end">
+        <ui id="menu-items" class="display-none ml-6 list-none gap-x-8 sm:flex">
           <li>
             <LinkButton
               href="/search/"
@@ -152,7 +152,7 @@ const { activeNav, store, products } = Astro.props;
     @apply relative flex w-full items-start justify-between sm:items-center;
   }
   .logo {
-    @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl w-[200px];
+    @apply absolute w-[200px] py-1 text-xl font-semibold sm:static sm:text-2xl;
   }
   .hamburger-menu {
     @apply self-end p-2 sm:hidden;
@@ -162,7 +162,7 @@ const { activeNav, store, products } = Astro.props;
   }
 
   nav {
-    @apply flex w-full flex-col items-center sm:flex-row sm:justify-start sm:space-x-4 sm:py-0 sm:px-6 px-3;
+    @apply flex w-full flex-col items-center px-3 sm:flex-row sm:justify-start sm:space-x-4 sm:px-6 sm:py-0;
   }
   nav ul {
     @apply mt-4 grid w-44 grid-cols-2 grid-rows-2 gap-x-8 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-y-0;
