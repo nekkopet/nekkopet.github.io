@@ -14,21 +14,23 @@ import type Store from "@interfaces/Store";
 import type Event from "@interfaces/Event";
 import { slugifyStr } from "@utils/slugify";
 
+import RSVPModal from "@components/Modal.rsvp.form";
+
 export interface Props {
   currentPage: number;
   totalPages: number;
   stores: CollectionEntry<"stores">[];
-  event?: { data: Event };
+  event?: { id: string; data: Event };
 }
+
+type eventPage = { params: { slug: string }; props: { event: Event } };
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
 
-  type eventPage = { params: { slug: string }; props: { event: Event } };
-
-  const eventsResult: eventPage[] = events.map((event: { data: Event }) => ({
+  const eventsResult: eventPage[] = events.map((event: any) => ({
     params: {
-      slug: event.data.slug || `2025-${slugifyStr(event.data.title)}`,
+      slug: event.data.slug || `2025-${slugifyStr(event.data?.title)}`,
     },
     props: { event },
   }));
@@ -39,12 +41,12 @@ export async function getStaticPaths() {
 const { event } = Astro.props;
 
 const stores = await getCollection("stores");
-const store = stores.find(
-  (store: { data: Store }) => store.data.slug == markketplace.STORE_SLUG
-);
+const store: { data: Store } = stores.find(
+  store => store?.data?.slug == markketplace?.STORE_SLUG
+) as any as { data: Store };
 
 const htmlDescription = marked.parse(event?.data?.Description || "");
-const prices = event?.data?.PRICES || [];
+// const prices = event?.data?.PRICES || [];
 
 const selectedImage =
   event?.data?.Thumbnail ||
@@ -54,9 +56,8 @@ const selectedImage =
 ---
 
 <script>
-  import { ProductSlideshow, ProductForm } from "../../scripts/ui.product";
+  import { ProductSlideshow } from "../../scripts/ui.product";
   document.addEventListener("astro:page-load", () => {
-    ProductForm();
     ProductSlideshow();
   });
 </script>
@@ -110,7 +111,7 @@ const selectedImage =
           <h1
             class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
           >
-            {event?.data?.title}
+            {event?.data?.Name}
           </h1>
 
           {/* Product description */}
@@ -120,136 +121,23 @@ const selectedImage =
               set:html={htmlDescription}
             />
           </div>
-
-          {/* Price selector */}
-          <div class="product-form-container mt-8 hidden">
-            <form
-              data-product-price={event?.data.id}
-              data-product-json={JSON.stringify(event?.data)}
-            >
-              <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-medium text-gray-900 dark:text-white">
-                  Available Options
-                </h2>
-                <span class="text-sm text-gray-500">
-                  Select your preferred option
-                </span>
-              </div>
-              <div class="m-4">
-                <label for="price"><strong>Price Options</strong></label>
-                <select
-                  id="price"
-                  name="price"
-                  data-input="product.prices"
-                  class="block w-full rounded-md border-2 border-solid border-gray-300 py-2 pl-3 pr-10 text-base focus:border-accent-500 focus:outline-none focus:ring-accent-500 dark:border-gray-600 dark:bg-gray-700"
-                >
-                  <option value=""></option>
-                  {
-                    prices.map((price: any) => (
-                      <option
-                        value={price.STRIPE_ID}
-                        data-price-data={JSON.stringify(price)}
-                      >
-                        {price.Name.replace(/_/gi, " ")} - ${price.Price}{" "}
-                        {price.Currency}
-                      </option>
-                    ))
-                  }
-                </select>
-                <p class="">
-                  <em data-output="product.price.description"></em>
-                </p>
-              </div>
-              <div class="m-4">
-                <label for="quantity"><strong>Quantity</strong></label>
-                <input
-                  type="number"
-                  id="quantity"
-                  value="1"
-                  data-input="quantity"
-                  class="w-full rounded-md border-2 border-solid border-gray-300 py-2 pl-3 pr-10 text-base focus:border-accent-500 focus:outline-none focus:ring-accent-500 dark:border-gray-600 dark:bg-gray-700"
-                  style={{
-                    // border: "1px solid #6b7280",
-                  }}
-                />
-              </div>
-              <div class="m-4">
-                <p>For tips, or custom price products, enter the number here</p>
-                <label for="custom-price"><strong>Custom Price</strong></label>
-                <input
-                  data-input="custom-price"
-                  type="number"
-                  placeholder="0"
-                  name="custom-price"
-                  id="custom-price"
-                  class="w-full rounded-md border-2 border-solid border-gray-300 py-2 pl-3 pr-10 text-base focus:border-accent-500 focus:outline-none focus:ring-accent-500 dark:border-gray-600 dark:bg-gray-700"
-                  style={{
-                    // border: "1px solid #6b7280",
-                  }}
-                />
-              </div>
-              <div class="m-4">
-                <label for="total"><strong>Total</strong></label>
-                <p class="text-4xl">$<span data-output="total">0</span></p>
-              </div>
-              <div class="m-4">
-                <button
-                  disabled
-                  data-action-button="submit"
-                  type="submit"
-                  class="flex w-full items-center justify-center rounded-md border border-transparent bg-sky-500 px-8 py-3 text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Continue to Payment
-                </button>
-                <ol class="mt-4 max-w-xl text-sm text-gray-500">
-                  <li class="mb-2">
-                    We use Stripe to collect payments, and send payouts to the
-                    artists
-                  </li>
-                  <li class="mb-2">
-                    You'll be redirected to a Stripe page to continue, and we'll
-                    notify the artists after a succesful transaction
-                  </li>
-                  <li class="mb-2">
-                    Currently we don't support a shopping cart, you can get one
-                    or multiple units of the same
-                    <em>Price</em> per transaction
-                  </li>
-                  <li class="mb-2">
-                    We notify the artist after a succesful transaction and
-                    forward your shipping details and email to them
-                  </li>
-                  <li class="mb-2">
-                    The artists will reach out with tracking details, or follow
-                    up steps to complete the transaction
-                  </li>
-                </ol>
-              </div>
-            </form>
-          </div>
-          {/* Product metadata */}
-          <!-- <div class="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
-          <div class="prose dark:prose-invert">
-            <h3 class="text-sm font-medium text-gray-900 dark:text-white">
-              Tags
-            </h3>
-            <div class="mt-4 space-y-6">
-              {
-                product?.data?.Tag?.map((tag: any) => (
-                  <span class="text-accent-800 dark:bg-accent-800 mr-2 inline-flex items-center rounded-full bg-accent-100 px-3 py-0.5 text-sm font-medium dark:text-accent-100">
-                    {tag.Label}
-                  </span>
-                ))
-              }
-            </div>
-          </div>
-        </div> -->
         </div>
       </div>
-      <button class="mt-8 text-accent-500 dark:text-accent-300" disabled>
-        <a href="#">RSVP Coming soon</a>
-      </button>
+      {
+        event?.data?.SEO?.metaUrl && (
+          <button class="mt-8 text-accent-500 dark:text-accent-300" disabled>
+            <a
+              href={event?.data?.SEO?.metaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              RSVP in external site
+            </a>
+          </button>
+        )
+      }
+      <RSVPModal client:load eventId={event?.id as string} onClose={() => {}} />
     </div>
-    <Footer />
   </main>
+  <Footer />
 </Layout>
