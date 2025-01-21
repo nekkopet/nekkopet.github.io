@@ -1,5 +1,5 @@
 export default interface Event {
-  title: string;
+  Name: string;
   Description: string;
   startDate: string;
   endDate: string;
