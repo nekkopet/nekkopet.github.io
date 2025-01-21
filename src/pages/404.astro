@@ -5,14 +5,17 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import { markketplace } from "@config";
 import type Store from "@interfaces/Store";
+import { getCollection } from "astro:content";
 
-const { store } = markketplace;
-
-const title = `404 Not Found : ${store?.title}`;
+const stores = await getCollection("stores");
+const store = stores.find(
+  (store: { data: any }) => markketplace?.STORE_SLUG == store?.data?.slug
+) as any as { data: Store };
+const title = `404 Not Found | ${store?.data?.title}`;
 ---
 
 <Layout title={title}>
-  <Header store={{ data: store as Store }} />
+  <Header store={store} />
   <main id="main-content">
     <div class="not-found-wrapper">
       <h1 aria-label="404 Not Found">404</h1>

@@ -14,7 +14,7 @@ const { image, title } = Astro.props;
 
 {
   image && (
-    <div class="relative mb-6 aspect-video w-full overflow-hidden rounded-xl">
+    <div class="relative aspect-video overflow-hidden rounded-xl">
       <img
         src={image.url}
         alt={image.alternativeText || title}
