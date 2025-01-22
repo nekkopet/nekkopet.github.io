@@ -31,7 +31,7 @@ pages = pages
 <Layout title={`Pages Index | ${SITE.title}`}>
   <Header store={store} activeNav="pages" />
   <Main pageTitle="Pages" pageDesc="A list of all pages.">
-    <ul>
+    <ul class="-mx-4 flex flex-wrap">
       {
         pages.map(page => (
           <Card
