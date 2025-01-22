@@ -55,47 +55,49 @@ const store: { data: Store } = stores.find(
   <Header activeNav="pages" store={store} />
   <Main pageTitle={store?.data?.title} pageDesc={`Store `}>
     <main id="main-content">
-      <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
-        {
-          store?.data?.SEO?.socialImage && (
-            <HeroImage
-              image={store?.data?.SEO?.socialImage?.formats?.medium}
-              title={store?.data?.title}
-            />
-          )
-        }
-        <section>
-          {
-            store?.data.Description?.split("\n").map(desc => (
-              <p class="mb-5">{desc}</p>
-            ))
-          }
-        </section>
-        <Hr />
-        <h2 class="brand-yellow mt-2 text-2xl tracking-wider sm:text-3xl">
-          Urls
-        </h2>
-        <div class="all-posts-btn-wrapper">
-          {
-            store?.data?.URLS.map(url => {
-              if (url.URL && url.Label)
-                return (
-                  <p class="mb-5 mt-2">
-                    <LinkButton target="_blank" href={url.URL}>
-                      {url.Label}
-                      <svg xmlns="http://www.w3.org/2000/svg">
-                        <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
-                      </svg>
-                    </LinkButton>
-                  </p>
-                );
-            })
-          }
-        </div>
-        <!-- <Hr /> -->
-        <!-- {store.slides} -->
+      <section id="about" class="mb-10 prose-img:border-0 flex flex-col lg:flex-row">
+          <div class="lg:w-1/2 w-full">
+            {
+              store?.data?.SEO?.socialImage && (
+                <HeroImage
+                  image={store?.data?.SEO?.socialImage?.formats?.medium}
+                  title={store?.data?.title}
+                />
+              )
+            }
+          </div>
+          <section class="mt-4 lg:mt-0 lg:w-1/2 w-full">
+            {
+              store?.data.Description?.split("\n").map(desc => (
+                <p class="mb-5">{desc}</p>
+              ))
+            }
+          </section>
       </section>
-    </main>
+      <Hr />
+      <h2 class="brand-yellow mt-2 text-2xl tracking-wider sm:text-3xl">
+        Urls
+      </h2>
+      <div class="all-posts-btn-wrapper">
+        {
+          store?.data?.URLS.map(url => {
+            if (url.URL && url.Label)
+              return (
+                <p class="mb-5 mt-2">
+                  <LinkButton target="_blank" href={url.URL}>
+                    {url.Label}
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                      <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+                    </svg>
+                  </LinkButton>
+                </p>
+              );
+          })
+        }
+      </div>
+      <!-- <Hr /> -->
+      <!-- {store.slides} -->
+  </main>
 
     <!-- <Pagination
       {currentPage}
