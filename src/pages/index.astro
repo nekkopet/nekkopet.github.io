@@ -116,7 +116,7 @@ const links = store?.URLS || [];
         products && products.length > 0 && (
           <section id="recent-posts">
             <div class="mb-12 mt-6">
-              <h1>Products</h1>
+              <h2>Products</h2>
               <ul class="-mx-4 flex flex-wrap">
                 {products.slice(0, 5).map(({ data }) => {
                   return (
@@ -164,7 +164,7 @@ const links = store?.URLS || [];
       {
         posts.length > 0 && (
           <section id="recent-posts">
-            <h1>Recent Posts</h1>
+            <h2>Recent Posts</h2>
             <ul>
               {posts.map(
                 ({ data, id }, index) =>
