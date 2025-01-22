@@ -8,6 +8,28 @@ interface Props {
 import { markketplace } from '../config';
 
 /**
+ * Wrapper method to abstract the creation of records in Markket Strapi API
+ *
+ * @param endpoint
+ * @param data
+ * @returns
+ */
+export const createRecord = async <T>(endpoint: string, data: T) => {
+  try {
+    const response = await fetch(`${markketplace.STRAPI_URL}/api/${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data }),
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Record creation failed:', error);
+    return false;
+  }
+};
+
+/**
  * Fetches data from the Strapi API
  * @param endpoint - The endpoint to fetch from
  * @param query - The query parameters to add to the url
