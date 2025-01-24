@@ -21,10 +21,11 @@ import { slugifyStr } from "@utils/slugify";
 import { markketplace } from "@config";
 
 const stores = await getCollection("stores");
-const events = await getCollection("events");
-const store = stores.find(
-  (store: Store) => store.data.slug === markketplace.STORE_SLUG
-);
+let events = await getCollection("events");
+
+const store: { data: Store } = stores.find(
+  (store: any) => store.data.slug === markketplace.STORE_SLUG
+) as any;
 
 const pages = await getCollection("pages");
 
@@ -48,14 +49,14 @@ const { currentPage, totalPages } = Astro.props;
     description,
   }}
 >
-  <Header activeNav="events" store={store} />
+  <Header store={store} />
   <main id="main-content">
     <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
       {
         eventPage?.data?.SEO?.socialImage && (
           <HeroImage
             image={eventPage?.data?.SEO?.socialImage}
-            title={eventPage?.data?.title}
+            title={eventPage?.data?.Title}
           />
         )
       }

@@ -185,6 +185,26 @@ button.brand-yellow:hover {
   }
 }
 
+.content-page {
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul.blog-list {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul.blog-list li {
+  width: 100%;
+}
+
+ul.blog-list li .aspect-video {
+  aspect-ratio: 16/6;
+}
+
 .content-page h1, h2, h3, h4 {
   margin-top: 1em;
 }
