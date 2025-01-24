@@ -83,6 +83,7 @@ const links = store?.URLS || [];
         )
       }
     </section>
+    <Hr />
     <section class="">
       <BlocksRenderer
         content={homePage?.data?.Content || ([] as BlocksContent[])}
@@ -165,7 +166,7 @@ const links = store?.URLS || [];
         posts.length > 0 && (
           <section id="recent-posts">
             <h1>Recent Posts</h1>
-            <ul>
+            <ul class="-mx-4 flex flex-wrap">
               {posts.map(
                 ({ data, id }, index) =>
                   index < SITE.postPerIndex && (
