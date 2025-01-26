@@ -16,7 +16,7 @@ const stores = defineCollection({
   loader: strapiLoader({
     contentType: "store",
     filter: `filters[active]=true`,
-    populate: 'SEO.socialImage,Logo,URLS,Favicon'
+    populate: 'SEO.socialImage,Logo,URLS,Favicon,events'
   }),
 });
 
@@ -43,7 +43,7 @@ const events = defineCollection({
   loader: strapiLoader({
     contentType: "event",
     filter: `filters[stores][slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO,SEO.socialImage,Tag,stores,Thumbnail,Slides'
+    populate: 'SEO,SEO.socialImage,Tag,Thumbnail,Slides,stores'
   }),
 });
 
