@@ -91,16 +91,18 @@ const selectedImage =
               product?.data?.Slides?.length > 0 && (
                 <div class="">
                   <div class="grid grid-cols-3 gap-2">
-                    {product?.data?.Slides?.map((slide: any) => (
+                    {product?.data?.Slides?.map((slide: any) => {
+                      return (
                       <div class="aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
                         <img
                           src={slide?.formats?.thumbnail?.url}
-                          alt={slide.alternativeText || ""}
+                          alt={slide?.alternativeText || ""}
                           data-astro-image={JSON.stringify(slide?.formats?.small)}
                           class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
+                          aria-description={slide?.caption || ""}
                         />
-                      </div>
-                    ))}
+                      </div>)}
+                    )}
                   </div>
                 </div>
               )
