@@ -1,0 +1,144 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { markketplace } from "@config";
+import HeroImage from "@components/HeroImage.astro";
+
+import { marked } from "marked";
+
+import { getCollection } from "astro:content";
+import type Store from "@interfaces/Store";
+import type Event from "@interfaces/Event";
+import { slugifyStr } from "@utils/slugify";
+
+import RSVPModal from "@components/Modal.rsvp.form";
+
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  stores: CollectionEntry<"stores">[];
+  event?: { id: string; data: Event };
+}
+
+type eventPage = { params: { slug: string }; props: { event: Event } };
+
+export async function getStaticPaths() {
+  const events = await getCollection("events");
+
+  const eventsResult: eventPage[] = events.map((event: any) => ({
+    params: {
+      slug: event.data.slug || `2025-${slugifyStr(event.data?.title)}`,
+    },
+    props: { event },
+  }));
+
+  return [...eventsResult];
+}
+
+const { event } = Astro.props;
+
+const stores = await getCollection("stores");
+const store: { data: Store } = stores.find(
+  store => store?.data?.slug == markketplace?.STORE_SLUG
+) as any as { data: Store };
+
+const htmlDescription = marked.parse(event?.data?.Description || "");
+// const prices = event?.data?.PRICES || [];
+
+const selectedImage =
+  event?.data?.Thumbnail ||
+  event?.data?.Slides?.[0] ||
+  event?.data?.SEO?.socialImage ||
+  {};
+---
+
+<script>
+  import { ProductSlideshow } from "../../scripts/ui.product";
+  document.addEventListener("astro:page-load", () => {
+    ProductSlideshow();
+  });
+</script>
+
+<Layout
+  title={`${event?.data?.Name} | ${store?.data?.title}`}
+  meta={{
+    title: event?.data?.SEO?.metaTitle,
+    image: event?.data?.Thumbnail?.url,
+    description: event?.data?.SEO?.metaDescription,
+  }}
+>
+  <Header store={store} />
+  <Main
+    pageTitle={event?.data?.Name as string}
+    pageDesc={event?.data?.SEO?.metaDescription || "Event Details"}
+  />
+
+  <main class="lg:px-8 product-page px-4 py-12 sm:px-6">
+    <div class="mx-auto max-w-3xl">
+      <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+        <div
+          class="aspect-w-3 aspect-h-4 max-sm max-w-2xl overflow-hidden rounded-l"
+        >
+          <HeroImage
+            title={event?.data?.Name as string}
+            image={selectedImage}
+          />
+        </div>
+        <div class="flex flex-col">
+          {
+            event?.data?.Slides?.length > 0 && (
+              <div class="mt-8">
+                <div class="grid grid-cols-3 gap-2">
+                  {event?.data?.Slides?.map((slide: any) => (
+                    <div class="product-slide aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
+                      <img
+                        src={slide?.formats?.thumbnail?.url}
+                        alt={slide?.alternativeText || ""}
+                        data-astro-image={JSON.stringify(slide?.formats?.small)}
+                        class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
+                        aria-description={slide?.caption || ""}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+        </div>
+        <div class="lg:mt-0 mt-10 px-4 sm:mt-16 sm:px-0">
+          <h1
+            class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
+          >
+            {event?.data?.Name}
+          </h1>
+
+          {/* Product description */}
+          <div class="mt-6">
+            <div
+              class="prose space-y-6 text-base text-gray-700 dark:prose-invert dark:text-gray-300"
+              set:html={htmlDescription}
+            />
+          </div>
+        </div>
+      </div>
+      {
+        event?.data?.SEO?.metaUrl && (
+          <button class="mt-8 text-accent-500 dark:text-accent-300" disabled>
+            <a
+              href={event?.data?.SEO?.metaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              RSVP in external site
+            </a>
+          </button>
+        )
+      }
+      <RSVPModal client:load eventId={event?.id as string} onClose={() => {}} />
+    </div>
+  </main>
+  <Footer />
+</Layout>

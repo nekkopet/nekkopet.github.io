@@ -3,64 +3,27 @@ import { SITE } from "@config";
 import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 import type Store from "../interfaces/Store";
+import { IconMenu4, IconX, IconSearch } from "@tabler/icons-react";
 
-export type activeNav = "tags" | "about" | "search" | "pages" | "blog" | "products";
+export type nav = "tags" | "about" | "search" | "pages" | "blog" | "products";
 
 export interface Props {
-  activeNav?: activeNav;
+  activeNav?: nav;
   store?: {
     data: Store;
   };
-  products: any;
+  products?: any;
 }
 
 const { activeNav, store, products } = Astro.props;
 ---
 
-<header>
+<header class="bg-skin-card dark:bg-skin-fill">
   <a id="skip-to-content" href="#main-content">Skip to content</a>
   <div class="nav-container">
     <div class="top-nav-wrap">
-      <a href="/" class="logo brand-magenta whitespace-nowrap">
-        {
-          store?.data?.Logo?.url ? (
-            <img
-              src={`${store?.data?.Logo.url}`}
-              alt={store?.data?.title || store?.data?.SEO?.metaTitle}
-              width={120}
-            />
-          ) : (
-            store?.data?.title || store?.data?.SEO?.metaTitle || SITE.title
-          )
-        }
-      </a>
-      <nav id="nav-menu">
-        <button
-          class="hamburger-menu focus-outline"
-          aria-label="Open Menu"
-          aria-expanded="false"
-          aria-controls="menu-items"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="menu-icon"
-          >
-            <line x1="7" y1="12" x2="21" y2="12" class="line"></line>
-            <line x1="3" y1="6" x2="21" y2="6" class="line"></line>
-            <line x1="12" y1="18" x2="21" y2="18" class="line"></line>
-            <line x1="18" y1="6" x2="6" y2="18" class="close"></line>
-            <line x1="6" y1="6" x2="18" y2="18" class="close"></line>
-          </svg>
-        </button>
-        <ul id="menu-items" class="display-none sm:flex">
+      <nav id="nav-menu" class="absolute sm:relative">
+        <ul id="menu-items" class="display-none lg:flex">
           <li>
             <a href="/blog/" class={activeNav === "blog" ? "active" : ""}>
               Blog
@@ -88,6 +51,33 @@ const { activeNav, store, products } = Astro.props;
               About
             </a>
           </li>
+        </ul>
+        <button
+          class="hamburger-menu focus-outline absolute left-4 sm:relative sm:left-0 sm:right-0"
+          style={{ marginLeft: "0px !important" }}
+          aria-label="Open Menu"
+          aria-expanded="false"
+          aria-controls="menu-items"
+        >
+          <IconMenu4 color="#ff00cf" size={42} />
+        </button>
+      </nav>
+      <a href="/" class="logo brand-magenta whitespace-nowrap">
+        {
+          store?.data?.Logo?.url ? (
+            <img
+              src={`${store?.data?.Logo.url}`}
+              alt={store?.data?.title || store?.data?.SEO?.metaTitle}
+              width={120}
+            />
+          ) : (
+            store?.data?.title || store?.data?.SEO?.metaTitle
+          )
+        }
+      </a>
+
+      <nav id="nav-menu" class="sm:justify-end">
+        <ui id="menu-items" class="display-none ml-6 list-none gap-x-8 sm:flex">
           <li>
             <LinkButton
               href="/search/"
@@ -97,15 +87,7 @@ const { activeNav, store, products } = Astro.props;
               ariaLabel="search"
               title="Search"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="scale-125 sm:scale-100"
-              >
-                <path
-                  d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"
-                >
-                </path>
-              </svg>
+              <IconSearch size={42} />
               <span class="sr-only">Search</span>
             </LinkButton>
           </li>
@@ -129,38 +111,68 @@ const { activeNav, store, products } = Astro.props;
               </li>
             )
           }
-        </ul>
+        </ui>
       </nav>
+    </div>
+  </div>
+  <div id="side-panel" class="fixed top-0 left-0 h-full w-[300px] dark:bg-skin-fill bg-gray-200 opacity-90 text-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-[1000] flex">
+    <div class="p-5 flex flex-col h-full">
+      <button
+        id="close-panel-btn"
+        class="absolute right-2.5 top-3.5 cursor-pointer border-none bg-none text-2xl text-white"
+        aria-label="Close Menu"
+        title="Close Menu"
+        onclick="toggleNav()"
+      >
+        <IconX color="#ff00cf" size={42} />
+      </button>
+      <h1>Menu</h1>
+      <ul class="list-none p-0 mt-5 space-y-4">
+        <li>
+          <a href="/blog/" class="text-[#ff00cf] text-lg transition-colors duration-300 hover:text-sky-400">Blog</a>
+        </li>
+        <li>
+          <a href="/products/" class="text-[#ff00cf] text-lg transition-colors duration-300 hover:text-sky-400">Products</a>
+        </li>
+        <li>
+          <a href="/tags/" class="text-[#ff00cf] text-lg transition-colors duration-300 hover:text-sky-400">Tags</a>
+        </li>
+        <li>
+          <a href="/about/" class="text-[#ff00cf] text-lg transition-colors duration-300 hover:text-sky-400">About</a>
+        </li>
+      </ul>
     </div>
   </div>
   <Hr />
 </header>
 
 <style>
+  /* Panel Styles */
+
   #skip-to-content {
     @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
   }
   .nav-container {
-    @apply mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row;
+    @apply mx-auto flex min-h-[90px] w-full flex-col items-center justify-between sm:flex-row md:min-h-[120px];
   }
   .top-nav-wrap {
-    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8;
+    @apply relative flex w-full items-start justify-between sm:items-center;
   }
   .logo {
-    @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl;
+    @apply absolute right-4 ml-[20px] mt-[5px] w-[200px] py-1 text-xl font-semibold sm:static sm:left-0 sm:ml-0 sm:mt-0 sm:text-2xl;
   }
   .hamburger-menu {
-    @apply self-end p-2 sm:hidden;
+    @apply mt-[20px] self-end p-2 sm:mt-0 lg:hidden;
   }
   .hamburger-menu svg {
     @apply h-6 w-6 scale-125 fill-skin-base;
   }
 
   nav {
-    @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
+    @apply flex w-full flex-col items-center px-3 sm:flex-row sm:justify-start sm:space-x-4 sm:py-0 sm:pr-6;
   }
   nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0;
+    @apply mt-4 grid w-44 grid-cols-2 grid-rows-2 gap-x-4 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-y-0;
   }
   nav ul li {
     @apply col-span-2 flex items-center justify-center;
@@ -211,25 +223,64 @@ const { activeNav, store, products } = Astro.props;
 
 <script>
   function toggleNav() {
-    // Toggle menu
     const menuBtn = document.querySelector(".hamburger-menu");
     const menuIcon = document.querySelector(".menu-icon");
-    const menuItems = document.querySelector("#menu-items");
+    const sidePanel = document.querySelector("#side-panel");
+    const closePanelBtn = document.querySelector("#close-panel-btn");
 
-    menuBtn?.addEventListener("click", () => {
-      const menuExpanded = menuBtn.getAttribute("aria-expanded") === "true";
-      menuIcon?.classList.toggle("is-active");
-      menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
+    if (!menuBtn || !sidePanel) {
+      console.error("Required elements not found");
+      return;
+    }
+
+    // Function to toggle the side panel visibility
+    const togglePanel = () => {
+      const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
+      menuBtn.setAttribute("aria-expanded", !isExpanded ? "true" : "false");
       menuBtn.setAttribute(
         "aria-label",
-        menuExpanded ? "Open Menu" : "Close Menu"
+        isExpanded ? "Open Menu" : "Close Menu"
       );
-      menuItems?.classList.toggle("display-none");
+      sidePanel.classList.toggle("translate-x-0");
+      sidePanel.classList.toggle("-translate-x-full");
+      menuIcon?.classList.toggle("is-active");
+    };
+
+    // Function to close the side panel
+    const closePanel = () => {
+      menuBtn.setAttribute("aria-expanded", "false");
+      menuBtn.setAttribute("aria-label", "Open Menu");
+      sidePanel.classList.remove("translate-x-0");
+      sidePanel.classList.add("-translate-x-full");
+      menuIcon?.classList.remove("is-active");
+    };
+
+    // Attach event listeners
+    menuBtn.addEventListener("click", togglePanel);
+    closePanelBtn?.addEventListener("click", closePanel);
+
+    // Close the side panel on outside click
+    document.addEventListener("click", e => {
+      if (
+        e.target &&
+        !sidePanel.contains(e.target as Node) &&
+        !menuBtn.contains(e.target as Node)
+      ) {
+        closePanel();
+      }
+    });
+
+    // Close the side panel on escape key press
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        closePanel();
+      }
     });
   }
 
+  // Initialize the toggleNav function
   toggleNav();
 
-  // Runs on view transitions navigation
+  // Reinitialize after dynamic navigation swaps (for frameworks like Astro)
   document.addEventListener("astro:after-swap", toggleNav);
 </script>

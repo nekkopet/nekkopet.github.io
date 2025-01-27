@@ -40,7 +40,7 @@ const { currentPage, totalPages } = Astro.props;
 >
   <Header activeNav="products" store={store} products={products} />
   <main id="main-content">
-    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
+    <section id="about" class="mb-10 max-w-4xl mt-4 prose-img:border-0">
       {
         store?.data?.SEO?.socialImage && (
           <HeroImage
@@ -49,7 +49,7 @@ const { currentPage, totalPages } = Astro.props;
           />
         )
       }
-      <h1 class="text-2xl tracking-wider sm:text-3xl">
+      <h1 class="text-2xl tracking-wider sm:text-3xl mt-2">
         {store?.data?.title}
       </h1>
       <p>{store?.data.Description}</p>

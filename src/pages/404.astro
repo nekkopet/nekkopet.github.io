@@ -1,22 +1,21 @@
 ---
-import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import { getCollection } from "astro:content";
-import type Store from "../interfaces/Store";
 import { markketplace } from "@config";
+import type Store from "@interfaces/Store";
+import { getCollection } from "astro:content";
 
 const stores = await getCollection("stores");
 const store = stores.find(
-  (store: Store) => store.data.slug === markketplace.STORE_SLUG
-);
+  (store: { data: any }) => markketplace?.STORE_SLUG == store?.data?.slug
+) as any as { data: Store };
+const title = `404 Not Found | ${store?.data?.title}`;
 ---
 
-<Layout title={`404 Not Found | ${SITE.title}`}>
+<Layout title={title}>
   <Header store={store} />
-
   <main id="main-content">
     <div class="not-found-wrapper">
       <h1 aria-label="404 Not Found">404</h1>

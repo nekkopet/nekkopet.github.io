@@ -10,7 +10,7 @@
     --color-accent: 0, 108, 172;
     --color-card: 230, 230, 230;
     --color-card-muted: 205, 205, 205;
-    --color-border: 236, 233, 233;
+    --color-border: 195, 201, 201;
   }
   html[data-theme="dark"] {
     --color-fill: 33, 39, 55;
@@ -34,17 +34,17 @@
   }
   section,
   footer {
-    @apply mx-auto max-w-3xl px-4;
+    @apply mx-auto px-4 md:px-8;
   }
   a {
     @apply outline-2 outline-offset-1 outline-skin-fill
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+    @apply inline-block h-6 w-6 group-hover:fill-skin-accent;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent
+    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 group-hover:fill-transparent
     sm:scale-110;
   }
         /* .prose {
@@ -141,22 +141,6 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
     text-decoration: var(--shiki-dark-text-decoration) !important; */
   }
 
-  h1, h2, h3, h4, strong {
-    color: #0157ad !important;
-  }
-
-  html[data-theme="dark"] h1,
-  html[data-theme="dark"] h3,
-  html[data-theme="dark"] h4,
-  html[data-theme="dark"] strong,
-  html[data-theme="dark"] h2 {
-    color: #fbda0d !important;
-  }
-
-  html[data-theme="dark"] a {
-    color: #E4007C !important;
-  }
-
   .brand-magenta {
     color: #E4007C !important;
   }
@@ -183,9 +167,6 @@ button.brand-yellow:hover {
   background-color: white;
   border-color: #0157ad !important;
 }
-.nav-container {
-  min-height: 120px;
-}
 
 @media (max-width: 640px) {
   .logo {
@@ -202,4 +183,107 @@ button.brand-yellow:hover {
   .focus-outline {
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
   }
+}
+.content-page {
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul.blog-list {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul.blog-list li {
+  width: 100%;
+}
+
+ul.blog-list li .aspect-video {
+  aspect-ratio: 16/6;
+}
+.content-page h1, h2, h3, h4 {
+  margin-top: 1em;
+}
+
+.content-page p{
+  margin-bottom: 1.5em;
+}
+.content-page a {
+  color: #4560ff;
+  font-weight: bold;
+  margin-bottom: 17px;
+  border-bottom: 1px solid #4560ff;
+  line-height: 2.2em;
+}
+
+html[data-theme="dark"] h1 {
+  color: #fbda0d !important;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 2em;
+}
+html[data-theme="dark"] h2 {
+  color: #fbda0d;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 1.5em;
+}
+html[data-theme="dark"] h3 {
+  color: #fbda0d;
+  font-weight: bold;
+  margin-bottom: 1em;
+  font-size: 1.17em;
+}
+html[data-theme="dark"] h4 {
+  color: #ff00cf;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 1em;
+}
+html[data-theme="dark"] strong {
+  color: #fbda0d;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 1em;
+}
+
+html[data-theme="light"] h1 {
+  color: #00A6FB;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 2em;
+}
+html[data-theme="light"] h2 {
+  color: #ff00cf;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 1.5em;
+}
+html[data-theme="light"] h3 {
+  color: #ff00cf;
+  font-weight: bold;
+  margin-bottom: 1em;
+  font-size: 1.17em;
+}
+html[data-theme="light"] h4 {
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 1em;
+}
+html[data-theme="light"] strong {
+  color: #00A6FB;
+  font-weight: bold;
+  margin-bottom: 1.8em;
+  font-size: 1em;
+}
+
+html[data-theme="dark"] a {
+  color: #E4007C !important;
+}
+
+.product-page .product-slide {
+  max-height: 180px;
 }

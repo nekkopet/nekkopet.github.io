@@ -83,6 +83,7 @@ const links = store?.URLS || [];
         )
       }
     </section>
+    <Hr />
     <section class="">
       <BlocksRenderer
         content={homePage?.data?.Content || ([] as BlocksContent[])}
@@ -92,24 +93,26 @@ const links = store?.URLS || [];
     <section>
       {
         links && links.length > 0 && (
-          <div class="mb-12 mt-6">
-            <h2>Links</h2>
-            {links.map(link => {
-              return (
-                <p class="mb-3">
-                  <LinkButton
-                    href={link.URL}
-                    className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-                  >
-                    {link.Label}
-                  </LinkButton>
-                </p>
-              );
-            })}
+          <div>
+            <div class="mb-12 mt-6">
+              <h2>Links</h2>
+              {links.map(link => {
+                return (
+                  <p class="mb-3">
+                    <LinkButton
+                      href={link.URL}
+                      className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+                    >
+                      {link.Label}
+                    </LinkButton>
+                  </p>
+                );
+              })}
+            </div>
           </div>
+        <Hr />
         )
       }
-      <Hr />
       {
         products && products.length > 0 && (
           <section id="recent-posts">
@@ -162,8 +165,8 @@ const links = store?.URLS || [];
       {
         posts.length > 0 && (
           <section id="recent-posts">
-            <h2>Recent Posts</h2>
-            <ul>
+            <h1>Recent Posts</h1>
+            <ul class="-mx-4 flex flex-wrap">
               {posts.map(
                 ({ data, id }, index) =>
                   index < SITE.postPerIndex && (
@@ -243,7 +246,7 @@ const links = store?.URLS || [];
     @apply pb-6 pt-8;
   }
   #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl mx-8;
   }
   #hero .rss-link {
     @apply mb-6;
@@ -252,7 +255,7 @@ const links = store?.URLS || [];
     @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
   }
   #hero p {
-    @apply my-2;
+    @apply my-2 mx-8;
   }
   .social-wrapper {
     @apply mt-4 flex flex-col sm:flex-row sm:items-center;
