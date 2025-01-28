@@ -44,7 +44,7 @@
     @apply inline-block h-6 w-6 group-hover:fill-skin-accent;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent
+    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 group-hover:fill-transparent
     sm:scale-110;
   }
         /* .prose {

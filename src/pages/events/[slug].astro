@@ -96,9 +96,10 @@ const selectedImage =
                     <div class="product-slide aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
                       <img
                         src={slide?.formats?.thumbnail?.url}
-                        alt={slide.alternativeText || ""}
+                        alt={slide?.alternativeText || ""}
                         data-astro-image={JSON.stringify(slide?.formats?.small)}
                         class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
+                        aria-description={slide?.caption || ""}
                       />
                     </div>
                   ))}
