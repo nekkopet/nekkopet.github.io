@@ -184,6 +184,7 @@ button.brand-yellow:hover {
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
   }
 }
+
 .content-page {
   max-width: 1024px;
   margin-left: auto;
@@ -203,6 +204,7 @@ ul.blog-list li {
 ul.blog-list li .aspect-video {
   aspect-ratio: 16/6;
 }
+
 .content-page h1, h2, h3, h4 {
   margin-top: 1em;
 }
