@@ -31,3 +31,6 @@ pnpm-debug.log*
 !.yarn/versions
 .pnp.*
 *.draft.*
+
+yarn.lock
+pnpm-lock.yaml
