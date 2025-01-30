@@ -69,8 +69,10 @@ export default function Card({ href, frontmatter, tags, image, secHeading = true
                   <li
                     className={`inline-block  my-1 underline-offset-4"`}
                   >
+                  
                     <a
                       href={`/tags/${tag?.toLowerCase()}/`}
+                      
                       className=" text-md pr-2 group"
                     >
                       <svg
