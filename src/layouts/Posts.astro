@@ -48,31 +48,31 @@ const blogPage: { data: Page } | undefined = pages.find(
   }}
 >
   <Header activeNav="blog" store={store} />
-  <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
-    {
-      blogPage?.data?.SEO?.socialImage && (
-        <HeroImage
-          image={blogPage?.data?.SEO?.socialImage}
-          title={blogPage?.data?.Title}
-        />
-      )
-    }
-    <h1 class="text-2xl tracking-wider sm:text-3xl">
-      {blogPage?.data?.Title}
-    </h1>
-  </section>
+  <main>
+    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
+      {
+        blogPage?.data?.SEO?.socialImage && (
+          <HeroImage
+            image={blogPage?.data?.SEO?.socialImage}
+            title={blogPage?.data?.Title}
+          />
+        )
+      }
+      <h1 class="text-2xl tracking-wider sm:text-3xl">
+        {blogPage?.data?.Title}
+      </h1>
+      <BlocksRenderer
+        content={blogPage?.data?.Content || ([] as BlocksContent[])}
+      />
+    </section>
+    <Hr />
+  </main>
 
-  <section class="">
-    <BlocksRenderer
-      content={blogPage?.data?.Content || ([] as BlocksContent[])}
-    />
-  </section>
-  <Hr />
   <Main
     pageTitle={blogPage?.data?.SEO?.metaTitle || "Articles"}
     pageDesc={blogPage?.data?.SEO?.metaDescription || "Articles"}
   >
-    <ul class="blog-list">
+    <ul class="-mx-4 flex flex-wrap">
       {
         paginatedPosts.map(({ data }) => (
           <Card
