@@ -64,7 +64,7 @@ const { currentPage, totalPages } = Astro.props;
 >
   <Header store={store as any as { data: Store }} />
   <main id="main-content">
-    <section id="about" class="mb-10 prose-img:border-0">
+    <section id="about" class="mb-10 prose-img:border-0 max-w-4xl">
       {
         eventPage?.data?.SEO?.socialImage && (
           <HeroImage
