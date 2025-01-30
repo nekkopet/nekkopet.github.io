@@ -139,7 +139,7 @@ const CheckoutModal = ({ prices, product }: Props) => {
 
       {/* Modal Trigger Button */}
       <button
-        className="flex items-center justify-center rounded-md border border-transparent bg-sky-500 px-8 py-3 text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
+        className="w-full mb-5 flex items-center justify-center rounded-md border border-transparent bg-sky-500 px-8 py-3 text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
         onClick={() => {setIsModalOpen(true)}}
       >
         Continue to Payment
