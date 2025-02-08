@@ -1,5 +1,11 @@
 import type { Site, SocialObjects } from "./types";
 
+const BASE_URL = ((process.env.BASE_URL || import.meta.env.BASE_URL) as string);
+
+const url = BASE_URL.startsWith('http') ? BASE_URL : 'https://markket.place/';
+
+console.log({ url, BASE_URL });
+
 /**
  * @type {{[string]: string}} Global Configuration attributes for the markket instance
  */
@@ -11,6 +17,7 @@ export const markketplace = {
     accent: import.meta.env.COLOR_ACCENT as string || '#38b2ac',
   },
   POSTHOG_ID: import.meta.env.POSTHOG_ID as string || '',
+  url,
 };
 
 /**
