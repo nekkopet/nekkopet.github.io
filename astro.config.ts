@@ -40,5 +40,6 @@ export default defineConfig({
       exclude: ["@resvg/resvg-js"],
     },
   },
-  scopedStyleStrategy: "where"
+  scopedStyleStrategy: "where",
+  outDir: "./dist",
 });
