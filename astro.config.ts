@@ -41,5 +41,5 @@ export default defineConfig({
     },
   },
   scopedStyleStrategy: "where",
-  outDir: "_site",
+  outDir: "dist",
 });
