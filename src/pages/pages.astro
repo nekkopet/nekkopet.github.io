@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
-import Card from "@components/Card";
+import PageCard from "@components/PageCard";
 import { slugifyStr } from "@utils/slugify";
 import { SITE } from "@config";
 import Footer from "@components/Footer.astro";
@@ -17,29 +17,22 @@ const store = stores.find(
 
 let pages = await getCollection("pages");
 pages = pages
-  .sort((a, b) => b.data.Title.localeCompare(a.data.Title))
+  .sort((a, b) => a.data.Title.localeCompare(b.data.Title))
   .filter(
-    page =>
-      page.data.Active && !["about", "home", "receipt"].includes(page.data.slug)
+    page => page.data.Active && !["home", "receipt"].includes(page.data.slug)
   );
 ---
 
 <Layout title={`Pages Index | ${SITE.title}`}>
   <Header store={store} activeNav="pages" />
   <Main pageTitle="Pages" pageDesc="A list of all pages.">
-    <ul class="-mx-4 flex flex-wrap">
+    <ul class="mx-4 flex max-w-3xl flex-wrap">
       {
         pages.map(page => (
-          <Card
+          <PageCard
             href={`/${slugifyStr(page.data.slug) || "#"}/`}
-            image={page?.data?.SEO?.socialImage}
-            frontmatter={{
-              title: page.data.Title,
-              pubDatetime: new Date(page.data.createdAt),
-              modDatetime: new Date(page.data.updatedAt),
-              description: page.data.SEO?.metaDescription || "",
-              SEO: { ...page.data.SEO },
-            }}
+            title={page.data.Title}
+            description={page.data.SEO?.metaDescription}
           />
         ))
       }
