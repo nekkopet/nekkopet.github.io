@@ -83,73 +83,10 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
   console.log("Payment link", { request, response });
 
   const url = response?.data?.link?.response?.url;
+
   if (request.ok && url) {
     window.location.href = url;
   }
 
   return request;
-};
-
-/**
- * Creates event listeners, and other needed scripts in the /product/:slug page, or wherever is embedded
- */
-export const ProductForm = function () {
-  // console.log('Activating ProductForm');
-
-  // const options: PaymentLinkOptions = {
-  //   totalPrice: 0,
-  //   product: '',
-  //   prices: [],
-  //   includes_shipping: true,
-  //   stripe_test: false,
-  // };
-
-  // const form = document.querySelector('form[data-product-price]')
-
-  // form?.addEventListener('change', async () => {
-
-
-
-  //   let customPriceInput = document.querySelector('[data-input="custom-price"]')?.value;
-  //   let customPrice = 0;
-  //   if (customPriceInput) {
-  //     customPriceInput = parseInt(customPriceInput, 10);
-  //     options.prices.push({
-  //       unit_amount: customPriceInput,
-  //       currency: 'usd',
-  //       product: productData.SKU,
-  //     })
-  //     customPrice = customPriceInput;
-  //   }
-
-  //   let quantityInput = document.querySelector('[data-input="quantity"]')?.value;
-  //   let priceOption = document.querySelector('[data-input="product.prices"]')?.value;
-  //   quantityInput = parseInt(quantityInput || '1', 10) || 1;
-  //   const selectedPrice = productData?.PRICES?.find((price: Price) => price.STRIPE_ID === priceOption);
-
-  //   if (selectedPrice?.STRIPE_ID) {
-  //     options.prices.push({
-  //       quantity: quantityInput,
-  //       price: selectedPrice?.STRIPE_ID,
-  //     } as Price);
-  //   }
-
-  //   const descriptionOutput = document.querySelector('[data-output="product.price.description"]');
-  //   if (descriptionOutput) {
-  //     descriptionOutput.innerHTML = selectedPrice?.Description || '';
-  //   }
-
-  //   const totalPrice = ((selectedPrice?.Price || 0) * quantityInput) + customPrice;
-  //   options.totalPrice = totalPrice;
-
-  //   const priceOutput = document.querySelector('[data-output="total"]');
-  //   if (priceOutput) {
-  //     priceOutput.innerHTML = `${totalPrice || '0'}`;
-  //   }
-
-  //   const submitButton = document.querySelector('[data-action-button="submit"]');
-  //   if (submitButton) {
-  //     submitButton.removeAttribute('disabled');
-  //   }
-  // });
 };

@@ -1,8 +1,8 @@
 import  {type FC, useEffect, useState } from 'react';
-import { ProductForm, createPaymentLink, type PaymentLinkOptions, type Price } from "scripts/ui.product"
+import { createPaymentLink, type PaymentLinkOptions, type Price } from "scripts/ui.product"
 
 interface Props {
-  prices: any;
+  prices: Price[];
   product: any;
 }
 
@@ -30,8 +30,6 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
     const basePrice = price?.Price || 0;
     const subtotal = basePrice * quantity;
     const newTotal = subtotal + tip;
-
-    console.log({ basePrice, price, subtotal, newTotal, tip })
 
     const option_prices = [
       {
@@ -74,12 +72,6 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
     setSelectedPriceId(price);
   };
 
-  useEffect(() => {
-    if (isModalOpen) {
-      ProductForm(); // Initialize ProductForm when modal is open
-    }
-  }, [isModalOpen]);
-
   const handleQuantityChange = (event: any) => {
     const newQuantity = event.target.value as number;
     setQuantity(newQuantity);
@@ -92,6 +84,13 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
 
   return (
     <>
+      {/* Modal Trigger Button */}
+      <button
+        className="w-full mb-5 flex items-center justify-center rounded-md border border-transparent bg-sky-500 px-8 py-3 text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
+        onClick={() => { setIsModalOpen(true) }}
+      >
+        Continue to Payment
+      </button>
       {isModalOpen && (
         <div className="modal-overlay fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-center items-center z-50"
           onClick={(e) => (e.target as Element).classList.contains('modal-overlay') && setIsModalOpen(false)}>
@@ -187,14 +186,6 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
           </div>
         </div>
       )}
-
-      {/* Modal Trigger Button */}
-      <button
-        className="w-full mb-5 flex items-center justify-center rounded-md border border-transparent bg-sky-500 px-8 py-3 text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
-        onClick={() => {setIsModalOpen(true)}}
-      >
-        Continue to Payment
-      </button>
     </>
   );
 };
