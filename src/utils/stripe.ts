@@ -1,7 +1,7 @@
-const PUBLIC_KEY = process.env.STRIPE_PUBLISHABLE_KEY || '';
+// import { markketplace } from "@config";
 
-export default {
-  enabled: !!PUBLIC_KEY,
-}
+// const PUBLIC_KEY = markketplace.STRIPE_PUBLISHABLE_KEY;
 
-
+// export default {
+//   enabled: !!PUBLIC_KEY,
+// }

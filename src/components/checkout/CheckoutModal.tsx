@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  {type FC, useEffect, useState } from 'react';
 import { ProductForm } from "scripts/ui.product"
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
   product: any;
 }
 
-const CheckoutModal = ({ prices, product }: Props) => {
+const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
