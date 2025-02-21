@@ -9,6 +9,10 @@ import Card from "@components/Card";
 import { SITE } from "@config";
 import HeroImage from "@components/HeroImage.astro";
 import Hr from "@components/Hr.astro";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
 
 export interface Props {
   currentPage: number;
@@ -17,7 +21,8 @@ export interface Props {
 }
 
 import { getCollection } from "astro:content";
-import type Store from "../interfaces/Store";
+import type Store from "@interfaces/Store";
+import type Page from "@interfaces/Page";
 import { slugifyStr } from "@utils/slugify";
 import { markketplace } from "@config";
 
@@ -27,30 +32,50 @@ const store = stores.find(
 );
 
 const { currentPage, totalPages } = Astro.props;
+
+const pages = await getCollection("pages");
+const StorePage: { data: Page } | undefined = pages.find(
+  (page: { data: Page }) => page.data.slug === "stores"
+);
+console.log({ StorePage });
 ---
 
 <Layout
   title={`Posts | ${SITE.title}`}
   meta={{
-    title: "Stores",
-    description: "Meet other stores in our markketplace",
+    title: StorePage?.data?.SEO?.metaTitle || "Stores",
+    description:
+      StorePage?.data?.SEO?.metaDescription ||
+      "Check out the stores in this markkët instance.",
   }}
 >
   <Header activeNav="pages" store={store} />
   <main id="main-content">
-    <section id="about" class="mb-10 max-w-3xl mt-4 prose-img:border-0">
+    <section id="about" class="mb-10 mt-4 max-w-3xl prose-img:border-0">
       {
         store?.data?.SEO?.socialImage && (
           <HeroImage
-            image={store?.data?.SEO?.socialImage}
-            title={store?.data?.title}
+            image={
+              StorePage?.data?.SEO?.socialImage || store?.data?.SEO?.socialImage
+            }
+            title={StorePage?.data?.Title || store?.data?.title}
           />
         )
       }
       <h1 class="text-2xl tracking-wider sm:text-3xl">
-        {store?.data?.title}
+        {StorePage?.data?.Title || store?.data?.title}
       </h1>
-      <p>{store?.data.Description}</p>
+      <div class="mb-5 mt-5">
+        {
+          StorePage?.data?.Content ? (
+            <BlocksRenderer
+              content={StorePage?.data?.Content || ([] as BlocksContent[])}
+            />
+          ) : (
+            "Articles by our contributors"
+          )
+        }
+      </div>
     </section>
     <Hr />
   </main>

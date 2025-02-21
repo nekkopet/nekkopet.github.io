@@ -59,6 +59,18 @@ const layoutProps = {
 };
 ---
 
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const links = document.querySelectorAll("a");
+    links.forEach(link => {
+      if (!link.href?.startsWith(window.location.origin)) {
+        link.setAttribute("rel", "noopener noreferrer");
+        link.setAttribute("target", "_blank");
+      }
+    });
+  });
+</script>
+
 <Layout {...layoutProps}>
   <Header store={store} />
 

@@ -59,11 +59,17 @@ const blogPage: { data: Page } | undefined = pages.find(
         )
       }
       <h1 class="text-2xl tracking-wider sm:text-3xl">
-        {blogPage?.data?.Title}
+        {blogPage?.data?.Title || "Blog Posts"}
       </h1>
-      <BlocksRenderer
-        content={blogPage?.data?.Content || ([] as BlocksContent[])}
-      />
+      {
+        blogPage?.data?.Content ? (
+          <BlocksRenderer
+            content={blogPage?.data?.Content || ([] as BlocksContent[])}
+          />
+        ) : (
+          "Articles by our contributors"
+        )
+      }
     </section>
     <Hr />
   </main>

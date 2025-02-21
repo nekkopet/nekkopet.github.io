@@ -9,6 +9,11 @@ import { SITE } from "@config";
 import { getCollection } from "astro:content";
 import type Store from "@interfaces/Store";
 import { markketplace } from "@config";
+import HeroImage from "@components/HeroImage.astro";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
 
 const stores = await getCollection("stores");
 const store: { data: Store } | undefined = stores?.find(
@@ -19,16 +24,55 @@ const posts = await getCollection("posts");
 
 let tags = getUniqueTags(posts);
 
-//  { id: 3, Label: 'Company', Color: 'Magenta' } ] }
-// from posts.Tags
+const pages = await getCollection("pages");
+const TagsPage = pages.find(
+  (page: { data: { title: string } }) => page.data.slug === "tags"
+);
+
+const pageTitle = TagsPage?.data.Title || "Tags";
+const pageDesc =
+  TagsPage?.data?.SEO?.metaDescription || "All the tags used in posts.";
 ---
 
-<Layout title={`Tags | ${SITE.title}`}>
+<Layout
+  title={`Tags | ${SITE.title}`}
+  meta={{
+    title: TagsPage?.data?.SEO?.metaTitle || "Blog",
+    image: TagsPage?.data?.SEO?.socialImage?.url || "",
+    description: TagsPage?.data?.SEO?.metaDescription || "",
+  }}
+>
   <Header activeNav="tags" store={store} />
-  <Main pageTitle="Tags" pageDesc="All the tags used in posts.">
+  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
+    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
+      {
+        TagsPage?.data?.SEO?.socialImage && (
+          <HeroImage
+            image={TagsPage?.data?.SEO?.socialImage}
+            title={TagsPage?.data?.Title}
+          />
+        )
+      }
+    </section>
     <ul>
       {tags.map(({ tag }) => tag && <Tag {tag} size="lg" />)}
     </ul>
+    <div class="mb-5 mt-5">
+      <p class="text-sm text-gray-500">
+        {tags.length} tags found.
+      </p>
+    </div>
+    <div class="mb-5 mt-5">
+      {
+        TagsPage?.data?.Content ? (
+          <BlocksRenderer
+            content={TagsPage?.data?.Content || ([] as BlocksContent[])}
+          />
+        ) : (
+          "Articles by our contributors"
+        )
+      }
+    </div>
   </Main>
   <Footer />
 </Layout>
