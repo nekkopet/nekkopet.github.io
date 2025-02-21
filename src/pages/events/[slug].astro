@@ -77,36 +77,38 @@ const selectedImage =
   />
 
   <main class="lg:px-8 product-page px-4 py-12 sm:px-6">
-    <div class="mx-auto max-w-3xl">
-      <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-        <div
-          class="aspect-w-3 aspect-h-4 max-sm max-w-2xl overflow-hidden rounded-l"
-        >
-          <HeroImage
-            title={event?.data?.Name as string}
-            image={selectedImage}
-          />
-        </div>
+    <div class="mx-auto w-full">
+      <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start items-start gap-4">
         <div class="flex flex-col">
-          {
-            event?.data?.Slides?.length > 0 && (
-              <div class="mt-8">
-                <div class="grid grid-cols-3 gap-2">
-                  {event?.data?.Slides?.map((slide: any) => (
-                    <div class="product-slide aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
-                      <img
-                        src={slide?.formats?.thumbnail?.url}
-                        alt={slide?.alternativeText || ""}
-                        data-astro-image={JSON.stringify(slide?.formats?.small)}
-                        class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
-                        aria-description={slide?.caption || ""}
-                      />
-                    </div>
-                  ))}
+          <div
+            class="aspect-w-3 aspect-h-4 w-full overflow-hidden rounded-l"
+          >
+            <HeroImage
+              title={event?.data?.Name as string}
+              image={selectedImage}
+            />
+          </div>
+          <div class="flex flex-col">
+            {
+              event?.data?.Slides?.length > 0 && (
+                <div class="mt-8">
+                  <div class="grid grid-cols-6 gap-2">
+                    {event?.data?.Slides?.map((slide: any) => (
+                      <div class="product-slide aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
+                        <img
+                          src={slide?.formats?.thumbnail?.url}
+                          alt={slide?.alternativeText || ""}
+                          data-astro-image={JSON.stringify(slide?.formats?.small)}
+                          class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
+                          aria-description={slide?.caption || ""}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )
-          }
+              )
+            }
+          </div>
         </div>
         <div class="lg:mt-0 mt-10 px-4 sm:mt-16 sm:px-0">
           <h1
@@ -126,7 +128,7 @@ const selectedImage =
       </div>
       {
         event?.data?.SEO?.metaUrl && (
-          <button class="mt-8 text-accent-500 dark:text-accent-300" disabled>
+          <button class="mt-8 text-accent-500 dark:text-accent-300 w-full" disabled>
             <a
               href={event?.data?.SEO?.metaUrl}
               target="_blank"
@@ -137,7 +139,15 @@ const selectedImage =
           </button>
         )
       }
-      <RSVPModal client:load eventId={event?.id as string} onClose={() => {}} />
+      {
+        !event?.data?.SEO?.metaUrl && (
+          <RSVPModal
+            client:load
+            eventId={event?.id as string}
+            onClose={() => {}}
+          />
+        )
+      }
     </div>
   </main>
   <Footer />

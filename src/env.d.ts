@@ -11,6 +11,8 @@ export interface ImportMetaEnv {
   readonly STORE_DESCRIPTION: string;
   readonly STORE_TITLE: string;
   readonly STORE_OG_IMAGE: string;
+  readonly PUBLIC_BASE_URL: string;
+  readonly PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
 }
 
 export interface ImportMeta {

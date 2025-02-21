@@ -184,6 +184,7 @@ button.brand-yellow:hover {
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
   }
 }
+
 .content-page {
   max-width: 1024px;
   margin-left: auto;
@@ -203,6 +204,7 @@ ul.blog-list li {
 ul.blog-list li .aspect-video {
   aspect-ratio: 16/6;
 }
+
 .content-page h1, h2, h3, h4 {
   margin-top: 1em;
 }
@@ -210,6 +212,10 @@ ul.blog-list li .aspect-video {
 .content-page p{
   margin-bottom: 1.5em;
 }
+.blog-post {
+  overflow: hidden;
+}
+.blog-post a,
 .content-page a {
   color: #4560ff;
   font-weight: bold;
@@ -286,4 +292,63 @@ html[data-theme="dark"] a {
 
 .product-page .product-slide {
   max-height: 180px;
+}
+
+/**Confirmation Page & Receipt */
+.confirmation-container {
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+}
+
+.confirmation-header {
+  background-color: #0057ad;
+  padding: 20px;
+  text-align: center;
+}
+
+.company-name {
+  color: #fff000;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.yellow-divider {
+  height: 4px;
+  background-color: #fff000;
+  margin: 0;
+}
+
+.confirmation-content {
+  padding: 40px 20px;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.text-brand-magenta,
+.magenta-highlight {
+  color: #ff00cf;
+}
+
+.confirmation-footer {
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #dddddd;
+}
+
+.footer-text {
+  color: #666666;
+  font-size: 14px;
+}
+
+.footer-link {
+  color: #0057ad;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
 }

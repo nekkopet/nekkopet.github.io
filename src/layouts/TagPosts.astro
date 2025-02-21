@@ -41,7 +41,7 @@ const {
     pageDesc={`All the articles with the tag "${tagName}".`}
   >
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
-    <ul>
+    <ul class="-mx-4 flex flex-wrap">
       {
         paginatedPosts.map(({ data }) => (
           <Card

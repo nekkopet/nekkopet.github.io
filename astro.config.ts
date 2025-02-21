@@ -10,7 +10,7 @@ import { markketplace } from "./src/config";
  * @type {import('astro/types').RuntimeConfig}
  */
 export default defineConfig({
-  site: markketplace.url,
+  site: markketplace?.url,
   integrations: [
     tailwind({
       applyBaseStyles: true,
@@ -37,8 +37,12 @@ export default defineConfig({
   output: "static",
   vite: {
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
+      exclude: ["@resvg/resvg-js", "fsevents"],
     },
+    ssr: {
+      noExternal: [],
+    }
   },
   scopedStyleStrategy: "where",
+  outDir: "./dist",
 });
