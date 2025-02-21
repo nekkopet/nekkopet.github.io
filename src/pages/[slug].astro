@@ -26,13 +26,12 @@ export async function getStaticPaths() {
   }));
 }
 
-
 const splitContentByHeading = (content: any) => {
   const sections = [];
   let currentSection = [];
 
-  content.forEach((block) => {
-    if (block.type === 'heading' && currentSection.length > 0) {
+  content.forEach(block => {
+    if (block.type === "heading" && currentSection.length > 0) {
       sections.push(currentSection);
       currentSection = [block];
     } else {
@@ -46,7 +45,7 @@ const splitContentByHeading = (content: any) => {
   }
 
   return sections;
-}
+};
 
 const stores = await getCollection("stores");
 const store = stores.find(
@@ -76,12 +75,14 @@ const sections = splitContentByHeading(page?.Content);
       }
       <h1 class="text-2xl tracking-wider sm:text-3xl">{page.Title}</h1>
     </section>
-    {sections.map((section, index) => (
-      <section class="max-w-4xl">
-          <BlocksRenderer key={index} content={section || ([] as BlocksContent[])} />
+    {
+      sections.map((section, index) => (
+        <section class="max-w-4xl">
+          <BlocksRenderer content={section || ([] as BlocksContent[])} />
           <Hr />
-      </section>
-    ))}
+        </section>
+      ))
+    }
   </main>
 </Layout>
 <Footer activeNav={page?.slug} />

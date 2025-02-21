@@ -37,8 +37,11 @@ export default defineConfig({
   output: "static",
   vite: {
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
+      exclude: ["@resvg/resvg-js", "fsevents"],
     },
+    ssr: {
+      noExternal: [],
+    }
   },
   scopedStyleStrategy: "where",
   outDir: "./dist",

@@ -1,26 +1,22 @@
-import { type Product } from '../interfaces';
 import { markketplace } from '@config';
+
 /**
- *
+ * Allows to click on a thumbnail and change the main product image
  */
 export const ProductSlideshow = function () {
-  // Front matter TS is executed in the ~server during the build process
-  // import confetti from 'canvas-confetti';
 
   const buttons = document.querySelectorAll("[data-astro-image]");
 
-  // Add event listeners to fire confetti when a button is clicked.
   buttons.forEach(button => {
     button.addEventListener("click", e => {
-      const jsonData = e.target?.getAttribute('data-astro-image');
+      const jsonData = (e.target as Element)?.getAttribute('data-astro-image');
 
       try {
-        const jsonObject = JSON.parse(jsonData || ''); // Parse the JSON string
+        const jsonObject = JSON.parse(jsonData || '');
         const heroImage = document.querySelector(".hero-image");
-        console.log({ heroImage })
 
         if (heroImage) {
-          heroImage.src = jsonObject.url;
+          (heroImage as HTMLImageElement).src = jsonObject.url;
         }
 
       } catch (error) {
@@ -52,6 +48,7 @@ export type PaymentLinkOptions = {
 /**
  * Sends a POST request to the API, to request a unique stripe payment link
  * We redirect buyers there to complete the purchase
+ * @TODO move to markket-next and import via npm
  *
  * @returns {Promise<Response>} Payment link
  */
@@ -83,109 +80,10 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
   console.log("Payment link", { request, response });
 
   const url = response?.data?.link?.response?.url;
+
   if (request.ok && url) {
     window.location.href = url;
   }
 
   return request;
-};
-
-/**
- * Creates event listeners, and other needed scripts in the /product/:slug page, or wherever is embedded
- */
-export const ProductForm = function () {
-  console.log('Activating ProductForm');
-  const options: PaymentLinkOptions = {
-    totalPrice: 0,
-    product: '',
-    prices: [],
-    includes_shipping: true,
-    stripe_test: false,
-  };
-
-  const form = document.querySelector('form[data-product-price]')
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    console.log('submit event', { options });
-
-    const response = await createPaymentLink({
-      totalPrice: options.totalPrice,
-      product: options.product,
-      prices: options.prices,
-      includes_shipping: options.includes_shipping,
-      stripe_test: options.stripe_test,
-    });
-
-    console.log({ options, response });
-  });
-
-  form?.addEventListener('change', async () => {
-    console.log('change event');
-    options.prices = [];
-
-    const productDataString = form.getAttribute('data-product-json');
-
-    if (!productDataString) {
-      console.error('No product data');
-      return;
-    }
-
-    const productData = JSON.parse(productDataString) as Product;
-
-    if (productData.Name?.match(/test/i)) {
-      // @TODO: Read from Product JSON
-      options.stripe_test = true;
-    }
-
-    if (productData.Name?.match(/digital/i)) {
-      // @TODO: Read from Product JSON
-      options.includes_shipping = false;
-    }
-
-    options.product = '' + productData.id;
-
-    let customPriceInput = document.querySelector('[data-input="custom-price"]')?.value;
-    let customPrice = 0;
-    if (customPriceInput) {
-      customPriceInput = parseInt(customPriceInput, 10);
-      options.prices.push({
-        unit_amount: customPriceInput,
-        currency: 'usd',
-        product: productData.SKU,
-      })
-      customPrice = customPriceInput;
-    }
-
-    let quantityInput = document.querySelector('[data-input="quantity"]')?.value;
-    let priceOption = document.querySelector('[data-input="product.prices"]')?.value;
-    quantityInput = parseInt(quantityInput || '1', 10) || 1;
-    const selectedPrice = productData?.PRICES?.find((price: Price) => price.STRIPE_ID === priceOption);
-
-    if (selectedPrice?.STRIPE_ID) {
-      options.prices.push({
-        quantity: quantityInput,
-        price: selectedPrice?.STRIPE_ID,
-      } as Price);
-    }
-
-    const descriptionOutput = document.querySelector('[data-output="product.price.description"]');
-    if (descriptionOutput) {
-      descriptionOutput.innerHTML = selectedPrice?.Description || '';
-    }
-
-    const totalPrice = ((selectedPrice?.Price || 0) * quantityInput) + customPrice;
-    options.totalPrice = totalPrice;
-
-    const priceOutput = document.querySelector('[data-output="total"]');
-    if (priceOutput) {
-      priceOutput.innerHTML = `${totalPrice || '0'}`;
-    }
-
-    const submitButton = document.querySelector('[data-action-button="submit"]');
-    if (submitButton) {
-      submitButton.removeAttribute('disabled');
-    }
-  });
 };

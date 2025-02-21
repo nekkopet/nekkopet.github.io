@@ -1,23 +1,29 @@
 import type { Site, SocialObjects } from "./types";
 
-const BASE_URL = ((process.env.BASE_URL || import.meta.env.BASE_URL) as string);
-
-const url = BASE_URL.startsWith('http') ? BASE_URL : 'https://markket.place/';
-
-console.log({ url, BASE_URL });
+// Loading .env files to populate the configuration
+const {
+  BASE_URL,
+  PUBLIC_STRIPE_PUBLISHABLE_KEY,
+  STRAPI_URL,
+  STORE_SLUG,
+  COLOR_PRIMARY,
+  COLOR_ACCENT,
+  POSTHOG_ID,
+} = import.meta.env;
 
 /**
  * @type {{[string]: string}} Global Configuration attributes for the markket instance
  */
 export const markketplace = {
-  STRAPI_URL: (import.meta.env.STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place',
-  STORE_SLUG: import.meta.env.STORE_SLUG as string || 'fika',
+  STRAPI_URL: (STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place',
+  STORE_SLUG: (STORE_SLUG as string) || 'fika',
   colors: {
-    primary: import.meta.env.COLOR_PRIMARY as string || '#fbda0c',
-    accent: import.meta.env.COLOR_ACCENT as string || '#38b2ac',
+    primary: COLOR_PRIMARY as string || '#fbda0c',
+    accent: COLOR_ACCENT as string || '#38b2ac',
   },
-  POSTHOG_ID: import.meta.env.POSTHOG_ID as string || '',
-  url,
+  POSTHOG_ID: POSTHOG_ID as string || '',
+  url: BASE_URL.startsWith('http') ? BASE_URL : 'https://markket.place/',
+  STRIPE_PUBLISHABLE_KEY: PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
 };
 
 /**

@@ -6,7 +6,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import { markketplace } from "@config";
 import HeroImage from "@components/HeroImage.astro";
-import CheckoutModal from "@pages/checkout/CheckoutModal"
+import CheckoutModal from "@components/checkout/CheckoutModal";
 
 import { marked } from "marked";
 
@@ -54,9 +54,8 @@ const selectedImage =
 ---
 
 <script>
-  import { ProductSlideshow, ProductForm } from "../../scripts/ui.product";
+  import { ProductSlideshow } from "../../scripts/ui.product";
   document.addEventListener("astro:page-load", () => {
-    ProductForm();
     ProductSlideshow();
   });
 </script>
@@ -74,43 +73,43 @@ const selectedImage =
     pageTitle={product?.data?.Name as string}
     pageDesc={product?.data?.SEO?.metaDescription || "Product Details"}
   />
-  <main class="lg:px-8 product-page px-4 py-12 sm:px-6">
+  <main class="product-page px-4 py-12 sm:px-6 lg:px-8">
     <div class="mx-auto w-full px-6">
-      <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mb-10">
+      <div class="mb-10 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
         <div class="flex flex-col">
-          <div
-            class="aspect-w-3 aspect-h-4 overflow-hidden rounded-l pr-3"
-          >
+          <div class="aspect-w-3 aspect-h-4 overflow-hidden rounded-l pr-3">
             <HeroImage
               title={product?.data?.Name as string}
               image={selectedImage}
             />
           </div>
-          <div class="flex flex-col w-full mt-10 justify-end">
+          <div class="mt-10 flex w-full flex-col justify-end">
             {
               product?.data?.Slides?.length > 0 && (
                 <div class="">
                   <div class="grid grid-cols-6 gap-2">
                     {product?.data?.Slides?.map((slide: any) => {
                       return (
-                      <div class="aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
-                        <img
-                          src={slide?.formats?.thumbnail?.url}
-                          alt={slide?.alternativeText || ""}
-                          data-astro-image={JSON.stringify(slide?.formats?.small)}
-                          class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
-                          aria-description={slide?.caption || ""}
-                        />
-                      </div>
-                      )}
-                    )}
+                        <div class="aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
+                          <img
+                            src={slide?.formats?.thumbnail?.url}
+                            alt={slide?.alternativeText || ""}
+                            data-astro-image={JSON.stringify(
+                              slide?.formats?.small
+                            )}
+                            class="h-full w-full cursor-pointer object-cover object-center transition-opacity hover:opacity-75"
+                            aria-description={slide?.caption || ""}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )
             }
           </div>
         </div>
-        <div class="lg:mt-0 mt-10 px-4 sm:mt-16 sm:px-0">
+        <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
           <h1
             class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
           >
@@ -125,11 +124,10 @@ const selectedImage =
             />
           </div>
         </div>
-
       </div>
       <Hr />
-      <div class="flex mt-6 justify-center">
-        <CheckoutModal  client:load prices={prices} product={product} />
+      <div class="mt-6 flex justify-center">
+        <CheckoutModal client:load prices={prices} product={product} />
       </div>
       <!-- <div class="w-full mt-8">
         <form
@@ -214,25 +212,20 @@ const selectedImage =
         </button> -->
         <ol class="mt-4 text-sm text-gray-500">
           <li class="mb-2">
-            We use Stripe to collect payments, and send payouts to the
-            artists
+            We use Stripe to collect payments, and send payouts to the artists
           </li>
           <li class="mb-2">
-            You'll be redirected to a Stripe page to continue, and we'll
-            notify the artists after a succesful transaction
-          </li>
-          <li class="mb-2">
-            Currently we don't support a shopping cart, you can get one
-            or multiple units of the same
+            Currently we don't support a shopping cart, you can get one or
+            multiple units of the same
             <em>Price</em> per transaction
           </li>
           <li class="mb-2">
-            We notify the artist after a succesful transaction and
-            forward your shipping details and email to them
+            We notify the artist after a succesful transaction and forward your
+            shipping details and email to them
           </li>
           <li class="mb-2">
-            The artists will reach out with tracking details, or follow
-            up steps to complete the transaction
+            The artists will reach out with tracking details, or follow up steps
+            to complete the transaction
           </li>
         </ol>
       </div>

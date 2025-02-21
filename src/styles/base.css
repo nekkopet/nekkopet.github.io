@@ -212,6 +212,10 @@ ul.blog-list li .aspect-video {
 .content-page p{
   margin-bottom: 1.5em;
 }
+.blog-post {
+  overflow: hidden;
+}
+.blog-post a,
 .content-page a {
   color: #4560ff;
   font-weight: bold;
