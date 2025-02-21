@@ -12,25 +12,21 @@ export interface Props {
 const { activeNav, noMarginTop = false } = Astro.props;
 ---
 
-<footer class={`${noMarginTop ? "" : "mt-auto"} bg-skin-card dark:bg-skin-fill`}>
+<footer
+  class={`${noMarginTop ? "" : "mt-auto"} bg-skin-card dark:bg-skin-fill`}
+>
   <Hr noPadding />
   <div class="footer-wrapper">
     <br />
     <div class="copyright-wrapper">
       <Socials centered />
       <span>Copyleft &#169; {currentYear}</span>
-      <span class="separator">&nbsp;|&nbsp;</span>
+      <span class="separator">&nbsp;</span>
       <span>Some rights reserved.</span>
       &nbsp;|&nbsp;
       <span>
         <a href="/pages/" class={activeNav === "pages" ? "active" : ""}>
           Pages
-        </a>
-      </span>
-      &nbsp;|&nbsp;
-      <span>
-        <a href="/stores/" class={activeNav === "stores" ? "active" : ""}>
-          Stores
         </a>
       </span>
       &nbsp;|&nbsp;
