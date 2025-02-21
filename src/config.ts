@@ -11,10 +11,6 @@ const {
   POSTHOG_ID,
 } = import.meta.env;
 
-console.info('Loading Astro environment variables:',
-  { BASE_URL, PUBLIC_STRIPE_PUBLISHABLE_KEY, STRAPI_URL, STORE_SLUG, COLOR_PRIMARY, COLOR_ACCENT, POSTHOG_ID }
-);
-
 /**
  * @type {{[string]: string}} Global Configuration attributes for the markket instance
  */

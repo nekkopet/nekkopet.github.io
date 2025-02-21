@@ -117,7 +117,8 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
                 <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
                   Available Options
                   <br />
-                  <small className="text-sm text-gray-500">Pick an option xor chose your own via tip input</small>
+                  <small className="text-sm text-gray-500">Pick an option to see more details</small>
+                  <br />
                 </h3>
               </div>
 
@@ -152,7 +153,7 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
               </div>
 
               <div className="m-4">
-                <label htmlFor="custom-price"><strong>Custom Price</strong></label>
+                <label htmlFor="custom-price"><strong>Tip || Custom Price</strong></label>
                 <input
                   type="number"
                   id="custom-price"
@@ -180,7 +181,9 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
                 </button>
               </div>
               <div className="m-4">
-                <p className="text-md">{selectedPrice?.Description || ' '}</p>
+                <p className="text-md">
+                  {total > 0 ? selectedPrice?.Description || 'Continue using custom price' : 'Please select a price and quantity to continue'}
+                </p>
               </div>
             </form>
           </div>
