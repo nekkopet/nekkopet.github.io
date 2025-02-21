@@ -1,5 +1,5 @@
 import  {type FC, useEffect, useState } from 'react';
-import { ProductForm } from "scripts/ui.product"
+import { ProductForm, createPaymentLink, type PaymentLinkOptions, type Price } from "scripts/ui.product"
 
 interface Props {
   prices: any;
@@ -8,13 +8,70 @@ interface Props {
 
 const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPrice, setSelectedPrice] = useState(0);
+  const [selectedPriceId, setSelectedPriceId] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [tip, setTip] = useState(0);
   const [total, setTotal] = useState(0);
-  const handlePriceChange = (event: any) => {
-    const price = event.target.value;
+  const [selectedPrice, setSelectedPrice] = useState({} as Price);
+
+  const [options, setOptions] = useState({
+    totalPrice: 0,
+    product: product.id,
+    prices: [],
+    stripe_test: product?.data.Name?.match(/test/i),
+    includes_shipping: !product?.data.Name?.match(/digital/i),
+  } as PaymentLinkOptions);
+
+
+  // Calculate total whenever inputs change
+  useEffect(() => {
+    const priceId = selectedPriceId;
+    const price = prices.find((p: Price) => p.STRIPE_ID == priceId);
+    const basePrice = price?.Price || 0;
+    const subtotal = basePrice * quantity;
+    const newTotal = subtotal + tip;
+
+    console.log({ basePrice, price, subtotal, newTotal, tip })
+
+    const option_prices = [
+      {
+        quantity,
+        price: String(selectedPriceId),
+        currency: 'usd',
+      } as Price,
+    ];
+
+    if (tip > 0) {
+      option_prices.push({
+        unit_amount: String(tip),
+        currency: 'usd',
+        product: product?.data.SKU,
+      } as Price);
+    }
+
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      totalPrice: newTotal,
+      prices: option_prices,
+
+    } as PaymentLinkOptions));
+    setTotal(Number(newTotal));
     setSelectedPrice(price);
-    updateTotal(price, quantity);
+
+  }, [selectedPriceId, quantity, tip]);
+
+
+  const redirectToPaymentLink = async (event: any) => {
+    event.preventDefault();
+    console.log('submit event', { options });
+    // @TODO: prevent redirect when price or product is missing
+    const a = await createPaymentLink(options);
+    console.log({ a });
+  };
+
+  const handlePriceChange = (event: any) => {
+    const price = event.target.value as string;
+    setSelectedPriceId(price);
   };
 
   useEffect(() => {
@@ -24,19 +81,13 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
   }, [isModalOpen]);
 
   const handleQuantityChange = (event: any) => {
-    const newQuantity = event.target.value;
+    const newQuantity = event.target.value as number;
     setQuantity(newQuantity);
-    updateTotal(selectedPrice, newQuantity);
   };
 
-  const handleCustomPriceChange = (event: any) => {
+  const handleTipChange = (event: any) => {
     const customPrice = event.target.value;
-    updateTotal(customPrice, quantity);
-  };
-
-  const updateTotal = (price: number, quantity: number) => {
-    const newTotal = price * quantity;
-    setTotal(newTotal);
+    setTip(parseInt(customPrice, 10));
   };
 
   return (
@@ -50,7 +101,7 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
               onClick={() => setIsModalOpen(false)}
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                 className="icon icon-tabler icons-tabler-outline icon-tabler-x">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M18 6l-12 12" />
@@ -66,12 +117,13 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
               <div className="hidden md:flex items-center justify-between">
                 <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
                   Available Options
+                  <br />
+                  <small className="text-sm text-gray-500">Pick an option xor chose your own via tip input</small>
                 </h3>
-                <span className="text-sm text-gray-500">Select your preferred option</span>
               </div>
 
               <div className="m-4">
-                <label htmlFor="price"><strong>Price Options</strong></label>
+                <label htmlFor="price"><strong>Product Options</strong></label>
                 <select
                   id="price"
                   name="price"
@@ -89,7 +141,7 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
               </div>
 
               <div className="m-4">
-                <label htmlFor="quantity"><strong>Quantity</strong></label>
+                <label htmlFor="quantity"><strong>Quantity multiplier</strong></label>
                 <input
                   type="number"
                   id="quantity"
@@ -108,7 +160,7 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
                   placeholder="0"
                   name="custom-price"
                   className="w-full rounded-md border-2 border-solid border-gray-300 py-2 pl-3 pr-10 text-base focus:border-accent-500 focus:outline-none focus:ring-accent-500 dark:border-gray-600 dark:bg-gray-700"
-                  onChange={handleCustomPriceChange}
+                  onChange={handleTipChange}
                 />
               </div>
 
@@ -119,21 +171,17 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
 
               <div className="m-4">
                 <button
-                  disabled
+                  disabled={total <= 0}
                   data-action-button="submit"
                   type="submit"
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-sky-500 px-8 py-3 text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={redirectToPaymentLink}
                 >
                   Continue to Payment
                 </button>
-
-                <ol className="mt-4 text-sm text-gray-500 hidden md:flex flex-col ">
-                  <li className="mb-2">We use Stripe to collect payments, and send payouts to the artists.</li>
-                  <li className="mb-2">You'll be redirected to a Stripe page to continue, and we'll notify the artists after a successful transaction.</li>
-                  <li className="mb-2">Currently, we don't support a shopping cart. You can get one or multiple units of the same <em>Price</em> per transaction.</li>
-                  <li className="mb-2">We notify the artist after a successful transaction and forward your shipping details and email to them.</li>
-                  <li className="mb-2">The artists will reach out with tracking details or follow-up steps to complete the transaction.</li>
-                </ol>
+              </div>
+              <div className="m-4">
+                <p className="text-md">{selectedPrice?.Description || ' '}</p>
               </div>
             </form>
           </div>

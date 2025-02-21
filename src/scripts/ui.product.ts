@@ -1,4 +1,4 @@
-import { type Product } from '../interfaces';
+// import { type Product } from '../interfaces';
 import { markketplace } from '@config';
 /**
  *
@@ -94,99 +94,62 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
  * Creates event listeners, and other needed scripts in the /product/:slug page, or wherever is embedded
  */
 export const ProductForm = function () {
-  console.log('Activating ProductForm');
+  // console.log('Activating ProductForm');
 
-  const options: PaymentLinkOptions = {
-    totalPrice: 0,
-    product: '',
-    prices: [],
-    includes_shipping: true,
-    stripe_test: false,
-  };
+  // const options: PaymentLinkOptions = {
+  //   totalPrice: 0,
+  //   product: '',
+  //   prices: [],
+  //   includes_shipping: true,
+  //   stripe_test: false,
+  // };
 
-  const form = document.querySelector('form[data-product-price]')
+  // const form = document.querySelector('form[data-product-price]')
 
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  // form?.addEventListener('change', async () => {
 
-    console.log('submit event', { options });
 
-    const response = await createPaymentLink({
-      totalPrice: options.totalPrice,
-      product: options.product,
-      prices: options.prices,
-      includes_shipping: options.includes_shipping,
-      stripe_test: options.stripe_test,
-    });
 
-    console.log({ options, response });
-  });
+  //   let customPriceInput = document.querySelector('[data-input="custom-price"]')?.value;
+  //   let customPrice = 0;
+  //   if (customPriceInput) {
+  //     customPriceInput = parseInt(customPriceInput, 10);
+  //     options.prices.push({
+  //       unit_amount: customPriceInput,
+  //       currency: 'usd',
+  //       product: productData.SKU,
+  //     })
+  //     customPrice = customPriceInput;
+  //   }
 
-  form?.addEventListener('change', async () => {
-    console.log('change event');
-    options.prices = [];
+  //   let quantityInput = document.querySelector('[data-input="quantity"]')?.value;
+  //   let priceOption = document.querySelector('[data-input="product.prices"]')?.value;
+  //   quantityInput = parseInt(quantityInput || '1', 10) || 1;
+  //   const selectedPrice = productData?.PRICES?.find((price: Price) => price.STRIPE_ID === priceOption);
 
-    const productDataString = form.getAttribute('data-product-json');
+  //   if (selectedPrice?.STRIPE_ID) {
+  //     options.prices.push({
+  //       quantity: quantityInput,
+  //       price: selectedPrice?.STRIPE_ID,
+  //     } as Price);
+  //   }
 
-    if (!productDataString) {
-      console.error('No product data');
-      return;
-    }
+  //   const descriptionOutput = document.querySelector('[data-output="product.price.description"]');
+  //   if (descriptionOutput) {
+  //     descriptionOutput.innerHTML = selectedPrice?.Description || '';
+  //   }
 
-    const productData = JSON.parse(productDataString) as Product;
+  //   const totalPrice = ((selectedPrice?.Price || 0) * quantityInput) + customPrice;
+  //   options.totalPrice = totalPrice;
 
-    if (productData.Name?.match(/test/i)) {
-      // @TODO: Read from Product JSON
-      options.stripe_test = true;
-    }
+  //   const priceOutput = document.querySelector('[data-output="total"]');
+  //   if (priceOutput) {
+  //     priceOutput.innerHTML = `${totalPrice || '0'}`;
+  //   }
 
-    if (productData.Name?.match(/digital/i)) {
-      // @TODO: Read from Product JSON
-      options.includes_shipping = false;
-    }
-
-    options.product = '' + productData.id;
-
-    let customPriceInput = document.querySelector('[data-input="custom-price"]')?.value;
-    let customPrice = 0;
-    if (customPriceInput) {
-      customPriceInput = parseInt(customPriceInput, 10);
-      options.prices.push({
-        unit_amount: customPriceInput,
-        currency: 'usd',
-        product: productData.SKU,
-      })
-      customPrice = customPriceInput;
-    }
-
-    let quantityInput = document.querySelector('[data-input="quantity"]')?.value;
-    let priceOption = document.querySelector('[data-input="product.prices"]')?.value;
-    quantityInput = parseInt(quantityInput || '1', 10) || 1;
-    const selectedPrice = productData?.PRICES?.find((price: Price) => price.STRIPE_ID === priceOption);
-
-    if (selectedPrice?.STRIPE_ID) {
-      options.prices.push({
-        quantity: quantityInput,
-        price: selectedPrice?.STRIPE_ID,
-      } as Price);
-    }
-
-    const descriptionOutput = document.querySelector('[data-output="product.price.description"]');
-    if (descriptionOutput) {
-      descriptionOutput.innerHTML = selectedPrice?.Description || '';
-    }
-
-    const totalPrice = ((selectedPrice?.Price || 0) * quantityInput) + customPrice;
-    options.totalPrice = totalPrice;
-
-    const priceOutput = document.querySelector('[data-output="total"]');
-    if (priceOutput) {
-      priceOutput.innerHTML = `${totalPrice || '0'}`;
-    }
-
-    const submitButton = document.querySelector('[data-action-button="submit"]');
-    if (submitButton) {
-      submitButton.removeAttribute('disabled');
-    }
-  });
+  //   const submitButton = document.querySelector('[data-action-button="submit"]');
+  //   if (submitButton) {
+  //     submitButton.removeAttribute('disabled');
+  //   }
+  // });
 };
