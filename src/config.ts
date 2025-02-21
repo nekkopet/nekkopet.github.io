@@ -1,8 +1,6 @@
 import type { Site, SocialObjects } from "./types";
 
-// import { loadEnv } from "vite";
-
-// hack because Astro doesn't read the .env file before their config file
+// Loading .env files to populate the configuration
 const {
   BASE_URL,
   PUBLIC_STRIPE_PUBLISHABLE_KEY,
@@ -13,8 +11,7 @@ const {
   POSTHOG_ID,
 } = import.meta.env;
 
-
-console.info('Loading Astro config',
+console.info('Loading Astro environment variables:',
   { BASE_URL, PUBLIC_STRIPE_PUBLISHABLE_KEY, STRAPI_URL, STORE_SLUG, COLOR_PRIMARY, COLOR_ACCENT, POSTHOG_ID }
 );
 

@@ -12,7 +12,7 @@ export const ProductSlideshow = function () {
   // Add event listeners to fire confetti when a button is clicked.
   buttons.forEach(button => {
     button.addEventListener("click", e => {
-      const jsonData = e.target?.getAttribute('data-astro-image');
+      const jsonData = (e.target as Element)?.getAttribute('data-astro-image');
 
       try {
         const jsonObject = JSON.parse(jsonData || ''); // Parse the JSON string
@@ -20,7 +20,7 @@ export const ProductSlideshow = function () {
         console.log({ heroImage })
 
         if (heroImage) {
-          heroImage.src = jsonObject.url;
+          (heroImage as HTMLImageElement).src = jsonObject.url;
         }
 
       } catch (error) {
@@ -95,6 +95,7 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
  */
 export const ProductForm = function () {
   console.log('Activating ProductForm');
+
   const options: PaymentLinkOptions = {
     totalPrice: 0,
     product: '',
