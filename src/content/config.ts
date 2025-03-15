@@ -16,7 +16,7 @@ const stores = defineCollection({
   loader: strapiLoader({
     contentType: "store",
     filter: `filters[active]=true`,
-    populate: 'SEO.socialImage,Logo,URLS,Favicon,events'
+    populate: 'SEO.socialImage,Logo,URLS,Favicon'
   }),
 });
 
