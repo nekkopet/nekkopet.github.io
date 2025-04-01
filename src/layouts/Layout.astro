@@ -33,7 +33,12 @@ const store: Store = stores.find(
   store => store.data.slug == markketplace.STORE_SLUG
 )?.data as any as Store;
 
-const baseUrl = Astro.site || "https://markket.place";
+let baseUrl = Astro.site?.toString() || "https://markket.place";
+
+
+if (!baseUrl?.startsWith("http")) {
+  baseUrl = `https://de.markket.place/store/${store?.slug}`;
+}
 
 const {
   title = SITE.title,

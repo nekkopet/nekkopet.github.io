@@ -21,6 +21,7 @@ import {
 import { slugifyStr } from "@utils/slugify";
 import { markketplace } from "@config";
 import { marked } from "marked";
+import AlbumsGrid from "@components/albums.grid";
 
 const stores = await getCollection("stores");
 const store = stores.find(
@@ -207,6 +208,8 @@ const content = marked.parse(store?.Description || "");
     <section class="mb-10 pt-10">
       <div  set:html={content} />
     </section>
+
+
   </main>
   <Footer />
 </Layout>
