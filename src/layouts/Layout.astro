@@ -18,6 +18,7 @@ export interface Props {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
+  className?: string;
   post?: CollectionEntry<"posts">;
   meta?: {
     title?: string;
@@ -46,6 +47,7 @@ const {
   post,
   scrollSmooth = false,
   meta,
+  className,
 } = Astro.props;
 
 const socialImageURL = new URL(
@@ -205,7 +207,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
     </style>
     <script is:inline src="/toggle-theme.js"></script>
   </head>
-  <body>
+  <body class={`theme-${className}`}>
     <slot />
   </body>
 </html>

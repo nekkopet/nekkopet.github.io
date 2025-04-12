@@ -5,7 +5,7 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import Socials from "@components/Socials.astro";
+// import Socials from "@components/Socials.astro";
 import { SITE, SOCIALS } from "@config";
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
@@ -43,7 +43,7 @@ const content = marked.parse(store?.data?.Description || "");
 // const products = store?.products?.data || [];
 ---
 
-<Layout title={`Home | ${SITE.title}`}>
+<Layout title={`Home | ${SITE.title}`} className={markketplace.style}>
   <Header store={store} products={products} />
   <main id="main-content">
     <section id="hero">
@@ -116,6 +116,36 @@ const content = marked.parse(store?.data?.Description || "");
         <Hr />
         )
       }
+
+{
+  posts.length > 0 && (
+    <section id="recent-posts">
+      <h1>Recent Posts</h1>
+      <ul class="-mx-4 flex flex-wrap">
+        {posts.map(
+          ({ data, id }, index) =>
+            index < SITE.postPerIndex && (
+              <Card
+                href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
+                image={data?.cover || data.SEO?.metaImage}
+                frontmatter={{
+                  author: "x",
+                  tags: data.Tags?.map(tag => tag.Label),
+                  title: data.Title,
+                  pubDatetime: new Date(data.createdAt),
+                  modDatetime: new Date(data.updatedAt),
+                  description: data.SEO?.metaDescription || "",
+                  SEO: { ...data.SEO },
+                }}
+                secHeading={false}
+              />
+            )
+        )}
+      </ul>
+    </section>
+  )
+}
+
       {
         products && products.length > 0 && (
           <section id="recent-posts">
@@ -164,35 +194,6 @@ const content = marked.parse(store?.data?.Description || "");
         )
       }
       <Hr />
-
-      {
-        posts.length > 0 && (
-          <section id="recent-posts">
-            <h1>Recent Posts</h1>
-            <ul class="-mx-4 flex flex-wrap">
-              {posts.map(
-                ({ data, id }, index) =>
-                  index < SITE.postPerIndex && (
-                    <Card
-                      href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
-                      image={data?.cover || data.SEO?.metaImage}
-                      frontmatter={{
-                        author: "x",
-                        tags: data.Tags?.map(tag => tag.Label),
-                        title: data.Title,
-                        pubDatetime: new Date(data.createdAt),
-                        modDatetime: new Date(data.updatedAt),
-                        description: data.SEO?.metaDescription || "",
-                        SEO: { ...data.SEO },
-                      }}
-                      secHeading={false}
-                    />
-                  )
-              )}
-            </ul>
-          </section>
-        )
-      }
 
       <div class="all-posts-btn-wrapper">
         <LinkButton href="/blog/">

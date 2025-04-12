@@ -9,6 +9,7 @@ const {
   COLOR_PRIMARY,
   COLOR_ACCENT,
   POSTHOG_ID,
+  MARKKET_STYLE
 } = import.meta.env;
 
 /**
@@ -24,6 +25,7 @@ export const markketplace = {
   POSTHOG_ID: POSTHOG_ID as string || '',
   url: BASE_URL.startsWith('http') ? BASE_URL : 'https://markket.place/',
   STRIPE_PUBLISHABLE_KEY: PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
+  style: MARKKET_STYLE || 'markket'
 };
 
 /**
