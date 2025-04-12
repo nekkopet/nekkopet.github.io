@@ -2,7 +2,7 @@ body {
   color: inherit;
 }
 
-#main-content {
+.theme-fairy>#main-content {
   max-width: 1024px;
   margin: auto;
 }
