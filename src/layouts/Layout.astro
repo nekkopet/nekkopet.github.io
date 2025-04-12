@@ -1,7 +1,7 @@
 ---
 import { LOCALE, SITE, markketplace } from "@config";
 import "@styles/base.css";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Posthog from "@components/posthog.astro";
 import type Store from "@interfaces/Store";
@@ -197,7 +197,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
       )
     }
 
-    <ViewTransitions />
+    <ClientRouter />
 
     <Posthog />
     <style
