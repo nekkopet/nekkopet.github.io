@@ -90,6 +90,12 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
+    {
+      markketplace.style && (
+        <link rel="stylesheet" href={`/${markketplace.style}.css`} />
+      )
+    }
+
     <!-- General Meta Tags -->
     <title>
       {
@@ -207,7 +213,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
     </style>
     <script is:inline src="/toggle-theme.js"></script>
   </head>
-  <body class={`theme-${className}`}>
+  <body class={`theme-${markketplace.style}`}>
     <slot />
   </body>
 </html>
