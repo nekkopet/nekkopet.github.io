@@ -1,0 +1,11 @@
+.theme-markket>#main-content {
+  max-width: 1024px;
+  margin: auto;
+}
+
+.theme-markket .nav-container {
+  background: #006aff;
+  background: linear-gradient(90deg, rgba(0, 106, 255, 1) 0%, rgba(117, 147, 255, 1) 100%);
+  color: white;
+  border-bottom: 4px solid #006AFF;
+}
