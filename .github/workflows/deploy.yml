@@ -21,8 +21,7 @@ jobs:
       STRAPI_URL: ${{ secrets.STRAPI_URL }}
       STORE_SLUG: ${{ secrets.STORE_SLUG }}
       BASE_URL: ${{ secrets.BASE_URL }}
-      COLOR_PRIMARY: ${{ secrets.COLOR_PRIMARY }}
-      COLOR_ACCENT: ${{ secrets.COLOR_ACCENT }}
+      MARKKET_STYLE: ${{vars.MARKKET_STYLE}}
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4

@@ -18,6 +18,7 @@ const {
 export const markketplace = {
   STRAPI_URL: (STRAPI_URL || '').replace(/\/$/, '') || 'https://api.markket.place',
   STORE_SLUG: (STORE_SLUG as string) || 'fika',
+  /** @deprecated - using public/$[style].css files */
   colors: {
     primary: COLOR_PRIMARY as string || '#fbda0c',
     accent: COLOR_ACCENT as string || '#38b2ac',
@@ -28,7 +29,7 @@ export const markketplace = {
   style: MARKKET_STYLE || 'markket'
 };
 
-/**
+/**q
  * Global configuration attributes for the astro site
  *
  * @TODO: Read these values from the API during launch or build time
