@@ -31,6 +31,12 @@ This repo contains a few theme variations that you can toggle using the variable
 
 You can fork and create new themes, and optionally send pull requests to share improvements
 
+Included theme options are `nekko` and `fae` - with example color & font varations
+
+[fae demo](https://tigerlily.github.io)
+
+[nekko demo](https://nekkopet.com)
+
 **Creating styles**
 
 The program loads a file with the same name, expected in the public format, as: `public/${MARKKET_STYLE}.css`  

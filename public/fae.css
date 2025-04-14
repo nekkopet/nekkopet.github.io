@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700');
+body {
+  color: inherit;
+}
+/*
+alternative to using custom fonts as well - directly with tailwind
+ @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import "tailwindcss";
+@theme {
+  --font-roboto: "Roboto", sans-serif;  */
+/* } */
+.theme-fae>#main-content {
+  max-width: 1024px;
+  margin: auto;
+  font-family: "Comic Neue", cursive;
+    font-size: 17px;
+}
+
+.theme-fae .nav-container {
+  background: #2A7B9B;
+  background: linear-gradient(166deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
+  color: white;
+  border-bottom: 4px solid #9fd170;
+}
+
+.theme-fae h1
+ {
+  font-weight: 700;
+  /* font-weight: 400; */
+  /* font-style: normal; */
+
+}
