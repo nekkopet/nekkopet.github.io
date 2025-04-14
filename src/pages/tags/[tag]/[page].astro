@@ -5,12 +5,27 @@ import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import type Store from "@interfaces/Store";
+import Pagination from "@components/Pagination.astro";
+import { SITE, markketplace } from "@config";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
 
 export interface Props {
   post: CollectionEntry<"posts">;
   tag?: string;
   tagName: string;
+  currentPage: number;
+  totalPages: number;
 }
+
+const stores = await getCollection("stores");
+const store = stores.find(
+  (store: any) => store.data.slug === markketplace.STORE_SLUG
+)?.data as Store | undefined;
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -45,7 +60,7 @@ export async function getStaticPaths() {
 }
 
 const { page } = Astro.params;
-const { tag, tagName } = Astro.props;
+const { tag, tagName, currentPage, totalPages } = Astro.props;
 
 const posts = await getCollection("posts");
 
@@ -57,4 +72,24 @@ const pagination = getPagination({
 });
 ---
 
-<TagPosts {...pagination} tag={tag || "all"} tagName={tagName || "all"} />
+<Layout title={`Tag: ${tagName} | ${SITE.title}`}>
+  <Header activeNav="tags" store={{ data: store } as any} />
+  <Breadcrumbs />
+  <Main
+    pageTitle={[`Tag:`, `${tagName}`]}
+    titleTransition={tag as string}
+    pageDesc={`All the articles with the tag "${tagName}".`}
+  />
+  <TagPosts {...pagination} tag={tag || "all"} tagName={tagName || "all"} />
+
+  <Pagination
+    {currentPage}
+    {totalPages}
+    prevUrl={`/tags/${tag}${
+      currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""
+    }/`}
+    nextUrl={`/tags/${tag}/${currentPage + 1}/`}
+  />
+
+  <Footer noMarginTop={totalPages > 1} />
+</Layout>

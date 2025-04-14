@@ -5,12 +5,15 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import Socials from "@components/Socials.astro";
-import { SITE, SOCIALS } from "@config";
+// import Socials from "@components/Socials.astro";
+import { SITE,  } from "@config";
+import { IconRss } from '@tabler/icons-react';
 import { getCollection } from "astro:content";
 import type Store from "../interfaces/Store";
 import type Page from "../interfaces/Page";
 import type Product from "../interfaces/Product";
+import type Article from "../interfaces/Article";
+
 import {
   BlocksRenderer,
   type BlocksContent,
@@ -21,33 +24,33 @@ import { marked } from "marked";
 
 const stores = await getCollection("stores");
 const store = stores.find(
-  (store: { data: Store }) => store.data.slug === markketplace.STORE_SLUG
-) as { data: Store };
+  (store: any) => store.data.slug === markketplace.STORE_SLUG
+)?.data as  Store  | undefined;
 
-const products: Product[] = await getCollection("products");
+const products = await getCollection("products") as any as { data: Product}[];
 
-const posts = await getCollection("posts");
+const posts = await getCollection("posts") as any as { data: Article}[];
 
-const socialCount = SOCIALS.filter(social => social.active).length;
+// const socialCount = SOCIALS.filter(social => social.active).length;
 
 const pages = await getCollection("pages");
 
-const homePage = pages.find(
-  (page: { data: Page }) => page.data.slug === "home"
-) as { data: Page };
+const homePage  = pages.find(
+  (page: any) => page.data.slug === "home"
+)?.data as Page  | undefined;
 
 const links = store?.URLS || [];
 
-const content = marked.parse(store?.data?.Description || "");
+const content = marked.parse(store?.Description || "");
 
 // const products = store?.products?.data || [];
 ---
 
 <Layout title={`Home | ${SITE.title}`}>
-  <Header store={store} products={products} />
+  <Header store={{data: store as Store }} products={products} />
   <main id="main-content">
     <section id="hero">
-      <h1>{store?.data?.title || "Markketplace"}</h1>
+      <h1>{store?.title || "Markketplace"}</h1>
       <a
         target="_blank"
         href="/rss.xml"
@@ -55,31 +58,23 @@ const content = marked.parse(store?.data?.Description || "");
         aria-label="rss feed"
         title="RSS Feed"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rss-icon">
-          <path
-            d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
-          >
-          </path><path
-            d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
-          >
-          </path><circle cx="6" cy="18" r="2"></circle>
-        </svg>
+        <IconRss size={18} />
         <span class="sr-only">RSS Feed</span>
       </a>
 
-      <p>
+      <p class="sparkle">
         <strong>
           {
-            homePage?.data?.SEO?.metaDescription ||
-              store?.data?.Description ||
+            homePage?.SEO?.metaDescription ||
+              store?.Description ||
               "A simple and minimal Markketplace theme."
           }
         </strong>
       </p>
       {
-        store.Logo?.url && (
+        store?.Logo?.url && (
           <img
-            src={store.Logo.url}
+            src={store?.Logo.url}
             alt={store.title}
             class="h-24 w-24 rounded-full"
           />
@@ -89,7 +84,7 @@ const content = marked.parse(store?.data?.Description || "");
     <Hr />
     <section class="">
       <BlocksRenderer
-        content={homePage?.data?.Content || ([] as BlocksContent[])}
+        content={(homePage?.Content || []) as BlocksContent}
       />
     </section>
     <Hr />
@@ -116,11 +111,54 @@ const content = marked.parse(store?.data?.Description || "");
         <Hr />
         )
       }
+
+{
+  posts.length > 0 && (
+    <section id="recent-posts">
+      <h1>Recent Posts</h1>
+      <ul class="-mx-4 flex flex-wrap">
+        {posts.map(
+          ({ data}, index) =>
+            index < SITE.postPerIndex && (
+              <Card
+                key={index}
+                href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
+                image={data?.cover || data.SEO?.metaImage}
+                tags={ data.Tags?.map(tag => tag.Label) as string[]}
+                frontmatter={{
+                  author: "x",
+                  title: data.Title,
+                  pubDatetime: new Date(data.createdAt),
+                  modDatetime: new Date(data.updatedAt),
+                  description: data.SEO?.metaDescription || "",
+                  SEO: { ...data.SEO },
+                }as any}
+                secHeading={false}
+              />
+            )
+        )}
+      </ul>
+      <div class="all-posts-btn-wrapper">
+        <LinkButton href="/blog/">
+          /Blog
+          <svg xmlns="http://www.w3.org/2000/svg">
+            <path
+              class="dark:fill-[#E4007C]"
+              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+            >
+            </path>
+          </svg>
+        </LinkButton>
+      </div>
+    </section>
+  )
+}
+
       {
         products && products.length > 0 && (
           <section id="recent-posts">
             <div class="mb-12 mt-6">
-              <h2>Products</h2>
+              <h2>Catalogue</h2>
               <ul class="-mx-4 flex flex-wrap">
                 {products.slice(0, 5).map(({ data }) => {
                   return (
@@ -153,7 +191,7 @@ const content = marked.parse(store?.data?.Description || "");
               </ul>
               <div class="all-posts-btn-wrapper">
                 <LinkButton href="/products/">
-                  All Products
+                  /Catalogue|
                   <svg xmlns="http://www.w3.org/2000/svg">
                     <path class="dark:fill-[#E4007C]" d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
                   </svg>
@@ -164,48 +202,6 @@ const content = marked.parse(store?.data?.Description || "");
         )
       }
       <Hr />
-
-      {
-        posts.length > 0 && (
-          <section id="recent-posts">
-            <h1>Recent Posts</h1>
-            <ul class="-mx-4 flex flex-wrap">
-              {posts.map(
-                ({ data, id }, index) =>
-                  index < SITE.postPerIndex && (
-                    <Card
-                      href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
-                      image={data?.cover || data.SEO?.metaImage}
-                      frontmatter={{
-                        author: "x",
-                        tags: data.Tags?.map(tag => tag.Label),
-                        title: data.Title,
-                        pubDatetime: new Date(data.createdAt),
-                        modDatetime: new Date(data.updatedAt),
-                        description: data.SEO?.metaDescription || "",
-                        SEO: { ...data.SEO },
-                      }}
-                      secHeading={false}
-                    />
-                  )
-              )}
-            </ul>
-          </section>
-        )
-      }
-
-      <div class="all-posts-btn-wrapper">
-        <LinkButton href="/blog/">
-          All Posts
-          <svg xmlns="http://www.w3.org/2000/svg">
-            <path
-              class="dark:fill-[#E4007C]"
-              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-            >
-            </path>
-          </svg>
-        </LinkButton>
-      </div>
     </section>
     <section class="mb-10 pt-10">
       <div  set:html={content} />

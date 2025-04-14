@@ -4,7 +4,12 @@ import TagPosts from "@layouts/TagPosts.astro";
 import getPostsByTag from "@utils/getPostsByTag";
 import getPagination from "@utils/getPagination";
 import getUniqueTags from "@utils/getUniqueTags";
-import { markketplace } from "@config";
+import { SITE, markketplace } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -42,6 +47,14 @@ const store = stores.find(
 );
 ---
 
-<main id="main-content">
-  <TagPosts {...pagination} {tag} {tagName} />
-</main>
+<Layout title={`Tag: ${tagName} | ${SITE.title}`}>
+  <Header activeNav="tags" store={store} />
+  <Main
+    pageTitle={[`Tag:`, `${tagName}`]}
+    titleTransition={tag}
+    pageDesc={`All the articles with the tag "${tagName}".`}
+  >
+    <TagPosts {...pagination} {tag} {tagName} />
+  </Main>
+  <Footer />
+</Layout>

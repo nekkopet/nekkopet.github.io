@@ -1,0 +1,461 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Dancing+Script:wght@400;700&display=swap');
+body {
+  color: inherit;
+}
+/* Fairy Theme Variables */
+:root {
+  --fae-pink: #ffb7e0;
+  --fae-lavender: #d4bbff;
+  --fae-mint: #b8f0dc;
+  --fae-yellow: #fff3b8;
+  --fae-blue: #a7ddff;
+  --fae-purple: #cda5f3;
+  --fae-green: #9fd170;
+  --fae-teal: #2A7B9B;
+  --fae-orange: #ffcea8;
+  --fae-text: #5a427a;
+  --fae-text-light: #7a6c95;
+  --fae-shadow: rgba(170, 145, 211, 0.25);
+  --fae-border: rgba(211, 181, 255, 0.5);
+  --fae-gradient-primary: linear-gradient(166deg, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
+  --fae-gradient-text: linear-gradient(90deg, #8a48e6 0%, #ff66b3 50%, #ffad4d 100%);
+  --fae-gradient-card: linear-gradient(to bottom right, rgba(255, 255, 255, 0.8), rgba(228, 240, 255, 0.5));
+  --fae-glow: 0 0 10px rgba(170, 145, 211, 0.6);
+}
+
+/* Main Theme Styling */
+.theme-fae>#main-content {
+  max-width: 1024px;
+  margin: auto;
+  font-family: "Comic Neue", cursive;
+  font-size: 17px;
+  color: var(--fae-text);
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%23d4bbff' fill-opacity='0.15'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 24.5l1-1 2 2-1 1-2-2zm15.5 7l1-1 2 2-1 1-2-2z' fill='%23ffb7e0' fill-opacity='0.1'/%3E%3C/svg%3E");
+    position: relative;
+    padding: 2rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .theme-fae>#main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top left, rgba(255, 183, 224, 0.1) 0%, transparent 70%),
+      radial-gradient(circle at bottom right, rgba(170, 145, 211, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.theme-fae .nav-container {
+  background: var(--fae-gradient-primary);
+  color: white;
+  border-bottom: 4px solid var(--fae-green);
+    box-shadow: 0 4px 15px var(--fae-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Magical sparkles in nav */
+.theme-fae .nav-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.1;
+  animation: fairy-dust 15s linear infinite;
+  pointer-events: none;
+}
+
+/* Typography */
+.theme-fae h1 {
+  font-weight: 700;
+  font-family: 'Dancing Script', cursive;
+    letter-spacing: 0.02em;
+    background: var(--fae-gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 3px var(--fae-shadow));
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .theme-fae h1::after {
+    content: '✨';
+    position: absolute;
+    font-size: 1.2rem;
+    top: 0;
+    right: -1.5rem;
+    opacity: 0.8;
+  }
+
+  .theme-fae h2 {
+    font-family: 'Dancing Script', cursive;
+    color: #8a48e6;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    position: relative;
+  }
+
+  .theme-fae h2::before {
+    content: '•❈•';
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    color: var(--fae-purple);
+    vertical-align: middle;
+  }
+
+  .theme-fae h3 {
+    color: #5a427a;
+    border-bottom: 2px dotted var(--fae-lavender);
+    padding-bottom: 0.3rem;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .theme-fae p {
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+
+  /* Links */
+  .theme-fae a {
+    color: #8a48e6;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .theme-fae a:hover {
+    color: #ff66b3;
+  }
+
+  .theme-fae a:not(nav a)::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background: linear-gradient(90deg, #8a48e6, #ff66b3);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+
+  .theme-fae a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* Cards and UI Elements */
+  .theme-fae .card,
+  .theme-fae article,
+  .theme-fae .prose {
+    background: var(--fae-gradient-card);
+    border-radius: 1rem;
+    border: 1px solid var(--fae-border);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px var(--fae-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-fae .card:hover,
+  .theme-fae article:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--fae-shadow);
+  }
+
+  /* Card decorative elements */
+  .theme-fae .card::before,
+  .theme-fae article::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    height: 6px;
+    background: linear-gradient(90deg, var(--fae-pink), var(--fae-lavender), var(--fae-mint), var(--fae-yellow), var(--fae-blue));
+    border-radius: 3px 3px 0 0;
+    opacity: 0.7;
+  }
+
+  /* Buttons */
+  .theme-fae button,
+  .theme-fae .btn {
+    background: linear-gradient(45deg, #8a48e6, #ff66b3);
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.6rem 1.2rem;
+    font-family: "Comic Neue", cursive;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px var(--fae-shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-fae button:hover,
+  .theme-fae .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--fae-shadow);
+  }
+
+  .theme-fae button::after,
+  .theme-fae .btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
+  }
+
+  .theme-fae button:hover::after,
+  .theme-fae .btn:hover::after {
+    left: 100%;
+  }
+
+  /* Images */
+  .theme-fae img {
+    border-radius: 1rem;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px var(--fae-shadow);
+    transition: transform 0.3s ease;
+  }
+
+  .theme-fae img:hover {
+    transform: scale(1.02);
+  }
+
+  /* Lists */
+  .theme-fae ul li {
+    list-style-type: none;
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .theme-fae ul li::before {
+    content: '🌸';
+    position: absolute;
+    left: 0;
+    font-size: 0.8rem;
+  }
+
+  /* Animations */
+  @keyframes fairy-dust {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0.1;
+    }
+
+    50% {
+      opacity: 0.2;
+    }
+
+    100% {
+      transform: translate(-50%, -50%);
+      opacity: 0.1;
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Footer */
+  .theme-fae footer {
+    background: linear-gradient(to top, rgba(170, 145, 211, 0.2), transparent);
+    padding: 2rem 0;
+    position: relative;
+    border-top: 2px dotted var(--fae-lavender);
+    margin-top: 3rem;
+  }
+
+  .theme-fae footer::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0,10 C30,4 70,4 100,10 L100,0 L0,0 Z' fill='rgba(170, 145, 211, 0.1)'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+  }
+
+  /* Dark mode adjustments */
+  html[data-theme="dark"] .theme-fae>#main-content {
+    background-color: #2a1e3d;
+    color: #e0d5f5;
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%23d4bbff' fill-opacity='0.05'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 24.5l1-1 2 2-1 1-2-2zm15.5 7l1-1 2 2-1 1-2-2z' fill='%23ffb7e0' fill-opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  html[data-theme="dark"] .theme-fae .card,
+  html[data-theme="dark"] .theme-fae article,
+  html[data-theme="dark"] .theme-fae .prose {
+    background: linear-gradient(to bottom right, rgba(59, 45, 85, 0.8), rgba(42, 30, 61, 0.5));
+    border: 1px solid rgba(170, 145, 211, 0.2);
+  }
+
+  html[data-theme="dark"] .theme-fae h1 {
+    background: linear-gradient(90deg, #a78dff 0%, #ff8dc7 50%, #ffbe6d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+  }
+
+  html[data-theme="dark"] .theme-fae a {
+    color: #a78dff;
+  }
+
+  html[data-theme="dark"] .theme-fae a:hover {
+    color: #ff8dc7;
+  }
+
+  /* Additional fairy elements */
+
+  /* Fairy dust on hover for headings */
+  .theme-fae h1:hover,
+  .theme-fae h2:hover {
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Sparkle elements that can be added to any element */
+  .theme-fae .sparkle {
+    position: relative;
+  }
+
+  .theme-fae .sparkle::after {
+    content: '✨';
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    font-size: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Code blocks */
+  .theme-fae pre {
+    background: linear-gradient(to right, #2a1e3d, #3a2b56);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: #e0d5f5;
+    border-left: 4px solid var(--fae-purple);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Horizontal rule */
+  .theme-fae hr {
+    border: none;
+    height: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,10 C30,0 70,20 100,10 L100,0 L0,0 Z' fill='none' stroke='%23d4bbff' stroke-width='1' stroke-dasharray='5,5'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    margin: 2rem 0;
+  }
+
+  /* Input fields */
+  .theme-fae input,
+  .theme-fae textarea,
+  .theme-fae select {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--fae-lavender);
+    border-radius: 1rem;
+    padding: 0.7rem 1rem;
+    font-family: "Comic Neue", cursive;
+    color: var(--fae-text);
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 5px var(--fae-shadow);
+  }
+
+  .theme-fae input:focus,
+  .theme-fae textarea:focus,
+  .theme-fae select:focus {
+    outline: none;
+    border-color: var(--fae-purple);
+    box-shadow: 0 0 0 3px var(--fae-shadow), inset 0 2px 5px var(--fae-shadow);
+  }
+
+  /* Tags and badges */
+  .theme-fae .tag,
+  .theme-fae .badge {
+    display: inline-block;
+    background: linear-gradient(45deg, var(--fae-lavender), var(--fae-pink));
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 2rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 5px var(--fae-shadow);
+    transition: all 0.3s ease;
+  }
+
+  .theme-fae .tag:hover,
+  .theme-fae .badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--fae-shadow);
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 640px) {
+    .theme-fae>#main-content {
+      padding: 1rem 0.5rem;
+    }
+
+    .theme-fae h1 {
+      font-size: 2rem;
+    }
+
+    .theme-fae h2 {
+      font-size: 1.5rem;
+    }
+
+                                                                                                                                .theme-fae .card,
+                                                                                                                                .theme-fae article,
+                                                                                                                                .theme-fae .prose {
+                                                                                                                                  padding: 1rem;
+                                                                                                                                }
+}

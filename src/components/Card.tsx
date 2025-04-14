@@ -1,13 +1,16 @@
 export interface Props {
   href?: string;
   author?: string;
-  tags: string[];
+  tags?: string[];
+  key?: string | number;
   frontmatter: {
     title: string;
     pubDatetime: Date;
     modDatetime: Date;
     description: string;
     author?: string;
+    tags?: any[];
+    SEO?: any;
   };
   image?: {
     url: string;
@@ -18,11 +21,11 @@ export interface Props {
   secHeading?: boolean;
 }
 
-export default function Card({ href, frontmatter, tags, image, secHeading = true }: Props) {
+export default function Card({ href, frontmatter, tags, image, key, secHeading = true }: Props) {
   const { title, pubDatetime, description } = frontmatter;
 
   return (
-    <li className="mb-8 w-full md:w-1/2 lg:w-1/3 px-4">
+    <li className="mb-8 w-full md:w-1/2 lg:w-1/3 px-4" key={key}>
       <article className="bg-gradient-to-br from-white to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
         <a href={href} className="block group">
           {image?.url && (
@@ -69,17 +72,17 @@ export default function Card({ href, frontmatter, tags, image, secHeading = true
                   <li
                     className={`inline-block  my-1 underline-offset-4"`}
                   >
-                  
+
                     <a
                       href={`/tags/${tag?.toLowerCase()}/`}
-                      
+
                       className=" text-md pr-2 group"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          className="fill-skin-base" 
+                          className="fill-skin-base"
                           d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"
                         >
                         </path>

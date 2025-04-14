@@ -1,7 +1,7 @@
 ---
 import { LOCALE, SITE, markketplace } from "@config";
 import "@styles/base.css";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Posthog from "@components/posthog.astro";
 import type Store from "@interfaces/Store";
@@ -18,6 +18,7 @@ export interface Props {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
+  className?: string;
   post?: CollectionEntry<"posts">;
   meta?: {
     title?: string;
@@ -46,6 +47,7 @@ const {
   post,
   scrollSmooth = false,
   meta,
+  className,
 } = Astro.props;
 
 const socialImageURL = new URL(
@@ -87,6 +89,12 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
     />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
+
+    {
+      markketplace.style && (
+        <link rel="stylesheet" href={`/${markketplace.style}.css`} />
+      )
+    }
 
     <!-- General Meta Tags -->
     <title>
@@ -189,7 +197,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
       )
     }
 
-    <ViewTransitions />
+    <ClientRouter />
 
     <Posthog />
     <style
@@ -205,7 +213,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
     </style>
     <script is:inline src="/toggle-theme.js"></script>
   </head>
-  <body>
+  <body class={`theme-${markketplace.style}`}>
     <slot />
   </body>
 </html>
