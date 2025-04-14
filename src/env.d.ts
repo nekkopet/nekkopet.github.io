@@ -13,7 +13,8 @@ export interface ImportMetaEnv {
   readonly STORE_OG_IMAGE: string;
   readonly PUBLIC_BASE_URL: string;
   readonly PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
-  readonly MARKKET_STYLE: 'fae' | 'nekko' | string;
+  /** @default 'markket'  */
+  readonly MARKKET_STYLE: 'fae' | 'nekko' | 'markket' | string;
 }
 
 export interface ImportMeta {

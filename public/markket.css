@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+.theme-markket #main-content {
+  max-width: 1280px;
+  margin: auto;
+  font-size: 17px;
+  position: relative;
+  padding: 2rem 1rem;
+}
+
+.theme-markket h1,
+.theme-markket h2,
+.theme-markket h3,
+.theme-markket h4,
+.theme-markket h5,
+.theme-markket h6 {
+  font-family: 'Roboto Mono', mono;
+}
