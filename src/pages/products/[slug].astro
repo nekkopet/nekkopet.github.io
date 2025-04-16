@@ -11,27 +11,26 @@ import CheckoutModal from "@components/checkout/CheckoutModal";
 import { marked } from "marked";
 
 import { getCollection } from "astro:content";
-import type Store from "@interfaces/Store";
 import { slugifyStr } from "@utils/slugify";
-import type Product from "@interfaces/Product";
 import Hr from "@components/Hr.astro";
+import type { Price } from "scripts/ui.product";
 
 export interface Props {
   currentPage: number;
   totalPages: number;
   stores: CollectionEntry<"stores">[];
-  product?: { data: Product };
+  product?: CollectionEntry<"products">;
 }
 
 export async function getStaticPaths() {
   const products = await getCollection("products");
 
-  const productsResult = products.map((product: { data: Product }) => ({
+  const productsResult = products.map(product => ({
     params: {
       slug: `${product.data.slug || slugifyStr(product.data.Name)}`,
     },
     props: { product },
-  })) as { params: { slug: string }; props: { product: Product } }[];
+  }));
 
   return [...productsResult];
 }
@@ -39,18 +38,12 @@ export async function getStaticPaths() {
 const { product } = Astro.props;
 
 const stores = await getCollection("stores");
-const store = stores.find(
-  (store: { data: Store }) => store.data.slug == markketplace.STORE_SLUG
-);
+const store = stores.find(store => store.data.slug == markketplace.STORE_SLUG);
 
 const htmlDescription = marked.parse(product?.data?.Description || "");
 const prices = product?.data?.PRICES || [];
-
 const selectedImage =
-  product?.data?.Thumbnail ||
-  product?.data?.Slides?.[0] ||
-  product?.data?.SEO?.socialImage ||
-  {};
+  product?.data?.Thumbnail || product?.data?.SEO?.socialImage || {};
 ---
 
 <script>
@@ -127,89 +120,14 @@ const selectedImage =
       </div>
       <Hr />
       <div class="mt-6 flex justify-center">
-        <CheckoutModal client:load prices={prices} product={product} />
+        <CheckoutModal
+          client:load
+          prices={prices as Price[]}
+          product={product}
+          store={store as CollectionEntry<"stores">}
+        />
       </div>
-      <!-- <div class="w-full mt-8">
-        <form
-          data-product-price={product?.data.id}
-          data-product-json={JSON.stringify(product?.data)}
-        >
-          <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-medium text-gray-900 dark:text-white">
-              Available Options
-            </h1>
-            <span class="text-sm text-gray-500">
-              Select your preferred option
-            </span>
-          </div>
-          <div class="m-4">
-            <label for="price"><strong>Price Options</strong></label>
-            <select
-              id="price"
-              name="price"
-              data-input="product.prices"
-              class="block w-full rounded-md border-2 border-solid border-gray-300 py-2 pl-3 pr-10 text-base focus:border-accent-500 focus:outline-none focus:ring-accent-500 dark:border-gray-600 dark:bg-gray-700"
-            >
-              <option value=""></option>
-              {
-                prices.map((price: any) => (
-                  <option
-                    value={price.STRIPE_ID}
-                    data-price-data={JSON.stringify(price)}
-                  >
-                    {price.Name.replace(/_/gi, " ")} - ${price.Price}{" "}
-                    {price.Currency}
-                  </option>
-                ))
-              }
-            </select>
-            <p class="">
-              <em data-output="product.price.description"></em>
-            </p>
-          </div>
-          <div class="m-4">
-            <label for="quantity"><strong>Quantity</strong></label>
-            <input
-              type="number"
-              id="quantity"
-              value="1"
-              data-input="quantity"
-              class="w-full rounded-md border-2 border-solid border-gray-300 py-2 pl-3 pr-10 text-base focus:border-accent-500 focus:outline-none focus:ring-accent-500 dark:border-gray-600 dark:bg-gray-700"
-              style={{
-                // border: "1px solid #6b7280",
-              }}
-            />
-          </div>
-          <div class="m-4">
-            <p>For tips, or custom price products, enter the number here</p>
-            <label for="custom-price"><strong>Custom Price</strong></label>
-            <input
-              data-input="custom-price"
-              type="number"
-              placeholder="0"
-              name="custom-price"
-              id="custom-price"
-              class="w-full rounded-md border-2 border-solid border-gray-300 py-2 pl-3 pr-10 text-base focus:border-accent-500 focus:outline-none focus:ring-accent-500 dark:border-gray-600 dark:bg-gray-700"
-              style={{
-                // border: "1px solid #6b7280",
-              }}
-            />
-          </div>
-          <div class="m-4">
-            <label for="total"><strong>Total</strong></label>
-            <p class="text-4xl">$<span data-output="total">0</span></p>
-          </div>
-        </form>
-      </div> -->
       <div class="m-4">
-        <!-- <button
-          disabled
-          data-action-button="submit"
-          type="submit"
-          class="flex w-full items-center justify-center rounded-md border border-transparent bg-sky-500 px-8 py-3 text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Continue to Payment
-        </button> -->
         <ol class="mt-4 text-sm text-gray-500">
           <li class="mb-2">
             We use Stripe to collect payments, and send payouts to the artists

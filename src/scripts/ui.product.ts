@@ -31,7 +31,7 @@ export type Price = {
   currency: string,
   product?: string,
   unit_amount?: string,
-  price?: string,
+  Price?: string,
   quantity?: number,
   STRIPE_ID?: string,
   Description?: string,
@@ -43,6 +43,7 @@ export type PaymentLinkOptions = {
   prices: Price[],
   includes_shipping: boolean,
   stripe_test: boolean,
+  store_id?: string,
 };
 
 /**
@@ -64,10 +65,10 @@ export const createPaymentLink = async (options: PaymentLinkOptions, isTest: boo
     action: 'stripe.link',
     includes_shipping: options.includes_shipping,
     stripe_test: options.stripe_test,
+    store_id: options.store_id,
   };
 
-  // markketplace.STRAPI_URL = 'http://localhost:1337';
-  const request = await fetch(`${markketplace.STRAPI_URL}/api/markket`, {
+  const request = await fetch(new URL(`/api/markket`, markketplace.STRAPI_URL), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

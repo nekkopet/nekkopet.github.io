@@ -1,6 +1,5 @@
 /* Source: https://github.com/ddukbg/stylemd/blob/main/templates/geocities.hbs */
-
-@import "https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap";
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap");
 body {
   background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
   background-color: #DDDDDD;

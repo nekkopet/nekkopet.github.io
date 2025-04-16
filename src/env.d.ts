@@ -14,7 +14,7 @@ export interface ImportMetaEnv {
   readonly PUBLIC_BASE_URL: string;
   readonly PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
   /** @default 'markket'  */
-  readonly MARKKET_STYLE: 'fae' | 'nekko' | 'markket' | string;
+  readonly MARKKET_STYLE: 'fae' | 'nekko' | 'markket' | 'msdos' | 'retro' | 'geo' | string;
 }
 
 export interface ImportMeta {

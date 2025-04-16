@@ -104,6 +104,7 @@ function mapTypeToZodSchema(type: string, field: any): ZodTypeAny {
   const schemaMap: Record<string, () => ZodTypeAny> = {
     string: () => z.string(),
     uid: () => z.string(),
+    documentId: () => z.string(),
     media: () =>
       z.object({
         allowedTypes: z.array(z.enum(field.allowedTypes)),
