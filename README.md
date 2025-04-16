@@ -47,6 +47,12 @@ And includes the name in the body as a class to reduce risks of CSS collusion
 <body class={`theme-${markketplace.style}`}>
 ```
 
+## StyleMD
+
+Some themes from [ddukbg/stylemd](https://github.com/ddukbg/stylemd) (MIT)
+
+**A command-line tool to generate static HTML from Markdown**
+
 # Markkët Headless API
 
 While this repo is compatible with any headless CMS, and astro content layer, we designed it to work for markket sites
