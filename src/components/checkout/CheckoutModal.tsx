@@ -1,12 +1,14 @@
 import  {type FC, useEffect, useState } from 'react';
 import { createPaymentLink, type PaymentLinkOptions, type Price } from "scripts/ui.product"
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
   prices: Price[];
   product: any;
+  store: CollectionEntry<"stores">;
 }
 
-const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
+const CheckoutModal: FC<Props> = ({ prices, product, store }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPriceId, setSelectedPriceId] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -20,14 +22,13 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
     prices: [],
     stripe_test: product?.data.Name?.match(/test/i),
     includes_shipping: !product?.data.Name?.match(/digital/i),
+    store_id: (store?.data as any)?.documentId,
   } as PaymentLinkOptions);
 
-
-  // Calculate total whenever inputs change
   useEffect(() => {
     const priceId = selectedPriceId;
     const price = prices.find((p: Price) => p.STRIPE_ID == priceId);
-    const basePrice = price?.Price || 0;
+    const basePrice = (price?.Price || 0) as number;
     const subtotal = basePrice * quantity;
     const newTotal = subtotal + tip;
 
@@ -54,7 +55,7 @@ const CheckoutModal: FC<Props> = ({ prices, product }: Props)  => {
 
     } as PaymentLinkOptions));
     setTotal(Number(newTotal));
-    setSelectedPrice(price);
+    setSelectedPrice(price as Price);
 
   }, [selectedPriceId, quantity, tip]);
 
