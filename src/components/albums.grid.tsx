@@ -1,14 +1,14 @@
 
 type AlbumsGridProps = {
-  albums: any[];
-  store: any;
+  albums?: any[];
+  store?: any;
 }
 
 const AlbumsGrid = ({ albums, }: AlbumsGridProps) => {
   return (
     <section className="py-16 px-4 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {albums.sort((a, b) => a.title.localeCompare(b.title)).map((album) => {
+        {albums?.sort((a, b) => a.title.localeCompare(b.title)).map((album) => {
           const coverUrl = album.cover?.formats?.medium?.url || album.cover?.url;
           const trackCount = album.tracks?.length || 0;
 

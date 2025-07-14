@@ -2,28 +2,23 @@
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
-import Card from "@components/Card";
-// import Socials from "@components/Socials.astro";
-import { SITE,  } from "@config";
-import { IconRss } from '@tabler/icons-react';
-import { getCollection } from "astro:content";
-import type Store from "../interfaces/Store";
-import type Page from "../interfaces/Page";
-import type Product from "../interfaces/Product";
-import type Article from "../interfaces/Article";
-
 import {
   BlocksRenderer,
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import { slugifyStr } from "@utils/slugify";
-import { markketplace } from "@config";
-import { marked } from "marked";
 import AlbumsGrid from "@components/albums.grid";
+import { marked } from "marked";
+import { getCollection } from "astro:content";
+import type Store from "@interfaces/Store";
+import type Product from "@interfaces/Product";
+import type Page from "@interfaces/Page";
+import { SITE, markketplace } from "@config";
+import Card from "@components/Card";
+import LinkButton from "@components/LinkButton.astro";
 
 const stores = await getCollection("stores");
+
 const store = stores.find(
   (store: any) => store.data.slug === markketplace.STORE_SLUG
 )?.data as Store | undefined;
@@ -32,10 +27,7 @@ const products = (await getCollection("products")) as any as {
   data: Product;
 }[];
 
-const posts = await getCollection("posts") as any as { data: Article}[];
-
-// const socialCount = SOCIALS.filter(social => social.active).length;
-
+const posts = await getCollection("posts");
 const pages = await getCollection("pages");
 
 const homePage = pages.find((page: any) => page.data.slug === "home")?.data as
@@ -45,75 +37,67 @@ const homePage = pages.find((page: any) => page.data.slug === "home")?.data as
 const links = store?.URLS || [];
 
 const content = marked.parse(store?.Description || "");
-
-// const products = store?.products?.data || [];
 ---
 
-<Layout title={`Home | ${SITE.title}`}>
-  <Header store={{data: store as Store }} products={products} />
-  <main id="main-content">
-    <section id="hero">
-      <h1>{store?.title || "Markketplace"}</h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="rss-link"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <IconRss size={18} />
-        <span class="sr-only">RSS Feed</span>
-      </a>
+<Layout title={`${homePage?.SEO?.metaTitle || "Markkët"}`}>
+  <Header store={store} products={products} />
 
-      <p class="sparkle">
-        <strong>
-          {
-            homePage?.SEO?.metaDescription ||
-              store?.Description ||
-              "A simple and minimal Markketplace theme."
-          }
-        </strong>
-      </p>
-      {
-        store?.Logo?.url && (
-          <img
-            src={store?.Logo.url}
-            alt={store.title}
-            class="h-24 w-24 rounded-full"
-          />
-        )
-      }
-    </section>
-    <Hr />
-    <section class="">
-      <BlocksRenderer
-        content={(homePage?.Content || []) as BlocksContent}
-      />
-    </section>
-    <Hr />
-    <section>
-      {
-        links && links.length > 0 && (
-          <div>
-            <div class="mb-12 mt-6">
-              <h2>Links</h2>
-              {links.map(link => {
-                return (
-                  <p class="mb-3">
-                    <LinkButton
-                      href={link.URL}
-                      className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-                    >
-                      {link.Label}
-                    </LinkButton>
-                  </p>
-                );
-              })}
+  <main>
+    <!-- Hero Section -->
+    <section
+      class="relative overflow-hidden bg-gradient-to-br from-accent-100 to-white dark:from-gray-900 dark:to-gray-800"
+    >
+      <div class="absolute inset-0 z-0 opacity-30">
+        <div class="bg-grid-pattern absolute inset-0"></div>
+      </div>
+
+      <div
+        class="container relative z-10 mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8"
+      >
+        <div class="flex flex-col items-center md:flex-row md:justify-between">
+          <div class="mb-10 max-w-xl md:mb-0 md:pr-8">
+            <h1
+              class="mb-6 text-4xl font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+            >
+              {store?.title || "Markkët"}
+            </h1>
+            <p
+              class="mb-8 text-lg font-medium text-gray-700 dark:text-gray-300"
+            >
+              {
+                homePage?.SEO?.metaDescription ||
+                  store?.Description ||
+                  "A simple and minimal Markkët theme."
+              }
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="/products"
+                class="bg-accent-600 dark:hover:bg-accent-600 inline-flex items-center justify-center rounded-lg px-5 py-3 text-base font-medium text-white transition-colors hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 dark:bg-accent-500"
+              >
+                Shop Now
+                <svg
+                  class="ml-2 h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  >
+                  </path>
+                </svg>
+              </a>
+              <a
+                href="/blog"
+                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+              >
+                Read Blog
+              </a>
             </div>
           </div>
-        <Hr />
-        )
-      }
+        </div>
 
 {
   posts.length > 0 && (
@@ -153,101 +137,298 @@ const content = marked.parse(store?.Description || "");
         </LinkButton>
       </div>
     </section>
-  )
-}
 
-      {
-        products && products.length > 0 && (
-          <section id="recent-posts">
-            <div class="mb-12 mt-6">
-              <h2>Catalogue</h2>
-              <ul class="-mx-4 flex flex-wrap">
-                {products.slice(0, 5).map(({ data }) => {
-                  return (
-                    <Card
-                      href={`/products/${data.slug || slugifyStr(data.Name)}`}
-                      tags={[]}
-                      image={data.Thumbnail || data.SEO?.socialImage}
-                      frontmatter={{
-                        author: "x",
-                        title: data.Name || data.SEO?.metaTitle || "---",
-                        pubDatetime: new Date(data.createdAt),
-                        modDatetime: new Date(data.updatedAt),
-                        description:
-                          data.SEO?.metaDescription || data.Description || "",
-                        SEO: {
-                          ...data.SEO,
-                          metaTitle:
-                            data.SEO?.metaTitle ||
-                            data.Name ||
-                            "Product Page - Markkët",
-                          socialImage: {
-                            url:
-                              data.SEO?.socialImage?.url || data.Thumbnail?.url,
-                          },
-                        },
-                      }}
-                    />
-                  );
-                })}
-              </ul>
-              <div class="all-posts-btn-wrapper">
-                <LinkButton href="/products/">
-                  /Catalogue|
-                  <svg xmlns="http://www.w3.org/2000/svg">
-                    <path class="dark:fill-[#E4007C]" d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
-                  </svg>
-                </LinkButton>
-              </div>
+    <!-- Content Section -->
+    <section class="container mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      <div class="prose prose-lg max-w-none dark:prose-invert">
+        <BlocksRenderer
+          content={homePage?.Content || ([] as BlocksContent[])}
+        />
+      </div>
+    </section>
+    )}
+    <!-- Featured Products Section -->
+    {
+      products && products.length > 0 && (
+        <section class="bg-gray-50 dark:bg-gray-800/50">
+          <div class="container mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+            <div class="mb-12 flex items-center justify-between">
+              <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+                Featured Products
+              </h2>
+              <a
+                href="/products"
+                class="text-accent-600 flex items-center hover:text-accent-500 dark:text-accent-400 dark:hover:text-accent-300"
+              >
+                View all
+                <svg
+                  class="ml-1 h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
             </div>
-          </section>
-        )
-      }
-      <Hr />
-    </section>
-    <section class="mb-10 pt-10">
-      <div  set:html={content} />
+
+            <div class="xl:grid-cols-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {products.slice(0, 4).map(({ data }) => (
+                <div class="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg dark:bg-gray-800">
+                  <div class="aspect-h-3 aspect-w-4 overflow-hidden">
+                    {data.Thumbnail?.url || data.SEO?.socialImage?.url ? (
+                      <img
+                        src={data.Thumbnail?.url || data.SEO?.socialImage?.url}
+                        alt={data.Name}
+                        class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div class="flex h-full items-center justify-center bg-gray-100 dark:bg-gray-700">
+                        <svg
+                          class="h-12 w-12 text-gray-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+
+                  <div class="p-4">
+                    <h3 class="group-hover:text-accent-600 mb-2 text-lg font-semibold text-gray-900 dark:text-white dark:group-hover:text-accent-400">
+                      {data.Name || data.SEO?.metaTitle || "Product"}
+                    </h3>
+                    <p class="mb-4 line-clamp-2 text-sm text-gray-600 dark:text-gray-300">
+                      {data.SEO?.metaDescription || data.Description || ""}
+                    </p>
+                    <a
+                      href={`/products/${data.slug || slugifyStr(data.Name)}`}
+                      class="text-accent-600 inline-flex items-center text-sm font-medium hover:text-accent-500 dark:text-accent-400 dark:hover:text-accent-300"
+                    >
+                      View Details
+                      <svg
+                        class="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Albums Section -->
+    <section class="container mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <h2
+        class="mb-12 text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
+      >
+        Collections
+      </h2>
+      <AlbumsGrid albums={homePage?.albums} store={store} />
     </section>
 
+    <!-- Recent Posts Section -->
+    {
+      posts && posts.length > 0 && (
+        <section class="from-accent-50 bg-gradient-to-br to-white dark:from-gray-900 dark:to-gray-800">
+          <div class="container mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+            <div class="mb-12 flex items-center justify-between">
+              <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+                From Our Blog
+              </h2>
+              <a
+                href="/blog"
+                class="text-accent-600 flex items-center hover:text-accent-500 dark:text-accent-400 dark:hover:text-accent-300"
+              >
+                View all posts
+                <svg
+                  class="ml-1 h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
 
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {posts.slice(0, 3).map(({ data }) => (
+                <article class="overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg dark:bg-gray-800">
+                  <div class="aspect-h-2 aspect-w-3 overflow-hidden">
+                    {data?.cover?.url || data.SEO?.metaImage?.url ? (
+                      <img
+                        src={data?.cover?.url || data.SEO?.metaImage?.url}
+                        alt={data.Title}
+                        class="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                      />
+                    ) : (
+                      <div class="flex h-full items-center justify-center bg-accent-100 dark:bg-gray-700">
+                        <svg
+                          class="h-12 w-12 text-accent-500"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1M19 20a2 2 0 002-2V8a2 2 0 00-2-2h-5M8 12h8m-8 4h8"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+
+                  <div class="p-6">
+                    <div class="mb-3 flex items-center gap-2">
+                      <time
+                        datetime={new Date(data.updatedAt).toISOString()}
+                        class="text-sm text-gray-500 dark:text-gray-400"
+                      >
+                        {new Date(data.updatedAt).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </time>
+                      {data.Tags && data.Tags.length > 0 && (
+                        <span class="text-accent-800 inline-block rounded-full bg-accent-100 px-2.5 py-0.5 text-xs font-medium dark:bg-accent-900/30 dark:text-accent-300">
+                          {data.Tags[0].Label}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 class="hover:text-accent-600 mb-3 text-xl font-bold text-gray-900 dark:text-white dark:hover:text-accent-400">
+                      <a
+                        href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
+                      >
+                        {data.Title}
+                      </a>
+                    </h3>
+
+                    <p class="mb-5 line-clamp-2 text-gray-600 dark:text-gray-300">
+                      {data.SEO?.metaDescription || ""}
+                    </p>
+
+                    <a
+                      href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
+                      class="text-accent-600 inline-flex items-center text-sm font-medium hover:text-accent-500 dark:text-accent-400 dark:hover:text-accent-300"
+                    >
+                      Read more
+                      <svg
+                        class="ml-1 h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Store Links Section -->
+    {
+      links && links.length > 0 && (
+        <section class="container mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <h2 class="mb-8 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Connect With Us
+          </h2>
+
+          <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {links.map(link => (
+              <a
+                href={link.URL}
+                class="group flex items-center rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-accent-500 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-accent-500"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="text-accent-600 mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent-100 dark:bg-gray-700 dark:text-accent-400">
+                  <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="group-hover:text-accent-600 text-lg font-medium text-gray-900 dark:text-white dark:group-hover:text-accent-400">
+                    {link.Label}
+                  </h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">
+                    {link.URL}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Store Description Section -->
+    <section class="bg-gray-50 dark:bg-gray-800/50">
+      <div class="container mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+        <div
+          class="prose prose-lg max-w-none dark:prose-invert"
+          set:html={content}
+        />
+      </div>
+    </section>
   </main>
+
   <Footer />
 </Layout>
 
 <style>
-  /* ===== Hero Section ===== */
-  #hero {
-    @apply pb-6 pt-8;
-  }
-  #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl mx-8;
-  }
-  #hero .rss-link {
-    @apply mb-6;
-  }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
-  }
-  #hero p {
-    @apply my-2 mx-8;
-  }
-  .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-  }
-  .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
-  }
-
-  /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts {
-    @apply pb-6 pt-12;
-  }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
-  }
-  .all-posts-btn-wrapper {
-    @apply my-8 text-center;
+  .bg-grid-pattern {
+    background-size: 20px 20px;
+    background-image: radial-gradient(
+      circle,
+      currentColor 1px,
+      transparent 1px
+    );
+    opacity: 0.1;
   }
 </style>
