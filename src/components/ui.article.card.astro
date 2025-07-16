@@ -1,0 +1,69 @@
+---
+const { article } = Astro.props;
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+
+const getImageUrl = (cover: any) => {
+  if (cover?.formats?.large) return cover.formats.large.url;
+  if (cover?.formats?.medium) return cover.formats.medium.url;
+  if (cover?.formats?.small) return cover.formats.small.url;
+  return cover?.url || cover?.data?.attributes?.url;
+};
+
+const imageUrl = getImageUrl(article.cover);
+
+---
+
+<article class="group relative bg-white/80 backdrop-blur-sm rounded-none overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 hover:-translate-y-3 border border-gray-100/50">
+  <a href={`/blog/${article.slug}`} class="block h-full">
+    <div class="relative h-80 overflow-hidden">
+      <img
+        src={imageUrl}
+        alt={article.Title}
+        loading="lazy"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 filter grayscale group-hover:grayscale-0"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+      <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-none shadow-lg">
+        <time datetime={article.publishedAt} class="text-xs font-light tracking-widest text-gray-800 uppercase">
+          {formatDate(article.publishedAt)}
+        </time>
+      </div>
+    </div>
+
+    <div class="p-8 flex flex-col h-full min-h-[200px]">
+      <!-- Tags -->
+      {article.Tags && article.Tags.length > 0 && (
+        <div class="flex gap-3 mb-6">
+          {article.Tags.slice(0, 2).map(tag => (
+            <span
+              class="px-3 py-1 bg-gray-900 text-white text-xs font-light tracking-wider uppercase rounded-none"
+            >
+              {tag.name}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <h3 class="text-2xl font-light text-gray-900 mb-4 group-hover:text-gray-700 transition-colors duration-300 leading-tight">
+        {article.Title}
+      </h3>
+
+      <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow font-light">
+        {article.SEO?.metaDescription || `An exploration of ${article?.Title?.toLowerCase()}`}
+      </p>
+
+      <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+        <span class="text-xs font-light tracking-widest text-gray-500 uppercase">Read Article</span>
+        <div class="w-8 h-px bg-gray-900 group-hover:w-12 transition-all duration-300"></div>
+      </div>
+    </div>
+  </a>
+</article>
