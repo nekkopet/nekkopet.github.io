@@ -33,7 +33,7 @@ const store: Store = stores.find(
   store => store.data.slug == markketplace.STORE_SLUG
 )?.data as any as Store;
 
-const baseUrl = store?.URLS?.[0]?.URL || Astro.site || "https://markket.place";
+const baseUrl = Astro.site || "https://markket.place";
 
 const {
   title = SITE.title,
@@ -213,7 +213,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
     </style>
     <script is:inline src="/toggle-theme.js"></script>
   </head>
-  <body class={`theme-${markketplace.style}`}>
+  <body class={`theme-${markketplace.style} ${className}`}>
     <slot />
   </body>
 </html>

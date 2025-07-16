@@ -3,7 +3,6 @@ import { defineCollection } from "astro:content";
 
 import { strapiLoader } from "../lib/strapi-loader";
 
-
 const pages = defineCollection({
   loader: strapiLoader({
     contentType: "page",
@@ -47,4 +46,4 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { posts, pages, stores, products, events };
+export const collections = { posts, pages, stores, products, events, };
