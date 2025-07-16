@@ -36,7 +36,7 @@ const split_title = store?.title.split(" ");
                   return (
                     <>
                       <br />
-                      <span class="block inline-block bg-gray-900 bg-linear-to-r from-gray-900 via-gray-700 to-gray-900 text-transparent">
+                      <span class="block bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
                         {w}
                       </span>
                     </>
@@ -46,9 +46,7 @@ const split_title = store?.title.split(" ");
               })
             }
           </h1>
-          <p
-            class="inline-block max-w-lg bg-gray-900 text-xl leading-relaxed font-light text-gray-600"
-          >
+          <p class="max-w-lg text-xl leading-relaxed font-light text-gray-600">
             {store?.SEO?.metaDescription}
           </p>
         </div>

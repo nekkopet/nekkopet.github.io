@@ -12,11 +12,9 @@ export interface Props {
 const { activeNav, noMarginTop = false } = Astro.props;
 ---
 
-<footer
-  class={`${noMarginTop ? "" : "mt-auto"} bg-skin-card dark:bg-skin-fill`}
->
+<footer class={`${noMarginTop ? "" : "mt-auto"} bg-white`}>
   <Hr noPadding />
-  <div class="footer-wrapper">
+  <div class="footer-wrapper px-4 py-8">
     <br />
     <div class="copyright-wrapper">
       <Socials centered />
@@ -24,17 +22,35 @@ const { activeNav, noMarginTop = false } = Astro.props;
       <span class="separator">&nbsp;</span>
       <span>Some rights reserved.</span>
       &nbsp;|&nbsp;
-      <span>
-        <a href="/pages/" class={activeNav === "pages" ? "active" : ""}>
-          Pages
-        </a>
-      </span>
-      &nbsp;|&nbsp;
-      <span>
-        <a href="/products/" class={activeNav === "products" ? "active" : ""}>
-          Products
-        </a>
-      </span>
+
+      {
+        [
+          {
+            name: "About",
+            href: "/about",
+          },
+          {
+            name: "Catalogue",
+            href: "/products",
+          },
+          {
+            name: "Home",
+            href: "/",
+          },
+        ].map(link => {
+          return (
+            <span>
+              <a
+                href={link.href}
+                class={`${activeNav === "pages" ? "active" : ""} hover:border-accent-500 overflow-hidden rounded-lg p-4 transition-all hover:shadow-md`}
+              >
+                {link.name}
+              </a>
+              &nbsp;|&nbsp;
+            </span>
+          );
+        })
+      }
     </div>
   </div>
 </footer>
