@@ -25,9 +25,11 @@ import { marked } from "marked";
 const stores = await getCollection("stores");
 const store = stores.find(
   (store: any) => store.data.slug === markketplace.STORE_SLUG
-)?.data as  Store  | undefined;
+)?.data as Store | undefined;
 
-const products = await getCollection("products") as any as { data: Product}[];
+const products = (await getCollection("products")) as any as {
+  data: Product;
+}[];
 
 const posts = await getCollection("posts") as any as { data: Article}[];
 
@@ -35,9 +37,9 @@ const posts = await getCollection("posts") as any as { data: Article}[];
 
 const pages = await getCollection("pages");
 
-const homePage  = pages.find(
-  (page: any) => page.data.slug === "home"
-)?.data as Page  | undefined;
+const homePage = pages.find((page: any) => page.data.slug === "home")?.data as
+  | Page
+  | undefined;
 
 const links = store?.URLS || [];
 
@@ -121,7 +123,6 @@ const content = marked.parse(store?.Description || "");
           ({ data}, index) =>
             index < SITE.postPerIndex && (
               <Card
-                key={index}
                 href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
                 image={data?.cover || data.SEO?.metaImage}
                 tags={ data.Tags?.map(tag => tag.Label) as string[]}

@@ -24,6 +24,7 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.21",
     "astro": "^5.3.0",
+    "cafecito": "^0.11.0",
     "dotenv": "^16.4.7",
     "fuse.js": "^7.0.0",
     "github-slugger": "^2.0.0",
