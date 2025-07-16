@@ -15,7 +15,7 @@ const store = defineCollection({
   loader: strapiLoader({
     contentType: "store",
     filter: `filters[slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO.socialImage,Logo,URLS,Favicon'
+    populate: 'SEO.socialImage,Logo,URLS,Favicon,Cover'
   }),
 });
 

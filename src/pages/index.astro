@@ -10,21 +10,16 @@ import { slugifyStr } from "@utils/slugify";
 import AlbumsGrid from "@components/albums.grid";
 import { marked } from "marked";
 import { getCollection } from "astro:content";
-import type Store from "@interfaces/Store";
-import type Product from "@interfaces/Product";
 import type Page from "@interfaces/Page";
-import { SITE, markketplace } from "@config";
+import { SITE,  } from "@config";
 import Card from "@components/Card";
 import LinkButton from "@components/LinkButton.astro";
 
-import UIHeader from '@components/ui.header.astro';
+import UiHero from '@components/ui.hero.astro';
 
 const store = (await getCollection("store"))?.[0]?.data;
 
-
-const products = (await getCollection("products")) as any as {
-  data: Product;
-}[];
+const products = (await getCollection("products") || [])?.splice(0, SITE.postPerIndex);
 
 const posts = await getCollection("posts");
 const pages = await getCollection("pages");
@@ -39,11 +34,9 @@ const content = marked.parse(store?.Description || "");
 ---
 
 <Layout title={`${homePage?.SEO?.metaTitle || "Markkët"}`}>
-  <UIHeader store={store} />
-  <Header store={store} products={products} />
+  <UiHero store={store} />
 
   <main>
-    <!-- Hero Section -->
     <section
       class="relative overflow-hidden bg-linear-to-br from-accent-100 to-white dark:from-gray-900 dark:to-gray-800"
     >
@@ -70,32 +63,6 @@ const content = marked.parse(store?.Description || "");
                   "A simple and minimal Markkët theme."
               }
             </p>
-            <div class="flex flex-wrap gap-4">
-              <a
-                href="/products"
-                class="bg-accent-600 dark:hover:bg-accent-600 inline-flex items-center justify-center rounded-lg px-5 py-3 text-base font-medium text-white transition-colors hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 dark:bg-accent-500"
-              >
-                Shop Now
-                <svg
-                  class="ml-2 h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  >
-                  </path>
-                </svg>
-              </a>
-              <a
-                href="/blog"
-                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-              >
-                Read Blog
-              </a>
-            </div>
           </div>
         </div>
 
@@ -105,8 +72,8 @@ const content = marked.parse(store?.Description || "");
       <h1>Recent Posts</h1>
       <ul class="-mx-4 flex flex-wrap">
         {posts.map(
-          ({ data}, index) =>
-            index < SITE.postPerIndex && (
+          ({ data}, ) =>
+            (
               <Card
                 href={`/blog/${new Date(data.updatedAt).getFullYear()}-${slugifyStr(data.Title)}`}
                 image={data?.cover || data.SEO?.metaImage}
