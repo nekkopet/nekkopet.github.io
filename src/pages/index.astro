@@ -45,7 +45,7 @@ const content = marked.parse(store?.Description || "");
   <main>
     <!-- Hero Section -->
     <section
-      class="relative overflow-hidden bg-gradient-to-br from-accent-100 to-white dark:from-gray-900 dark:to-gray-800"
+      class="relative overflow-hidden bg-linear-to-br from-accent-100 to-white dark:from-gray-900 dark:to-gray-800"
     >
       <div class="absolute inset-0 z-0 opacity-30">
         <div class="bg-grid-pattern absolute inset-0"></div>
@@ -250,7 +250,7 @@ const content = marked.parse(store?.Description || "");
     <!-- Recent Posts Section -->
     {
       posts && posts.length > 0 && (
-        <section class="from-accent-50 bg-gradient-to-br to-white dark:from-gray-900 dark:to-gray-800">
+        <section class="from-accent-50 bg-linear-to-br to-white dark:from-gray-900 dark:to-gray-800">
           <div class="container mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div class="mb-12 flex items-center justify-between">
               <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">

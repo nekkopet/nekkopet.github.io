@@ -1,10 +1,11 @@
 ---
 import { LOCALE, SITE, markketplace } from "@config";
-import "@styles/base.css";
 import { ClientRouter } from "astro:transitions";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Posthog from "@components/posthog.astro";
 import type Store from "@interfaces/Store";
+
+import "@styles/base.css";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -214,6 +215,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
         --color-primary: var(--primary);
         --color-accent: var(--accent);
       }
+      @reference "../styles/base.css";
     </style>
     <script is:inline src="/toggle-theme.js"></script>
   </head>

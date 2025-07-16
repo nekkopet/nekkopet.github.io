@@ -1,6 +1,33 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@config "../../tailwind.config.cjs";
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility display-none {
+  @reference hidden;
+}
+
+@utility focus-outline {
+  @reference outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
+}
 
 @layer base {
   :root,
@@ -29,26 +56,26 @@
     display: block;
   }
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-mono text-skin-base
+    @reference flex min-h-svh flex-col bg-skin-fill font-mono text-skin-base
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
   }
   section,
   footer {
-    @apply mx-auto px-4 md:px-8;
+    @reference mx-auto px-4 md:px-8;
   }
   a {
-    @apply outline-2 outline-offset-1 outline-skin-fill
+    @reference outline-2 outline-offset-1 outline-skin-fill
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
-    @apply inline-block h-6 w-6 group-hover:fill-skin-accent;
+    @reference inline-block h-6 w-6 group-hover:fill-skin-accent;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 group-hover:fill-transparent
+    @reference inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 group-hover:fill-transparent
     sm:scale-110;
   }
         /* .prose {
-          @apply prose-headings: !mb-3 prose-headings: !text-skin-base prose-h3:italic prose-p: !text-skin-base
+          @reference prose-headings: !mb-3 prose-headings: !text-skin-base prose-h3:italic prose-p: !text-skin-base
     prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
     hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
     prose-blockquote:border-opacity-50 prose-blockquote:opacity-80
@@ -64,7 +91,7 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
     prose-img:border-skin-line prose-hr:!border-skin-line;
   }
   .prose a {
-    @apply break-words hover:!text-skin-accent;
+    @reference break-words hover: !text-skin-accent;
   */
   .prose thead th:first-child,
   tbody td:first-child,
@@ -72,16 +99,16 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
     padding-left: 0.5714286em;
   }
   .prose h2#table-of-contents {
-    @apply mb-2;
+    @reference mb-2;
   }
   .prose details {
-    @apply inline-block cursor-pointer select-none text-skin-base;
+    @reference inline-block cursor-pointer select-none text-skin-base;
   }
   .prose summary {
-    @apply focus-outline;
+    @reference focus-outline;
   }
   .prose h2#table-of-contents + p {
-    @apply hidden;
+    @reference hidden;
   }
 
   /* ===== scrollbar ===== */
@@ -91,27 +118,27 @@ prose-code: rounded prose-code:bg-skin-card prose-code:bg-opacity-75 prose-code:
 
   /* width */
   ::-webkit-scrollbar {
-    @apply w-3;
+    @reference w-3;
   }
 
   /* Track */
   ::-webkit-scrollbar-track {
-    @apply bg-skin-fill;
+    @reference bg-skin-fill;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    @apply bg-skin-card;
+    @reference bg-skin-card;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-skin-card-muted;
+    @reference bg-skin-card-muted;
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   pre:has(code) {
-    @apply border border-skin-line;
+    @reference border border-skin-line;
   }
   code,
   blockquote {
@@ -173,16 +200,6 @@ button.brand-yellow:hover {
     width: 80px !important;
   }
 }
-}
-
-@layer components {
-  .prose-headings {}
-  .display-none {
-    @apply hidden;
-  }
-  .focus-outline {
-    @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
-  }
 }
 
 .content-page {
