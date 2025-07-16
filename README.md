@@ -23,6 +23,12 @@ export const markketplace = {
 };
 ```
 
+## Markket headless CMS
+
+Using the [cafecito](https://www.npmjs.com/package/cafecito) astro strapi loader
+
+`/src/content/config` for reference
+
 # Themes
 
 This repo contains a few theme variations that you can toggle using the variable `MARKKET_STYLE`
