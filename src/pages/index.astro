@@ -17,11 +17,10 @@ import { SITE, markketplace } from "@config";
 import Card from "@components/Card";
 import LinkButton from "@components/LinkButton.astro";
 
-const stores = await getCollection("stores");
+import UIHeader from '@components/ui.header.astro';
 
-const store = stores.find(
-  (store: any) => store.data.slug === markketplace.STORE_SLUG
-)?.data as Store | undefined;
+const store = (await getCollection("store"))?.[0]?.data;
+
 
 const products = (await getCollection("products")) as any as {
   data: Product;
@@ -40,6 +39,7 @@ const content = marked.parse(store?.Description || "");
 ---
 
 <Layout title={`${homePage?.SEO?.metaTitle || "Markkët"}`}>
+  <UIHeader store={store} />
   <Header store={store} products={products} />
 
   <main>

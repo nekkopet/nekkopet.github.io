@@ -35,7 +35,6 @@ const store: Store = stores.find(
 
 let baseUrl = Astro.site?.toString() || "https://markket.place";
 
-
 if (!baseUrl?.startsWith("http")) {
   baseUrl = `https://de.markket.place/store/${store?.slug}`;
 }
@@ -218,7 +217,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
     </style>
     <script is:inline src="/toggle-theme.js"></script>
   </head>
-  <body class={`theme-${markketplace.style} ${className}`}>
+  <body class={`theme-${markketplace.style} ${className || ""}`}>
     <slot />
   </body>
 </html>

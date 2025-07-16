@@ -11,6 +11,14 @@ const pages = defineCollection({
   }),
 });
 
+const store = defineCollection({
+  loader: strapiLoader({
+    contentType: "store",
+    filter: `filters[slug][$eq]=${markketplace.STORE_SLUG}`,
+    populate: 'SEO.socialImage,Logo,URLS,Favicon'
+  }),
+});
+
 const stores = defineCollection({
   loader: strapiLoader({
     contentType: "store",
@@ -46,4 +54,4 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { posts, pages, stores, products, events, };
+export const collections = { posts, pages, stores, products, events, store };
