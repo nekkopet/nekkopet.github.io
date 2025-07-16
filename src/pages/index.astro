@@ -1,11 +1,11 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Footer from "@components/Footer.astro";
-import { slugifyStr } from "@utils/slugify";
-import AlbumsGrid from "@components/albums.grid";
+// import { slugifyStr } from "@utils/slugify";
+// import AlbumsGrid from "@components/albums.grid";
 import { marked } from "marked";
 import { getCollection } from "astro:content";
-import { SITE } from "@config";
+// import { SITE } from "@config";
 import {
   BlocksRenderer,
   type BlocksContent,
@@ -31,9 +31,16 @@ const productsPage = pages.find(
 const links = store?.URLS || [];
 
 const content = marked.parse(store?.Description || "");
+
+const meta = {
+  title: homePage?.SEO?.metaTitle || store?.SEO?.metaTitle || store?.title,
+  image: homePage?.SEO?.socialImage?.url || store?.SEO?.socialImage?.url,
+  description: homePage?.SEO?.metaDescription || store?.SEO?.metaDescription,
+  url: homePage?.SEO?.metaUrl || "/",
+};
 ---
 
-<Layout title={`${homePage?.SEO?.metaTitle || "Markkët"}`}>
+<Layout title={`${homePage?.SEO?.metaTitle || "Markkët"}`} meta={meta}>
   <UiHero
     store={store}
     page={homePage}
