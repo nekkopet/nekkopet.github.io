@@ -8,10 +8,8 @@ import "@styles/base.css";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
-const stores = await getCollection("stores");
-const store = stores.find(
-  store => store.data.slug == markketplace.STORE_SLUG
-)?.data;
+const stores = await getCollection("store");
+const store = stores?.[0]?.data;
 
 let baseUrl = Astro.site?.toString() || "https://markket.place";
 
@@ -33,8 +31,9 @@ const {
 
 const {
   image,
-  pubDatetime = store?.updatedAt,
-  modDatetime = store?.createdAt,
+  /** item.createdAt  */
+  pubDatetime = store?.createdAt || "",
+  modDatetime = store?.updatedAt,
 } = meta;
 
 const socialImageURL = new URL(
@@ -47,9 +46,9 @@ const structuredData = {
   "@type": "BlogPosting",
   headline: `${title}`,
   image: `${socialImageURL}`,
-  datePublished: new Date(pubDatetime as string).toISOString(),
+  datePublished: new Date(pubDatetime).toISOString(),
   ...(modDatetime && {
-    dateModified: new Date(modDatetime as string).toISOString(),
+    dateModified: new Date(modDatetime).toISOString(),
   }),
   author: [
     {
@@ -140,7 +139,7 @@ let href = new URL(Astro.url.pathname, Astro.site || "http://markket.place");
         socialImageURL}
     />
 
-    <!-- Article Published/Modified time -->
+    <!-- Article Published/Modified time : defaults to build/deploy time -->
     {
       pubDatetime && (
         <meta
