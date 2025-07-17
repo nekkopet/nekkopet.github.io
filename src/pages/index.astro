@@ -33,14 +33,18 @@ const links = store?.URLS || [];
 const content = marked.parse(store?.Description || "");
 
 const meta = {
-  title: homePage?.SEO?.metaTitle || store?.SEO?.metaTitle || store?.title,
+  title:
+    homePage?.SEO?.metaTitle ||
+    store?.SEO?.metaTitle ||
+    store?.title ||
+    "Markkët",
   image: homePage?.SEO?.socialImage?.url || store?.SEO?.socialImage?.url,
   description: homePage?.SEO?.metaDescription || store?.SEO?.metaDescription,
   url: homePage?.SEO?.metaUrl || "/",
 };
 ---
 
-<Layout title={`${homePage?.SEO?.metaTitle || "Markkët"}`} meta={meta}>
+<Layout meta={meta}>
   <UiHero
     store={store}
     page={homePage}

@@ -1,14 +1,20 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import Posts from "@layouts/Posts.astro";
 import PostDetails from "@layouts/PostDetails.astro";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
 import { slugifyStr } from "@utils/slugify";
+import ArticlesPage from "@components/pages.articles.astro";
+import Layout from "@layouts/Layout.astro";
+import Footer from "@components/Footer.astro";
 
 export interface Props {
   post: CollectionEntry<"posts">;
+  meta: {};
 }
+
+const pages = await getCollection("pages");
+const blogPage = pages.find(p => p.data.slug == "blog")?.data;
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -19,7 +25,17 @@ export async function getStaticPaths() {
         post.data.slug ||
         `${new Date(post.data.updatedAt).getFullYear()}-${slugifyStr(post.data.Title)}`,
     },
-    props: { post: post },
+    props: {
+      post,
+      meta: {
+        title: post.data?.SEO?.metaTitle || "Blog Post",
+        image: post.data?.SEO?.socialImage?.url,
+        description: post.data?.SEO?.metaDescription,
+        url: post.data?.SEO?.metaUrl || `/blog/${post?.data?.slug}`,
+        pubDatetime: post.data?.updatedAt,
+        modDatetime: post.data?.createdAt,
+      },
+    },
   }));
 
   const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
@@ -30,7 +46,7 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const { post } = Astro.props;
+const { post, meta } = Astro.props;
 
 const posts = await getCollection("posts");
 
@@ -40,4 +56,9 @@ const pagination = getPagination({
 });
 ---
 
-{post ? <PostDetails post={post} /> : <Posts {...pagination} />}
+<Layout meta={meta}>
+  {post && <PostDetails post={post} />}
+
+  {!post && <ArticlesPage pagination={pagination} page={blogPage} />}}
+  <Footer />
+</Layout>

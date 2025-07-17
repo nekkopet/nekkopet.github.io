@@ -23,6 +23,7 @@ const imageUrl = getImageUrl(article.cover);
 <article
   class="group hover:shadow-3xl relative overflow-hidden rounded-none border border-gray-100/50 bg-white/80 shadow-2xl backdrop-blur-sm transition-all duration-700 hover:-translate-y-3"
 >
+  <!-- // unlikely to be important, but keeping slugify for backwards compatibility, ideally slug is enforced -->
   <a
     href={"/blog/" + article.slug ||
       `${new Date(article.createdAt).getFullYear()}-${slugifyStr(article.Title)}`}
