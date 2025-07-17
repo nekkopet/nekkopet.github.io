@@ -1,14 +1,13 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
-import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Pagination from "@components/Pagination.astro";
-import Card from "@components/Card";
-import HeroImage from "@components/HeroImage.astro";
-import Hr from "@components/Hr.astro";
+// import Pagination from "@components/Pagination.astro";
 import ProductsPage from "@components/pages.products.astro";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
 
 export interface Props {
   currentPage: number;
@@ -17,19 +16,17 @@ export interface Props {
 }
 
 import { getCollection } from "astro:content";
-import { slugifyStr } from "@utils/slugify";
 
 const store = (await getCollection("store"))?.[0]?.data;
+
 const page = (await getCollection("pages"))?.find(
   (p: any) => p.data.slug == "products"
 )?.data;
-const products = await getCollection("products");
-import {
-  BlocksRenderer,
-  type BlocksContent,
-} from "@strapi/blocks-react-renderer";
 
-const { currentPage, totalPages } = Astro.props;
+const products = await getCollection("products");
+
+//  @TODO, restore see more pages, $currentPage
+const { totalPages } = Astro.props;
 const meta = {
   title: page?.SEO?.metaTitle || `${store?.title} Catalogue`,
   image: page?.SEO?.socialImage?.url,
@@ -42,15 +39,8 @@ const meta = {
 
 <Layout meta={meta}>
   <ProductsPage products={products} page={page} />
-  <!--
-  <Pagination
-    {currentPage}
-    {totalPages}
-    prevUrl={`/blog${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
-    nextUrl={`/blog/${currentPage + 1}/`}
-  /> -->
   <section class="container mx-auto max-w-4xl px-4 py-12 sm:px-6">
-    <div class="prose prose-lg dark:prose-invert max-w-none">
+    <div class="prose prose-lg dark:prose-invert max-w-none text-gray-700">
       <BlocksRenderer content={page?.Content || ([] as BlocksContent[])} />
     </div>
   </section>

@@ -203,3 +203,7 @@ ul.blog-list li .aspect-video {
 .footer-link:hover {
   text-decoration: underline;
 }
+
+.markdown-block-content p {
+  padding-bottom: 16px;
+}
