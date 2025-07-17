@@ -4,10 +4,8 @@ import Footer from "@components/Footer.astro";
 import { markketplace } from "@config";
 import { getCollection } from "astro:content";
 
-const stores = await getCollection("stores");
-const store = stores.find(
-  (store: { data: any }) => markketplace?.STORE_SLUG == store?.data?.slug
-)?.data;
+const stores = await getCollection("store");
+const store = stores?.[0]?.data;
 
 const meta = {
   title: `404 - not found | ${store?.title}`,
