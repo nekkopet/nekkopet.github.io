@@ -1,15 +1,16 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import PostDetails from "@layouts/PostDetails.astro";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
 import { slugifyStr } from "@utils/slugify";
 import ArticlesPage from "@components/pages.articles.astro";
+import ArticlePage from "@components/pages.article.astro";
 import Layout from "@layouts/Layout.astro";
 import Footer from "@components/Footer.astro";
+import type { Article } from "@interfaces/Article";
 
 export interface Props {
-  post: CollectionEntry<"posts">;
+  post: Article["data"];
   meta: {};
 }
 
@@ -26,7 +27,7 @@ export async function getStaticPaths() {
         `${new Date(post.data.updatedAt).getFullYear()}-${slugifyStr(post.data.Title)}`,
     },
     props: {
-      post,
+      post: post.data,
       meta: {
         title: post.data?.SEO?.metaTitle || "Blog Post",
         image: post.data?.SEO?.socialImage?.url,
@@ -57,8 +58,14 @@ const pagination = getPagination({
 ---
 
 <Layout meta={meta}>
-  {post && <PostDetails post={post} />}
-
   {!post && <ArticlesPage pagination={pagination} page={blogPage} />}}
+  {
+    post && (
+      <>
+        <ArticlePage article={post} />
+        {/* // related articles */}
+      </>
+    )
+  }
   <Footer />
 </Layout>
