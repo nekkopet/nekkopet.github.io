@@ -1,10 +1,10 @@
 ---
 const { product } = Astro.props;
+import { markketplace } from "@config";
 import { type Product } from "../interfaces";
 
 const getImageUrl = (product: Product) => {
   const { Slides: slides } = product;
-  console.log({ product });
   if (product?.Thumbnail?.url) return product?.Thumbnail?.url;
 
   if (slides && slides.length > 0) {
@@ -13,7 +13,9 @@ const getImageUrl = (product: Product) => {
     if (slide.formats?.small) return slide.formats.small.url;
     return slide.url;
   }
-  return "https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg";
+  if (product?.SEO?.metaImage?.url) return product?.SEO?.metaImage?.url;
+
+  return markketplace.defaults.product;
 };
 
 const imageUrl = getImageUrl(product);

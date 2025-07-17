@@ -1,5 +1,6 @@
 ---
 const { article } = Astro.props;
+import { slugifyStr } from "@utils/slugify";
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -22,7 +23,11 @@ const imageUrl = getImageUrl(article.cover);
 <article
   class="group hover:shadow-3xl relative overflow-hidden rounded-none border border-gray-100/50 bg-white/80 shadow-2xl backdrop-blur-sm transition-all duration-700 hover:-translate-y-3"
 >
-  <a href={`/blog/${article.slug}`} class="block h-full">
+  <a
+    href={"/blog/" + article.slug ||
+      `${new Date(article.createdAt).getFullYear()}-${slugifyStr(article.Title)}`}
+    class="block h-full"
+  >
     <div class="relative h-80 overflow-hidden">
       <img
         src={imageUrl}

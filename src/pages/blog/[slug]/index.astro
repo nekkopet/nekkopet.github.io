@@ -15,7 +15,9 @@ export async function getStaticPaths() {
 
   const postResult = posts.map(post => ({
     params: {
-      slug: `${new Date(post.data.updatedAt).getFullYear()}-${slugifyStr(post.data.Title)}`,
+      slug:
+        post.data.slug ||
+        `${new Date(post.data.updatedAt).getFullYear()}-${slugifyStr(post.data.Title)}`,
     },
     props: { post: post },
   }));
