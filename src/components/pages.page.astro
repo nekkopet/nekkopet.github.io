@@ -1,0 +1,85 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+type Page = CollectionEntry<'pages'>;
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
+export interface Props {
+  page: Page['data']
+}
+
+const { page } = Astro.props;
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+---
+
+
+<article class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+  <div class="max-w-5xl mx-auto px-8 py-16">
+    <!-- Back Navigation -->
+    <div class="mb-16">
+      <a
+        href="/about"
+        class="inline-f2lex items-center text-gray-600 hover:text-gray-900 font-light tracking-wider uppercase text-xs transition-colors group"
+      >
+        <div class="w-8 h-px bg-gray-600 mr-4 group-hover:w-12 group-hover:bg-gray-900 transition-all duration-300"></div>
+        Back to About
+      </a>
+    </div>
+
+    <!-- Page Header -->
+    <header class="mb-20 text-center">
+      <div class="mb-8">
+        <time datetime={page.publishedAt} class="text-xs font-light tracking-widest text-gray-500 uppercase">
+          {formatDate(page.publishedAt)}
+        </time>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-extralight text-gray-900 mb-12 leading-tight tracking-tight">
+        {page.Title}
+      </h1>
+
+      {page.SEO?.metaDescription && (
+        <p class="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto font-light">
+          {page.SEO.metaDescription}
+        </p>
+      )}
+
+      <div class="mt-12">
+        <div class="w-24 h-px bg-gray-900 mx-auto"></div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="prose prose-lg max-w-none mb-20">
+      <div class="bg-white/80 backdrop-blur-sm border border-gray-100/50 p-12 shadow-xl mb-16">
+        <div class="space-y-6 text-gray-700 font-light leading-relaxed">
+          <BlocksRenderer
+            content={page?.Content || ([] as BlocksContent[])}
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="border-t border-gray-200 pt-16">
+      <div class="text-center">
+        <a
+          href="/about"
+          class="inline-flex items-center px-8 py-4 bg-white border border-gray-200 text-gray-900 font-light tracking-wider uppercase text-xs hover:bg-gray-50 transition-colors group shadow-lg"
+        >
+          <div class="w-6 h-px bg-gray-900 mr-4 group-hover:w-8 transition-all duration-300"></div>
+          More About Us
+        </a>
+      </div>
+    </footer>
+  </div>
+</article>
