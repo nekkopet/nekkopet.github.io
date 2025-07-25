@@ -4,27 +4,28 @@ import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import PageCard from "@components/PageCard";
 import { slugifyStr } from "@utils/slugify";
-import { SITE } from "@config";
 import Footer from "@components/Footer.astro";
-import Header from "@components/Header.astro";
-import type Store from "@interfaces/Store";
 import { markketplace } from "@config";
 
-const stores = await getCollection("stores");
-const store = stores.find(
-  (store: Store) => store.data.slug === markketplace.STORE_SLUG
-);
+const store = (await getCollection("store"))?.[0]?.data;
 
-let pages = await getCollection("pages");
-pages = pages
+const pages = (await getCollection("pages"))
   .sort((a, b) => a.data.Title.localeCompare(b.data.Title))
   .filter(
     page => page.data.Active && !["home", "receipt"].includes(page.data.slug)
   );
 ---
 
-<Layout title={`Pages Index | ${SITE.title}`}>
-  <Header store={store} activeNav="pages" />
+<Layout
+  meta={{
+    title: `Pages Index | ${store.title}`,
+    image:
+      store?.SEO?.socialImage?.url ||
+      store?.Logo?.url ||
+      markketplace?.defaults?.hero,
+    description: store?.SEO?.metaDescription,
+  }}
+>
   <Main pageTitle="Pages" pageDesc="A list of all pages.">
     <ul class="mx-4 flex max-w-3xl flex-wrap">
       {

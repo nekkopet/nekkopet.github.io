@@ -1,20 +1,12 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import type { Store } from "@interfaces/index";
-import HeroImage from "@components/HeroImage.astro";
-import {
-  BlocksRenderer,
-  type BlocksContent,
-} from "@strapi/blocks-react-renderer";
 import Layout from "@layouts/Layout.astro";
-import Header, { type activeNav } from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Breadcrumbs from "@components/Breadcrumbs.astro";
-import Hr from "@components/Hr.astro";
-import { markketplace } from "@config";
+import PagePage from "@components/pages.page.astro";
 
 export interface Props {
-  page: CollectionEntry<"pages">;
+  page: CollectionEntry<"pages">["data"];
+  slug: string;
 }
 
 export async function getStaticPaths() {
@@ -26,34 +18,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const splitContentByHeading = (content: any) => {
-  const sections = [];
-  let currentSection = [];
-
-  content.forEach(block => {
-    if (block.type === "heading" && currentSection.length > 0) {
-      sections.push(currentSection);
-      currentSection = [block];
-    } else {
-      currentSection.push(block);
-    }
-  });
-
-  // Push the last section if it has content
-  if (currentSection.length > 0) {
-    sections.push(currentSection);
-  }
-
-  return sections;
-};
-
-const stores = await getCollection("stores");
-const store = stores.find(
-  (store: Store) => store.data.slug === markketplace.STORE_SLUG
-);
-
-const { page } = Astro.props;
-const sections = splitContentByHeading(page?.Content);
+const { page, slug } = Astro.props;
 ---
 
 <Layout
@@ -64,25 +29,6 @@ const sections = splitContentByHeading(page?.Content);
     url: `/${page?.slug}`,
   }}
 >
-  <Header store={store} activeNav={page?.data?.slug as activeNav} />
-  <Breadcrumbs />
-  <main id="main-content" class="content-page">
-    <section id="about" class="mb-10 max-w-3xl prose-img:border-0">
-      {
-        page?.SEO?.socialImage && (
-          <HeroImage image={page?.SEO?.socialImage} title={page?.Title} />
-        )
-      }
-      <h1 class="text-2xl tracking-wider sm:text-3xl">{page.Title}</h1>
-    </section>
-    {
-      sections.map((section, index) => (
-        <section class="max-w-4xl">
-          <BlocksRenderer content={section || ([] as BlocksContent[])} />
-          <Hr />
-        </section>
-      ))
-    }
-  </main>
-  <Footer activeNav={page?.slug} />
+  <PagePage page={page} />
+  <Footer activeNav={slug} />
 </Layout>
