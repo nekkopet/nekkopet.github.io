@@ -44,7 +44,7 @@ const pages = defineCollection({
   loader: strapiLoader({
     contentType: "page",
     filter: `filters[store][slug][$eq]=${markketplace.STORE_SLUG}`,
-    populate: 'SEO.socialImage,albums,albums.tracks'
+    populate: 'SEO.socialImage,albums,albums.tracks,albums.cover'
   }),
 });
 

@@ -1,11 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Footer from "@components/Footer.astro";
-// import { slugifyStr } from "@utils/slugify";
-// import AlbumsGrid from "@components/albums.grid";
 import { marked } from "marked";
 import { getCollection } from "astro:content";
-// import { SITE } from "@config";
 import {
   BlocksRenderer,
   type BlocksContent,
@@ -14,6 +11,7 @@ import {
 import UiHero from "@components/ui.hero.astro";
 import ArticleList from "@components/ui.article.list.astro";
 import ProductList from "@components/ui.product.list.astro";
+import AlbumsGrid from "@components/albums.grid.astro";
 
 const store = (await getCollection("store"))?.[0]?.data;
 
@@ -87,16 +85,6 @@ const meta = {
           </div>
         </section>
 
-        <!-- Albums Section -->
-        <!-- <section class="container mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2
-            class="mb-12 text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
-          >
-            Collections
-          </h2>
-          <AlbumsGrid albums={homePage?.albums} store={store} />
-        </section> -->
-
         <!-- Store Links Section -->
         {
           links && links.length > 0 && (
@@ -153,6 +141,15 @@ const meta = {
           </div>
         </section>
       </div>
+      {
+        homePage?.albums?.length > 1 && (
+          <section class="container w-[100%] min-w-[100%] border border-white/50 bg-gradient-to-br from-purple-50 via-white to-pink-50 px-4 py-16 backdrop-blur-sm sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl">
+              <AlbumsGrid albums={homePage?.albums} title="Collections" />
+            </div>
+          </section>
+        )
+      }
       <Footer />
     </section>
   </main>
